@@ -1,0 +1,38 @@
+running egg_info
+creating ../../build/driver_ros2/driver_ros2.egg-info
+writing ../../build/driver_ros2/driver_ros2.egg-info/PKG-INFO
+writing dependency_links to ../../build/driver_ros2/driver_ros2.egg-info/dependency_links.txt
+writing entry points to ../../build/driver_ros2/driver_ros2.egg-info/entry_points.txt
+writing requirements to ../../build/driver_ros2/driver_ros2.egg-info/requires.txt
+writing top-level names to ../../build/driver_ros2/driver_ros2.egg-info/top_level.txt
+writing manifest file '../../build/driver_ros2/driver_ros2.egg-info/SOURCES.txt'
+reading manifest file '../../build/driver_ros2/driver_ros2.egg-info/SOURCES.txt'
+writing manifest file '../../build/driver_ros2/driver_ros2.egg-info/SOURCES.txt'
+running build
+running build_py
+creating /home/kencheng/notebooks/ros_ws/build/driver_ros2/build
+creating /home/kencheng/notebooks/ros_ws/build/driver_ros2/build/lib
+creating /home/kencheng/notebooks/ros_ws/build/driver_ros2/build/lib/driver_ros2
+copying driver_ros2/driver_node.py -> /home/kencheng/notebooks/ros_ws/build/driver_ros2/build/lib/driver_ros2
+copying driver_ros2/__init__.py -> /home/kencheng/notebooks/ros_ws/build/driver_ros2/build/lib/driver_ros2
+copying driver_ros2/ros_robot_controller_sdk.py -> /home/kencheng/notebooks/ros_ws/build/driver_ros2/build/lib/driver_ros2
+running install
+running install_lib
+creating /home/kencheng/notebooks/ros_ws/install/driver_ros2/lib/python3.10/site-packages/driver_ros2
+copying /home/kencheng/notebooks/ros_ws/build/driver_ros2/build/lib/driver_ros2/driver_node.py -> /home/kencheng/notebooks/ros_ws/install/driver_ros2/lib/python3.10/site-packages/driver_ros2
+copying /home/kencheng/notebooks/ros_ws/build/driver_ros2/build/lib/driver_ros2/__init__.py -> /home/kencheng/notebooks/ros_ws/install/driver_ros2/lib/python3.10/site-packages/driver_ros2
+copying /home/kencheng/notebooks/ros_ws/build/driver_ros2/build/lib/driver_ros2/ros_robot_controller_sdk.py -> /home/kencheng/notebooks/ros_ws/install/driver_ros2/lib/python3.10/site-packages/driver_ros2
+byte-compiling /home/kencheng/notebooks/ros_ws/install/driver_ros2/lib/python3.10/site-packages/driver_ros2/driver_node.py to driver_node.cpython-310.pyc
+byte-compiling /home/kencheng/notebooks/ros_ws/install/driver_ros2/lib/python3.10/site-packages/driver_ros2/__init__.py to __init__.cpython-310.pyc
+byte-compiling /home/kencheng/notebooks/ros_ws/install/driver_ros2/lib/python3.10/site-packages/driver_ros2/ros_robot_controller_sdk.py to ros_robot_controller_sdk.cpython-310.pyc
+running install_data
+creating /home/kencheng/notebooks/ros_ws/install/driver_ros2/share/ament_index
+creating /home/kencheng/notebooks/ros_ws/install/driver_ros2/share/ament_index/resource_index
+creating /home/kencheng/notebooks/ros_ws/install/driver_ros2/share/ament_index/resource_index/packages
+copying resource/driver_ros2 -> /home/kencheng/notebooks/ros_ws/install/driver_ros2/share/ament_index/resource_index/packages
+copying package.xml -> /home/kencheng/notebooks/ros_ws/install/driver_ros2/share/driver_ros2
+running install_egg_info
+Copying ../../build/driver_ros2/driver_ros2.egg-info to /home/kencheng/notebooks/ros_ws/install/driver_ros2/lib/python3.10/site-packages/driver_ros2-0.0.0-py3.10.egg-info
+running install_scripts
+Installing driver_node script to /home/kencheng/notebooks/ros_ws/install/driver_ros2/lib/driver_ros2
+writing list of installed files to '/home/kencheng/notebooks/ros_ws/build/driver_ros2/install.log'

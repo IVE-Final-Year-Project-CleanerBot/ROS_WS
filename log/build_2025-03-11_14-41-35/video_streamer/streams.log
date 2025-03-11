@@ -1,0 +1,25 @@
+[4.656s] Invoking command in '/home/kencheng/notebooks/ros_ws/src/video_streamer': CONDA_PROMPT_MODIFIER=(ros2_humble) PYTHONPATH=/home/kencheng/notebooks/ros_ws/build/video_streamer/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/kencheng/notebooks/ros_ws/install/video_streamer/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/video_streamer build --build-base /home/kencheng/notebooks/ros_ws/build/video_streamer/build install --record /home/kencheng/notebooks/ros_ws/build/video_streamer/install.log --single-version-externally-managed install_data
+[6.170s] running egg_info
+[6.280s] writing ../../build/video_streamer/video_streamer.egg-info/PKG-INFO
+[6.283s] writing dependency_links to ../../build/video_streamer/video_streamer.egg-info/dependency_links.txt
+[6.284s] writing entry points to ../../build/video_streamer/video_streamer.egg-info/entry_points.txt
+[6.286s] writing requirements to ../../build/video_streamer/video_streamer.egg-info/requires.txt
+[6.287s] writing top-level names to ../../build/video_streamer/video_streamer.egg-info/top_level.txt
+[6.601s] reading manifest file '../../build/video_streamer/video_streamer.egg-info/SOURCES.txt'
+[6.608s] writing manifest file '../../build/video_streamer/video_streamer.egg-info/SOURCES.txt'
+[6.609s] running build
+[6.610s] running build_py
+[6.611s] copying video_streamer/__init__.py -> /home/kencheng/notebooks/ros_ws/build/video_streamer/build/lib/video_streamer
+[6.612s] copying video_streamer/video_stream.py -> /home/kencheng/notebooks/ros_ws/build/video_streamer/build/lib/video_streamer
+[6.613s] running install
+[6.636s] running install_lib
+[6.730s] running install_data
+[6.731s] copying resource/video_streamer -> /home/kencheng/notebooks/ros_ws/install/video_streamer/share/ament_index/resource_index/packages
+[6.733s] copying package.xml -> /home/kencheng/notebooks/ros_ws/install/video_streamer/share/video_streamer
+[6.734s] running install_egg_info
+[6.830s] removing '/home/kencheng/notebooks/ros_ws/install/video_streamer/lib/python3.10/site-packages/video_streamer-0.0.0-py3.10.egg-info' (and everything under it)
+[6.831s] Copying ../../build/video_streamer/video_streamer.egg-info to /home/kencheng/notebooks/ros_ws/install/video_streamer/lib/python3.10/site-packages/video_streamer-0.0.0-py3.10.egg-info
+[6.837s] running install_scripts
+[7.643s] Installing video_stream script to /home/kencheng/notebooks/ros_ws/install/video_streamer/lib/video_streamer
+[7.645s] writing list of installed files to '/home/kencheng/notebooks/ros_ws/build/video_streamer/install.log'
+[7.782s] Invoked command in '/home/kencheng/notebooks/ros_ws/src/video_streamer' returned '0': CONDA_PROMPT_MODIFIER=(ros2_humble) PYTHONPATH=/home/kencheng/notebooks/ros_ws/build/video_streamer/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/kencheng/notebooks/ros_ws/install/video_streamer/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/video_streamer build --build-base /home/kencheng/notebooks/ros_ws/build/video_streamer/build install --record /home/kencheng/notebooks/ros_ws/build/video_streamer/install.log --single-version-externally-managed install_data

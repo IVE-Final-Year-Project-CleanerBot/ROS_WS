@@ -1,0 +1,95 @@
+amcl:
+  ros__parameters:
+    use_sim_time: false
+    min_particles: 500
+    max_particles: 2000
+    alpha1: 0.2
+    alpha2: 0.2
+    alpha3: 0.2
+    alpha4: 0.2
+    alpha5: 0.2
+    odom_frame_id: "odom"
+    base_frame_id: "base_link"
+    scan_topic: "scan"
+    map_topic: "map"
+    update_min_d: 0.2
+    update_min_a: 0.2
+    resample_interval: 1.0
+    transform_tolerance: 0.1
+    recovery_alpha_slow: 0.001
+    recovery_alpha_fast: 0.1
+
+map_server:
+  ros__parameters:
+    yaml_filename: "config/map.yaml"
+    use_sim_time: false
+
+planner_server:
+  ros__parameters:
+    use_sim_time: false
+    expected_planner_frequency: 20.0
+    planner_plugins: ["GridBased"]
+    GridBased:
+      plugin: "nav2_navfn_planner/NavfnPlanner"
+      tolerance: 0.5
+      use_astar: false
+      allow_unknown: true
+
+controller_server:
+  ros__parameters:
+    use_sim_time: false
+    controller_frequency: 20.0
+    min_vel_x: 0.0
+    max_vel_x: 0.26
+    min_vel_y: 0.0
+    max_vel_y: 0.0
+    min_vel_theta: 0.0
+    max_vel_theta: 1.82
+    acc_lim_x: 2.5
+    acc_lim_y: 0.0
+    acc_lim_theta: 3.2
+    controller_plugins: ["FollowPath"]
+    FollowPath:
+      plugin: "dwb_core::DWBLocalPlanner"
+      debug_trajectory_details: true
+      min_vel_x: 0.0
+      max_vel_x: 0.26
+      min_vel_y: 0.0
+      max_vel_y: 0.0
+      min_vel_theta: 0.0
+      max_vel_theta: 1.82
+      acc_lim_x: 2.5
+      acc_lim_y: 0.0
+      acc_lim_theta: 3.2
+      critics: ["RotateToGoal", "Oscillation", "ObstacleFootprint", "GoalAlign", "PathAlign", "PathDist", "GoalDist"]
+      RotateToGoal:
+        scale: 32.0
+      Oscillation:
+        scale: 10.0
+        oscillation_reset_dist: 0.05
+      ObstacleFootprint:
+        scale: 24.0
+      GoalAlign:
+        scale: 24.0
+      PathAlign:
+        scale: 32.0
+      PathDist:
+        scale: 32.0
+      GoalDist:
+        scale: 24.0
+
+bt_navigator:
+  ros__parameters:
+    use_sim_time: false
+    bt_xml_filename: "config/navigate_w_replanning_and_recovery.xml"
+
+recovery_server:
+  ros__parameters:
+    use_sim_time: false
+    recovery_plugins: ["Spin", "BackUp", "Wait"]
+    Spin:
+      plugin: "nav2_recoveries/Spin"
+    BackUp:
+      plugin: "nav2_recoveries/BackUp"
+    Wait:
+      plugin: "nav2_recoveries/Wait"

@@ -1,0 +1,28 @@
+[4.736s] Invoking command in '/home/kencheng/notebooks/ros_ws/src/driver_ros2': CONDA_PROMPT_MODIFIER=(base) PYTHONPATH=/home/kencheng/notebooks/ros_ws/build/driver_ros2/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/kencheng/notebooks/ros_ws/install/driver_ros2/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/driver_ros2 build --build-base /home/kencheng/notebooks/ros_ws/build/driver_ros2/build install --record /home/kencheng/notebooks/ros_ws/build/driver_ros2/install.log --single-version-externally-managed install_data
+[5.545s] /home/kencheng/miniconda3/envs/ros2_humble/lib/python3.10/site-packages/setuptools/_distutils/dist.py:270: UserWarning: Unknown distribution option: 'tests_require'
+[5.545s]   warnings.warn(msg)
+[6.358s] running egg_info
+[6.479s] writing ../../build/driver_ros2/driver_ros2.egg-info/PKG-INFO
+[6.481s] writing dependency_links to ../../build/driver_ros2/driver_ros2.egg-info/dependency_links.txt
+[6.483s] writing entry points to ../../build/driver_ros2/driver_ros2.egg-info/entry_points.txt
+[6.484s] writing requirements to ../../build/driver_ros2/driver_ros2.egg-info/requires.txt
+[6.485s] writing top-level names to ../../build/driver_ros2/driver_ros2.egg-info/top_level.txt
+[6.715s] reading manifest file '../../build/driver_ros2/driver_ros2.egg-info/SOURCES.txt'
+[6.721s] writing manifest file '../../build/driver_ros2/driver_ros2.egg-info/SOURCES.txt'
+[6.722s] running build
+[6.722s] running build_py
+[6.723s] copying driver_ros2/driver_node.py -> /home/kencheng/notebooks/ros_ws/build/driver_ros2/build/lib/driver_ros2
+[6.725s] copying driver_ros2/__init__.py -> /home/kencheng/notebooks/ros_ws/build/driver_ros2/build/lib/driver_ros2
+[6.726s] copying driver_ros2/ros_robot_controller_sdk.py -> /home/kencheng/notebooks/ros_ws/build/driver_ros2/build/lib/driver_ros2
+[6.728s] running install
+[6.749s] running install_lib
+[6.858s] running install_data
+[6.859s] copying resource/driver_ros2 -> /home/kencheng/notebooks/ros_ws/install/driver_ros2/share/ament_index/resource_index/packages
+[6.861s] copying package.xml -> /home/kencheng/notebooks/ros_ws/install/driver_ros2/share/driver_ros2
+[6.862s] running install_egg_info
+[6.971s] removing '/home/kencheng/notebooks/ros_ws/install/driver_ros2/lib/python3.10/site-packages/driver_ros2-0.0.0-py3.10.egg-info' (and everything under it)
+[6.973s] Copying ../../build/driver_ros2/driver_ros2.egg-info to /home/kencheng/notebooks/ros_ws/install/driver_ros2/lib/python3.10/site-packages/driver_ros2-0.0.0-py3.10.egg-info
+[6.979s] running install_scripts
+[7.938s] Installing driver_node script to /home/kencheng/notebooks/ros_ws/install/driver_ros2/lib/driver_ros2
+[7.940s] writing list of installed files to '/home/kencheng/notebooks/ros_ws/build/driver_ros2/install.log'
+[8.093s] Invoked command in '/home/kencheng/notebooks/ros_ws/src/driver_ros2' returned '0': CONDA_PROMPT_MODIFIER=(base) PYTHONPATH=/home/kencheng/notebooks/ros_ws/build/driver_ros2/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/kencheng/notebooks/ros_ws/install/driver_ros2/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/driver_ros2 build --build-base /home/kencheng/notebooks/ros_ws/build/driver_ros2/build install --record /home/kencheng/notebooks/ros_ws/build/driver_ros2/install.log --single-version-externally-managed install_data

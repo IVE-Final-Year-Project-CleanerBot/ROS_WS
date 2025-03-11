@@ -1,0 +1,329 @@
+[0.477s] DEBUG:colcon:Command line arguments: ['/usr/bin/colcon', 'build']
+[0.477s] DEBUG:colcon:Parsed command line arguments: Namespace(log_base=None, log_level=None, verb_name='build', build_base='build', install_base='install', merge_install=False, symlink_install=False, test_result_base=None, continue_on_error=False, executor='parallel', parallel_workers=4, event_handlers=None, ignore_user_meta=False, metas=['./colcon.meta'], base_paths=['.'], packages_ignore=None, packages_ignore_regex=None, paths=None, packages_up_to=None, packages_up_to_regex=None, packages_above=None, packages_above_and_dependencies=None, packages_above_depth=None, packages_select_by_dep=None, packages_skip_by_dep=None, packages_skip_up_to=None, packages_select_build_failed=False, packages_skip_build_finished=False, packages_select_test_failures=False, packages_skip_test_passed=False, packages_select=None, packages_skip=None, packages_select_regex=None, packages_skip_regex=None, packages_start=None, packages_end=None, allow_overriding=[], cmake_args=None, cmake_target=None, cmake_target_skip_unavailable=False, cmake_clean_cache=False, cmake_clean_first=False, cmake_force_configure=False, ament_cmake_args=None, catkin_cmake_args=None, catkin_skip_building_tests=False, mixin_files=None, mixin=None, verb_parser=<colcon_mixin.mixin.mixin_argument.MixinArgumentDecorator object at 0xffff8309aec0>, verb_extension=<colcon_core.verb.build.BuildVerb object at 0xffff832b44c0>, main=<bound method BuildVerb.main of <colcon_core.verb.build.BuildVerb object at 0xffff832b44c0>>, mixin_verb=('build',))
+[1.442s] Level 1:colcon.colcon_core.package_discovery:discover_packages(colcon_meta) check parameters
+[1.443s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) check parameters
+[1.443s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) check parameters
+[1.443s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) check parameters
+[1.443s] Level 1:colcon.colcon_core.package_discovery:discover_packages(colcon_meta) discover
+[1.443s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) discover
+[1.443s] INFO:colcon.colcon_core.package_discovery:Crawling recursively for packages in '/home/kencheng/notebooks/ros_ws'
+[1.444s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['ignore', 'ignore_ament_install']
+[1.444s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'ignore'
+[1.444s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'ignore_ament_install'
+[1.444s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['colcon_pkg']
+[1.445s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'colcon_pkg'
+[1.445s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['colcon_meta']
+[1.445s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'colcon_meta'
+[1.445s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['ros']
+[1.445s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'ros'
+[1.527s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['cmake', 'python']
+[1.527s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'cmake'
+[1.527s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'python'
+[1.528s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['python_setup_py']
+[1.528s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'python_setup_py'
+[1.528s] Level 1:colcon.colcon_core.package_identification:_identify(build) by extensions ['ignore', 'ignore_ament_install']
+[1.529s] Level 1:colcon.colcon_core.package_identification:_identify(build) by extension 'ignore'
+[1.529s] Level 1:colcon.colcon_core.package_identification:_identify(build) ignored
+[1.529s] Level 1:colcon.colcon_core.package_identification:_identify(install) by extensions ['ignore', 'ignore_ament_install']
+[1.530s] Level 1:colcon.colcon_core.package_identification:_identify(install) by extension 'ignore'
+[1.530s] Level 1:colcon.colcon_core.package_identification:_identify(install) ignored
+[1.530s] Level 1:colcon.colcon_core.package_identification:_identify(log) by extensions ['ignore', 'ignore_ament_install']
+[1.531s] Level 1:colcon.colcon_core.package_identification:_identify(log) by extension 'ignore'
+[1.531s] Level 1:colcon.colcon_core.package_identification:_identify(log) ignored
+[1.531s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['ignore', 'ignore_ament_install']
+[1.531s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'ignore'
+[1.532s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'ignore_ament_install'
+[1.532s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['colcon_pkg']
+[1.532s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'colcon_pkg'
+[1.532s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['colcon_meta']
+[1.532s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'colcon_meta'
+[1.532s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['ros']
+[1.532s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'ros'
+[1.533s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['cmake', 'python']
+[1.533s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'cmake'
+[1.533s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'python'
+[1.533s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['python_setup_py']
+[1.533s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'python_setup_py'
+[1.534s] Level 1:colcon.colcon_core.package_identification:_identify(src/cartographer_ros2) by extensions ['ignore', 'ignore_ament_install']
+[1.534s] Level 1:colcon.colcon_core.package_identification:_identify(src/cartographer_ros2) by extension 'ignore'
+[1.534s] Level 1:colcon.colcon_core.package_identification:_identify(src/cartographer_ros2) by extension 'ignore_ament_install'
+[1.535s] Level 1:colcon.colcon_core.package_identification:_identify(src/cartographer_ros2) by extensions ['colcon_pkg']
+[1.535s] Level 1:colcon.colcon_core.package_identification:_identify(src/cartographer_ros2) by extension 'colcon_pkg'
+[1.535s] Level 1:colcon.colcon_core.package_identification:_identify(src/cartographer_ros2) by extensions ['colcon_meta']
+[1.535s] Level 1:colcon.colcon_core.package_identification:_identify(src/cartographer_ros2) by extension 'colcon_meta'
+[1.535s] Level 1:colcon.colcon_core.package_identification:_identify(src/cartographer_ros2) by extensions ['ros']
+[1.535s] Level 1:colcon.colcon_core.package_identification:_identify(src/cartographer_ros2) by extension 'ros'
+[1.545s] DEBUG:colcon.colcon_core.package_identification:Package 'src/cartographer_ros2' with type 'ros.ament_cmake' and name 'cartographer_ros2'
+[1.545s] Level 1:colcon.colcon_core.package_identification:_identify(src/driver_ros2) by extensions ['ignore', 'ignore_ament_install']
+[1.546s] Level 1:colcon.colcon_core.package_identification:_identify(src/driver_ros2) by extension 'ignore'
+[1.546s] Level 1:colcon.colcon_core.package_identification:_identify(src/driver_ros2) by extension 'ignore_ament_install'
+[1.546s] Level 1:colcon.colcon_core.package_identification:_identify(src/driver_ros2) by extensions ['colcon_pkg']
+[1.546s] Level 1:colcon.colcon_core.package_identification:_identify(src/driver_ros2) by extension 'colcon_pkg'
+[1.547s] Level 1:colcon.colcon_core.package_identification:_identify(src/driver_ros2) by extensions ['colcon_meta']
+[1.547s] Level 1:colcon.colcon_core.package_identification:_identify(src/driver_ros2) by extension 'colcon_meta'
+[1.547s] Level 1:colcon.colcon_core.package_identification:_identify(src/driver_ros2) by extensions ['ros']
+[1.547s] Level 1:colcon.colcon_core.package_identification:_identify(src/driver_ros2) by extension 'ros'
+[1.549s] DEBUG:colcon.colcon_core.package_identification:Package 'src/driver_ros2' with type 'ros.ament_python' and name 'driver_ros2'
+[1.550s] Level 1:colcon.colcon_core.package_identification:_identify(src/nav2_ros2) by extensions ['ignore', 'ignore_ament_install']
+[1.550s] Level 1:colcon.colcon_core.package_identification:_identify(src/nav2_ros2) by extension 'ignore'
+[1.551s] Level 1:colcon.colcon_core.package_identification:_identify(src/nav2_ros2) by extension 'ignore_ament_install'
+[1.551s] Level 1:colcon.colcon_core.package_identification:_identify(src/nav2_ros2) by extensions ['colcon_pkg']
+[1.551s] Level 1:colcon.colcon_core.package_identification:_identify(src/nav2_ros2) by extension 'colcon_pkg'
+[1.551s] Level 1:colcon.colcon_core.package_identification:_identify(src/nav2_ros2) by extensions ['colcon_meta']
+[1.551s] Level 1:colcon.colcon_core.package_identification:_identify(src/nav2_ros2) by extension 'colcon_meta'
+[1.551s] Level 1:colcon.colcon_core.package_identification:_identify(src/nav2_ros2) by extensions ['ros']
+[1.552s] Level 1:colcon.colcon_core.package_identification:_identify(src/nav2_ros2) by extension 'ros'
+[1.554s] DEBUG:colcon.colcon_core.package_identification:Package 'src/nav2_ros2' with type 'ros.ament_cmake' and name 'nav2_ros2'
+[1.555s] Level 1:colcon.colcon_core.package_identification:_identify(src/sllidar_ros2) by extensions ['ignore', 'ignore_ament_install']
+[1.555s] Level 1:colcon.colcon_core.package_identification:_identify(src/sllidar_ros2) by extension 'ignore'
+[1.555s] Level 1:colcon.colcon_core.package_identification:_identify(src/sllidar_ros2) by extension 'ignore_ament_install'
+[1.556s] Level 1:colcon.colcon_core.package_identification:_identify(src/sllidar_ros2) by extensions ['colcon_pkg']
+[1.556s] Level 1:colcon.colcon_core.package_identification:_identify(src/sllidar_ros2) by extension 'colcon_pkg'
+[1.556s] Level 1:colcon.colcon_core.package_identification:_identify(src/sllidar_ros2) by extensions ['colcon_meta']
+[1.556s] Level 1:colcon.colcon_core.package_identification:_identify(src/sllidar_ros2) by extension 'colcon_meta'
+[1.556s] Level 1:colcon.colcon_core.package_identification:_identify(src/sllidar_ros2) by extensions ['ros']
+[1.556s] Level 1:colcon.colcon_core.package_identification:_identify(src/sllidar_ros2) by extension 'ros'
+[1.559s] DEBUG:colcon.colcon_core.package_identification:Package 'src/sllidar_ros2' with type 'ros.ament_cmake' and name 'sllidar_ros2'
+[1.559s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) using defaults
+[1.559s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) discover
+[1.559s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) using defaults
+[1.559s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) discover
+[1.560s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) using defaults
+[1.635s] Level 1:colcon.colcon_core.package_discovery:discover_packages(prefix_path) check parameters
+[1.636s] Level 1:colcon.colcon_core.package_discovery:discover_packages(prefix_path) discover
+[1.640s] WARNING:colcon.colcon_ros.prefix_path.ament:The path '/home/kencheng/notebooks/ros_ws/install/sllidar_ros2' in the environment variable AMENT_PREFIX_PATH doesn't exist
+[1.640s] WARNING:colcon.colcon_ros.prefix_path.ament:The path '/home/kencheng/notebooks/ros_ws/install/driver' in the environment variable AMENT_PREFIX_PATH doesn't exist
+[1.641s] WARNING:colcon.colcon_ros.prefix_path.catkin:The path '/home/kencheng/notebooks/ros_ws/install/sllidar_ros2' in the environment variable CMAKE_PREFIX_PATH doesn't exist
+[1.644s] DEBUG:colcon.colcon_installed_package_information.package_discovery:Found 0 installed packages in /home/kencheng/notebooks/ros_ws/install
+[1.657s] DEBUG:colcon.colcon_installed_package_information.package_discovery:Found 417 installed packages in /opt/ros/humble
+[1.670s] Level 1:colcon.colcon_core.package_discovery:discover_packages(prefix_path) using defaults
+[1.900s] Level 5:colcon.colcon_core.verb:set package 'cartographer_ros2' build argument 'cmake_args' from command line to 'None'
+[1.900s] Level 5:colcon.colcon_core.verb:set package 'cartographer_ros2' build argument 'cmake_target' from command line to 'None'
+[1.900s] Level 5:colcon.colcon_core.verb:set package 'cartographer_ros2' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[1.900s] Level 5:colcon.colcon_core.verb:set package 'cartographer_ros2' build argument 'cmake_clean_cache' from command line to 'False'
+[1.900s] Level 5:colcon.colcon_core.verb:set package 'cartographer_ros2' build argument 'cmake_clean_first' from command line to 'False'
+[1.901s] Level 5:colcon.colcon_core.verb:set package 'cartographer_ros2' build argument 'cmake_force_configure' from command line to 'False'
+[1.901s] Level 5:colcon.colcon_core.verb:set package 'cartographer_ros2' build argument 'ament_cmake_args' from command line to 'None'
+[1.901s] Level 5:colcon.colcon_core.verb:set package 'cartographer_ros2' build argument 'catkin_cmake_args' from command line to 'None'
+[1.901s] Level 5:colcon.colcon_core.verb:set package 'cartographer_ros2' build argument 'catkin_skip_building_tests' from command line to 'False'
+[1.901s] DEBUG:colcon.colcon_core.verb:Building package 'cartographer_ros2' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/kencheng/notebooks/ros_ws/build/cartographer_ros2', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/kencheng/notebooks/ros_ws/install/cartographer_ros2', 'merge_install': False, 'path': '/home/kencheng/notebooks/ros_ws/src/cartographer_ros2', 'symlink_install': False, 'test_result_base': None}
+[1.902s] Level 5:colcon.colcon_core.verb:set package 'driver_ros2' build argument 'cmake_args' from command line to 'None'
+[1.903s] Level 5:colcon.colcon_core.verb:set package 'driver_ros2' build argument 'cmake_target' from command line to 'None'
+[1.903s] Level 5:colcon.colcon_core.verb:set package 'driver_ros2' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[1.903s] Level 5:colcon.colcon_core.verb:set package 'driver_ros2' build argument 'cmake_clean_cache' from command line to 'False'
+[1.903s] Level 5:colcon.colcon_core.verb:set package 'driver_ros2' build argument 'cmake_clean_first' from command line to 'False'
+[1.903s] Level 5:colcon.colcon_core.verb:set package 'driver_ros2' build argument 'cmake_force_configure' from command line to 'False'
+[1.903s] Level 5:colcon.colcon_core.verb:set package 'driver_ros2' build argument 'ament_cmake_args' from command line to 'None'
+[1.903s] Level 5:colcon.colcon_core.verb:set package 'driver_ros2' build argument 'catkin_cmake_args' from command line to 'None'
+[1.903s] Level 5:colcon.colcon_core.verb:set package 'driver_ros2' build argument 'catkin_skip_building_tests' from command line to 'False'
+[1.903s] DEBUG:colcon.colcon_core.verb:Building package 'driver_ros2' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/kencheng/notebooks/ros_ws/build/driver_ros2', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/kencheng/notebooks/ros_ws/install/driver_ros2', 'merge_install': False, 'path': '/home/kencheng/notebooks/ros_ws/src/driver_ros2', 'symlink_install': False, 'test_result_base': None}
+[1.905s] Level 5:colcon.colcon_core.verb:set package 'nav2_ros2' build argument 'cmake_args' from command line to 'None'
+[1.905s] Level 5:colcon.colcon_core.verb:set package 'nav2_ros2' build argument 'cmake_target' from command line to 'None'
+[1.905s] Level 5:colcon.colcon_core.verb:set package 'nav2_ros2' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[1.905s] Level 5:colcon.colcon_core.verb:set package 'nav2_ros2' build argument 'cmake_clean_cache' from command line to 'False'
+[1.905s] Level 5:colcon.colcon_core.verb:set package 'nav2_ros2' build argument 'cmake_clean_first' from command line to 'False'
+[1.905s] Level 5:colcon.colcon_core.verb:set package 'nav2_ros2' build argument 'cmake_force_configure' from command line to 'False'
+[1.906s] Level 5:colcon.colcon_core.verb:set package 'nav2_ros2' build argument 'ament_cmake_args' from command line to 'None'
+[1.906s] Level 5:colcon.colcon_core.verb:set package 'nav2_ros2' build argument 'catkin_cmake_args' from command line to 'None'
+[1.906s] Level 5:colcon.colcon_core.verb:set package 'nav2_ros2' build argument 'catkin_skip_building_tests' from command line to 'False'
+[1.906s] DEBUG:colcon.colcon_core.verb:Building package 'nav2_ros2' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/kencheng/notebooks/ros_ws/build/nav2_ros2', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/kencheng/notebooks/ros_ws/install/nav2_ros2', 'merge_install': False, 'path': '/home/kencheng/notebooks/ros_ws/src/nav2_ros2', 'symlink_install': False, 'test_result_base': None}
+[1.907s] Level 5:colcon.colcon_core.verb:set package 'sllidar_ros2' build argument 'cmake_args' from command line to 'None'
+[1.907s] Level 5:colcon.colcon_core.verb:set package 'sllidar_ros2' build argument 'cmake_target' from command line to 'None'
+[1.908s] Level 5:colcon.colcon_core.verb:set package 'sllidar_ros2' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[1.908s] Level 5:colcon.colcon_core.verb:set package 'sllidar_ros2' build argument 'cmake_clean_cache' from command line to 'False'
+[1.908s] Level 5:colcon.colcon_core.verb:set package 'sllidar_ros2' build argument 'cmake_clean_first' from command line to 'False'
+[1.908s] Level 5:colcon.colcon_core.verb:set package 'sllidar_ros2' build argument 'cmake_force_configure' from command line to 'False'
+[1.908s] Level 5:colcon.colcon_core.verb:set package 'sllidar_ros2' build argument 'ament_cmake_args' from command line to 'None'
+[1.908s] Level 5:colcon.colcon_core.verb:set package 'sllidar_ros2' build argument 'catkin_cmake_args' from command line to 'None'
+[1.908s] Level 5:colcon.colcon_core.verb:set package 'sllidar_ros2' build argument 'catkin_skip_building_tests' from command line to 'False'
+[1.908s] DEBUG:colcon.colcon_core.verb:Building package 'sllidar_ros2' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/kencheng/notebooks/ros_ws/build/sllidar_ros2', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/kencheng/notebooks/ros_ws/install/sllidar_ros2', 'merge_install': False, 'path': '/home/kencheng/notebooks/ros_ws/src/sllidar_ros2', 'symlink_install': False, 'test_result_base': None}
+[1.909s] INFO:colcon.colcon_core.executor:Executing jobs using 'parallel' executor
+[1.912s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:run_until_complete
+[1.913s] INFO:colcon.colcon_ros.task.ament_cmake.build:Building ROS package in '/home/kencheng/notebooks/ros_ws/src/cartographer_ros2' with build type 'ament_cmake'
+[1.914s] INFO:colcon.colcon_cmake.task.cmake.build:Building CMake package in '/home/kencheng/notebooks/ros_ws/src/cartographer_ros2'
+[1.923s] INFO:colcon.colcon_core.plugin_system:Skipping extension 'colcon_core.shell.bat': Not used on non-Windows systems
+[1.924s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[1.924s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[1.945s] INFO:colcon.colcon_ros.task.ament_python.build:Building ROS package in '/home/kencheng/notebooks/ros_ws/src/driver_ros2' with build type 'ament_python'
+[1.946s] Level 1:colcon.colcon_core.shell:create_environment_hook('driver_ros2', 'ament_prefix_path')
+[1.948s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/kencheng/notebooks/ros_ws/install/driver_ros2/share/driver_ros2/hook/ament_prefix_path.ps1'
+[1.951s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/kencheng/notebooks/ros_ws/install/driver_ros2/share/driver_ros2/hook/ament_prefix_path.dsv'
+[1.954s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/kencheng/notebooks/ros_ws/install/driver_ros2/share/driver_ros2/hook/ament_prefix_path.sh'
+[1.957s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[1.957s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[1.977s] INFO:colcon.colcon_ros.task.ament_cmake.build:Building ROS package in '/home/kencheng/notebooks/ros_ws/src/nav2_ros2' with build type 'ament_cmake'
+[1.978s] INFO:colcon.colcon_cmake.task.cmake.build:Building CMake package in '/home/kencheng/notebooks/ros_ws/src/nav2_ros2'
+[1.979s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[1.979s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[2.001s] INFO:colcon.colcon_ros.task.ament_cmake.build:Building ROS package in '/home/kencheng/notebooks/ros_ws/src/sllidar_ros2' with build type 'ament_cmake'
+[2.001s] INFO:colcon.colcon_cmake.task.cmake.build:Building CMake package in '/home/kencheng/notebooks/ros_ws/src/sllidar_ros2'
+[2.003s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[2.003s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[2.039s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/kencheng/notebooks/ros_ws/build/cartographer_ros2': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/kencheng/notebooks/ros_ws/install/driver:/opt/ros/humble CONDA_PROMPT_MODIFIER=(ros2_humble) /usr/bin/cmake /home/kencheng/notebooks/ros_ws/src/cartographer_ros2 -DCMAKE_INSTALL_PREFIX=/home/kencheng/notebooks/ros_ws/install/cartographer_ros2
+[3.735s] INFO:colcon.colcon_core.task.python.build:Building Python package in '/home/kencheng/notebooks/ros_ws/src/driver_ros2'
+[3.737s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[3.737s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[3.773s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/kencheng/notebooks/ros_ws/build/nav2_ros2': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/kencheng/notebooks/ros_ws/install/driver:/opt/ros/humble CONDA_PROMPT_MODIFIER=(ros2_humble) /usr/bin/cmake /home/kencheng/notebooks/ros_ws/src/nav2_ros2 -DCMAKE_INSTALL_PREFIX=/home/kencheng/notebooks/ros_ws/install/nav2_ros2
+[3.808s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/kencheng/notebooks/ros_ws/build/sllidar_ros2': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/kencheng/notebooks/ros_ws/install/driver:/opt/ros/humble CONDA_PROMPT_MODIFIER=(ros2_humble) /usr/bin/cmake /home/kencheng/notebooks/ros_ws/src/sllidar_ros2 -DCMAKE_INSTALL_PREFIX=/home/kencheng/notebooks/ros_ws/install/sllidar_ros2
+[7.156s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/kencheng/notebooks/ros_ws/src/driver_ros2': CONDA_PROMPT_MODIFIER=(ros2_humble) PYTHONPATH=/home/kencheng/notebooks/ros_ws/build/driver_ros2/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/kencheng/notebooks/ros_ws/install/driver_ros2/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/driver_ros2 build --build-base /home/kencheng/notebooks/ros_ws/build/driver_ros2/build install --record /home/kencheng/notebooks/ros_ws/build/driver_ros2/install.log --single-version-externally-managed install_data
+[9.651s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/kencheng/notebooks/ros_ws/src/driver_ros2' returned '0': CONDA_PROMPT_MODIFIER=(ros2_humble) PYTHONPATH=/home/kencheng/notebooks/ros_ws/build/driver_ros2/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/kencheng/notebooks/ros_ws/install/driver_ros2/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/driver_ros2 build --build-base /home/kencheng/notebooks/ros_ws/build/driver_ros2/build install --record /home/kencheng/notebooks/ros_ws/build/driver_ros2/install.log --single-version-externally-managed install_data
+[9.658s] Level 1:colcon.colcon_core.environment:checking '/home/kencheng/notebooks/ros_ws/install/driver_ros2' for CMake module files
+[9.660s] Level 1:colcon.colcon_core.environment:checking '/home/kencheng/notebooks/ros_ws/install/driver_ros2' for CMake config files
+[9.664s] Level 1:colcon.colcon_core.environment:checking '/home/kencheng/notebooks/ros_ws/install/driver_ros2/lib'
+[9.665s] Level 1:colcon.colcon_core.environment:checking '/home/kencheng/notebooks/ros_ws/install/driver_ros2/bin'
+[9.666s] Level 1:colcon.colcon_core.environment:checking '/home/kencheng/notebooks/ros_ws/install/driver_ros2/lib/pkgconfig/driver_ros2.pc'
+[9.667s] Level 1:colcon.colcon_core.environment:checking '/home/kencheng/notebooks/ros_ws/install/driver_ros2/lib/python3.10/site-packages'
+[9.667s] Level 1:colcon.colcon_core.shell:create_environment_hook('driver_ros2', 'pythonpath')
+[9.668s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/kencheng/notebooks/ros_ws/install/driver_ros2/share/driver_ros2/hook/pythonpath.ps1'
+[9.671s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/kencheng/notebooks/ros_ws/install/driver_ros2/share/driver_ros2/hook/pythonpath.dsv'
+[9.673s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/kencheng/notebooks/ros_ws/install/driver_ros2/share/driver_ros2/hook/pythonpath.sh'
+[9.675s] Level 1:colcon.colcon_core.environment:checking '/home/kencheng/notebooks/ros_ws/install/driver_ros2/bin'
+[9.676s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(driver_ros2)
+[9.677s] INFO:colcon.colcon_core.shell:Creating package script '/home/kencheng/notebooks/ros_ws/install/driver_ros2/share/driver_ros2/package.ps1'
+[9.681s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/kencheng/notebooks/ros_ws/install/driver_ros2/share/driver_ros2/package.dsv'
+[9.683s] INFO:colcon.colcon_core.shell:Creating package script '/home/kencheng/notebooks/ros_ws/install/driver_ros2/share/driver_ros2/package.sh'
+[9.687s] INFO:colcon.colcon_core.shell:Creating package script '/home/kencheng/notebooks/ros_ws/install/driver_ros2/share/driver_ros2/package.bash'
+[9.690s] INFO:colcon.colcon_core.shell:Creating package script '/home/kencheng/notebooks/ros_ws/install/driver_ros2/share/driver_ros2/package.zsh'
+[9.693s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/kencheng/notebooks/ros_ws/install/driver_ros2/share/colcon-core/packages/driver_ros2)
+[12.303s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/kencheng/notebooks/ros_ws/build/cartographer_ros2' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/kencheng/notebooks/ros_ws/install/driver:/opt/ros/humble CONDA_PROMPT_MODIFIER=(ros2_humble) /usr/bin/cmake /home/kencheng/notebooks/ros_ws/src/cartographer_ros2 -DCMAKE_INSTALL_PREFIX=/home/kencheng/notebooks/ros_ws/install/cartographer_ros2
+[12.315s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/kencheng/notebooks/ros_ws/build/cartographer_ros2': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/kencheng/notebooks/ros_ws/install/driver:/opt/ros/humble CONDA_PROMPT_MODIFIER=(ros2_humble) /usr/bin/cmake --build /home/kencheng/notebooks/ros_ws/build/cartographer_ros2 -- -j4 -l4
+[14.317s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/kencheng/notebooks/ros_ws/build/sllidar_ros2' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/kencheng/notebooks/ros_ws/install/driver:/opt/ros/humble CONDA_PROMPT_MODIFIER=(ros2_humble) /usr/bin/cmake /home/kencheng/notebooks/ros_ws/src/sllidar_ros2 -DCMAKE_INSTALL_PREFIX=/home/kencheng/notebooks/ros_ws/install/sllidar_ros2
+[14.327s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/kencheng/notebooks/ros_ws/build/sllidar_ros2': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/kencheng/notebooks/ros_ws/install/driver:/opt/ros/humble CONDA_PROMPT_MODIFIER=(ros2_humble) /usr/bin/cmake --build /home/kencheng/notebooks/ros_ws/build/sllidar_ros2 -- -j4 -l4
+[14.538s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/kencheng/notebooks/ros_ws/build/nav2_ros2' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/kencheng/notebooks/ros_ws/install/driver:/opt/ros/humble CONDA_PROMPT_MODIFIER=(ros2_humble) /usr/bin/cmake /home/kencheng/notebooks/ros_ws/src/nav2_ros2 -DCMAKE_INSTALL_PREFIX=/home/kencheng/notebooks/ros_ws/install/nav2_ros2
+[14.540s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/kencheng/notebooks/ros_ws/build/nav2_ros2': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/kencheng/notebooks/ros_ws/install/driver:/opt/ros/humble CONDA_PROMPT_MODIFIER=(ros2_humble) /usr/bin/cmake --build /home/kencheng/notebooks/ros_ws/build/nav2_ros2 -- -j4 -l4
+[37.468s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/kencheng/notebooks/ros_ws/build/nav2_ros2' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/kencheng/notebooks/ros_ws/install/driver:/opt/ros/humble CONDA_PROMPT_MODIFIER=(ros2_humble) /usr/bin/cmake --build /home/kencheng/notebooks/ros_ws/build/nav2_ros2 -- -j4 -l4
+[37.602s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/kencheng/notebooks/ros_ws/build/nav2_ros2': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/kencheng/notebooks/ros_ws/install/driver:/opt/ros/humble CONDA_PROMPT_MODIFIER=(ros2_humble) /usr/bin/cmake --install /home/kencheng/notebooks/ros_ws/build/nav2_ros2
+[37.823s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(nav2_ros2)
+[37.837s] Level 1:colcon.colcon_core.environment:checking '/home/kencheng/notebooks/ros_ws/install/nav2_ros2' for CMake module files
+[37.842s] Level 1:colcon.colcon_core.environment:checking '/home/kencheng/notebooks/ros_ws/install/nav2_ros2' for CMake config files
+[37.850s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/kencheng/notebooks/ros_ws/build/nav2_ros2' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/kencheng/notebooks/ros_ws/install/driver:/opt/ros/humble CONDA_PROMPT_MODIFIER=(ros2_humble) /usr/bin/cmake --install /home/kencheng/notebooks/ros_ws/build/nav2_ros2
+[37.860s] Level 1:colcon.colcon_core.shell:create_environment_hook('nav2_ros2', 'cmake_prefix_path')
+[37.862s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/kencheng/notebooks/ros_ws/install/nav2_ros2/share/nav2_ros2/hook/cmake_prefix_path.ps1'
+[37.869s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/kencheng/notebooks/ros_ws/install/nav2_ros2/share/nav2_ros2/hook/cmake_prefix_path.dsv'
+[37.885s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/kencheng/notebooks/ros_ws/install/nav2_ros2/share/nav2_ros2/hook/cmake_prefix_path.sh'
+[37.890s] Level 1:colcon.colcon_core.environment:checking '/home/kencheng/notebooks/ros_ws/install/nav2_ros2/lib'
+[37.891s] Level 1:colcon.colcon_core.environment:checking '/home/kencheng/notebooks/ros_ws/install/nav2_ros2/bin'
+[37.892s] Level 1:colcon.colcon_core.environment:checking '/home/kencheng/notebooks/ros_ws/install/nav2_ros2/lib/pkgconfig/nav2_ros2.pc'
+[37.895s] Level 1:colcon.colcon_core.environment:checking '/home/kencheng/notebooks/ros_ws/install/nav2_ros2/lib/python3.10/site-packages'
+[37.903s] Level 1:colcon.colcon_core.environment:checking '/home/kencheng/notebooks/ros_ws/install/nav2_ros2/bin'
+[37.905s] INFO:colcon.colcon_core.shell:Creating package script '/home/kencheng/notebooks/ros_ws/install/nav2_ros2/share/nav2_ros2/package.ps1'
+[37.909s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/kencheng/notebooks/ros_ws/install/nav2_ros2/share/nav2_ros2/package.dsv'
+[37.914s] INFO:colcon.colcon_core.shell:Creating package script '/home/kencheng/notebooks/ros_ws/install/nav2_ros2/share/nav2_ros2/package.sh'
+[37.919s] INFO:colcon.colcon_core.shell:Creating package script '/home/kencheng/notebooks/ros_ws/install/nav2_ros2/share/nav2_ros2/package.bash'
+[37.922s] INFO:colcon.colcon_core.shell:Creating package script '/home/kencheng/notebooks/ros_ws/install/nav2_ros2/share/nav2_ros2/package.zsh'
+[37.926s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/kencheng/notebooks/ros_ws/install/nav2_ros2/share/colcon-core/packages/nav2_ros2)
+[37.932s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(nav2_ros2)
+[37.939s] Level 1:colcon.colcon_core.environment:checking '/home/kencheng/notebooks/ros_ws/install/nav2_ros2' for CMake module files
+[37.944s] Level 1:colcon.colcon_core.environment:checking '/home/kencheng/notebooks/ros_ws/install/nav2_ros2' for CMake config files
+[37.956s] Level 1:colcon.colcon_core.shell:create_environment_hook('nav2_ros2', 'cmake_prefix_path')
+[37.957s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/kencheng/notebooks/ros_ws/install/nav2_ros2/share/nav2_ros2/hook/cmake_prefix_path.ps1'
+[37.970s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/kencheng/notebooks/ros_ws/install/nav2_ros2/share/nav2_ros2/hook/cmake_prefix_path.dsv'
+[37.974s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/kencheng/notebooks/ros_ws/install/nav2_ros2/share/nav2_ros2/hook/cmake_prefix_path.sh'
+[37.985s] Level 1:colcon.colcon_core.environment:checking '/home/kencheng/notebooks/ros_ws/install/nav2_ros2/lib'
+[37.987s] Level 1:colcon.colcon_core.environment:checking '/home/kencheng/notebooks/ros_ws/install/nav2_ros2/bin'
+[37.987s] Level 1:colcon.colcon_core.environment:checking '/home/kencheng/notebooks/ros_ws/install/nav2_ros2/lib/pkgconfig/nav2_ros2.pc'
+[37.989s] Level 1:colcon.colcon_core.environment:checking '/home/kencheng/notebooks/ros_ws/install/nav2_ros2/lib/python3.10/site-packages'
+[37.991s] Level 1:colcon.colcon_core.environment:checking '/home/kencheng/notebooks/ros_ws/install/nav2_ros2/bin'
+[37.994s] INFO:colcon.colcon_core.shell:Creating package script '/home/kencheng/notebooks/ros_ws/install/nav2_ros2/share/nav2_ros2/package.ps1'
+[38.013s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/kencheng/notebooks/ros_ws/install/nav2_ros2/share/nav2_ros2/package.dsv'
+[38.030s] INFO:colcon.colcon_core.shell:Creating package script '/home/kencheng/notebooks/ros_ws/install/nav2_ros2/share/nav2_ros2/package.sh'
+[38.035s] INFO:colcon.colcon_core.shell:Creating package script '/home/kencheng/notebooks/ros_ws/install/nav2_ros2/share/nav2_ros2/package.bash'
+[38.042s] INFO:colcon.colcon_core.shell:Creating package script '/home/kencheng/notebooks/ros_ws/install/nav2_ros2/share/nav2_ros2/package.zsh'
+[38.063s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/kencheng/notebooks/ros_ws/install/nav2_ros2/share/colcon-core/packages/nav2_ros2)
+[39.998s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/kencheng/notebooks/ros_ws/build/cartographer_ros2' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/kencheng/notebooks/ros_ws/install/driver:/opt/ros/humble CONDA_PROMPT_MODIFIER=(ros2_humble) /usr/bin/cmake --build /home/kencheng/notebooks/ros_ws/build/cartographer_ros2 -- -j4 -l4
+[40.000s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/kencheng/notebooks/ros_ws/build/cartographer_ros2': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/kencheng/notebooks/ros_ws/install/driver:/opt/ros/humble CONDA_PROMPT_MODIFIER=(ros2_humble) /usr/bin/cmake --install /home/kencheng/notebooks/ros_ws/build/cartographer_ros2
+[40.135s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(cartographer_ros2)
+[40.137s] Level 1:colcon.colcon_core.environment:checking '/home/kencheng/notebooks/ros_ws/install/cartographer_ros2' for CMake module files
+[40.139s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/kencheng/notebooks/ros_ws/build/cartographer_ros2' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/kencheng/notebooks/ros_ws/install/driver:/opt/ros/humble CONDA_PROMPT_MODIFIER=(ros2_humble) /usr/bin/cmake --install /home/kencheng/notebooks/ros_ws/build/cartographer_ros2
+[40.143s] Level 1:colcon.colcon_core.environment:checking '/home/kencheng/notebooks/ros_ws/install/cartographer_ros2' for CMake config files
+[40.156s] Level 1:colcon.colcon_core.shell:create_environment_hook('cartographer_ros2', 'cmake_prefix_path')
+[40.158s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/kencheng/notebooks/ros_ws/install/cartographer_ros2/share/cartographer_ros2/hook/cmake_prefix_path.ps1'
+[40.161s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/kencheng/notebooks/ros_ws/install/cartographer_ros2/share/cartographer_ros2/hook/cmake_prefix_path.dsv'
+[40.179s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/kencheng/notebooks/ros_ws/install/cartographer_ros2/share/cartographer_ros2/hook/cmake_prefix_path.sh'
+[40.188s] Level 1:colcon.colcon_core.environment:checking '/home/kencheng/notebooks/ros_ws/install/cartographer_ros2/lib'
+[40.190s] Level 1:colcon.colcon_core.environment:checking '/home/kencheng/notebooks/ros_ws/install/cartographer_ros2/bin'
+[40.191s] Level 1:colcon.colcon_core.environment:checking '/home/kencheng/notebooks/ros_ws/install/cartographer_ros2/lib/pkgconfig/cartographer_ros2.pc'
+[40.193s] Level 1:colcon.colcon_core.environment:checking '/home/kencheng/notebooks/ros_ws/install/cartographer_ros2/lib/python3.10/site-packages'
+[40.202s] Level 1:colcon.colcon_core.environment:checking '/home/kencheng/notebooks/ros_ws/install/cartographer_ros2/bin'
+[40.204s] INFO:colcon.colcon_core.shell:Creating package script '/home/kencheng/notebooks/ros_ws/install/cartographer_ros2/share/cartographer_ros2/package.ps1'
+[40.207s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/kencheng/notebooks/ros_ws/install/cartographer_ros2/share/cartographer_ros2/package.dsv'
+[40.222s] INFO:colcon.colcon_core.shell:Creating package script '/home/kencheng/notebooks/ros_ws/install/cartographer_ros2/share/cartographer_ros2/package.sh'
+[40.225s] INFO:colcon.colcon_core.shell:Creating package script '/home/kencheng/notebooks/ros_ws/install/cartographer_ros2/share/cartographer_ros2/package.bash'
+[40.228s] INFO:colcon.colcon_core.shell:Creating package script '/home/kencheng/notebooks/ros_ws/install/cartographer_ros2/share/cartographer_ros2/package.zsh'
+[40.231s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/kencheng/notebooks/ros_ws/install/cartographer_ros2/share/colcon-core/packages/cartographer_ros2)
+[40.248s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(cartographer_ros2)
+[40.250s] Level 1:colcon.colcon_core.environment:checking '/home/kencheng/notebooks/ros_ws/install/cartographer_ros2' for CMake module files
+[40.255s] Level 1:colcon.colcon_core.environment:checking '/home/kencheng/notebooks/ros_ws/install/cartographer_ros2' for CMake config files
+[40.258s] Level 1:colcon.colcon_core.shell:create_environment_hook('cartographer_ros2', 'cmake_prefix_path')
+[40.260s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/kencheng/notebooks/ros_ws/install/cartographer_ros2/share/cartographer_ros2/hook/cmake_prefix_path.ps1'
+[40.277s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/kencheng/notebooks/ros_ws/install/cartographer_ros2/share/cartographer_ros2/hook/cmake_prefix_path.dsv'
+[40.280s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/kencheng/notebooks/ros_ws/install/cartographer_ros2/share/cartographer_ros2/hook/cmake_prefix_path.sh'
+[40.284s] Level 1:colcon.colcon_core.environment:checking '/home/kencheng/notebooks/ros_ws/install/cartographer_ros2/lib'
+[40.285s] Level 1:colcon.colcon_core.environment:checking '/home/kencheng/notebooks/ros_ws/install/cartographer_ros2/bin'
+[40.286s] Level 1:colcon.colcon_core.environment:checking '/home/kencheng/notebooks/ros_ws/install/cartographer_ros2/lib/pkgconfig/cartographer_ros2.pc'
+[40.287s] Level 1:colcon.colcon_core.environment:checking '/home/kencheng/notebooks/ros_ws/install/cartographer_ros2/lib/python3.10/site-packages'
+[40.289s] Level 1:colcon.colcon_core.environment:checking '/home/kencheng/notebooks/ros_ws/install/cartographer_ros2/bin'
+[40.296s] INFO:colcon.colcon_core.shell:Creating package script '/home/kencheng/notebooks/ros_ws/install/cartographer_ros2/share/cartographer_ros2/package.ps1'
+[40.306s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/kencheng/notebooks/ros_ws/install/cartographer_ros2/share/cartographer_ros2/package.dsv'
+[40.315s] INFO:colcon.colcon_core.shell:Creating package script '/home/kencheng/notebooks/ros_ws/install/cartographer_ros2/share/cartographer_ros2/package.sh'
+[40.320s] INFO:colcon.colcon_core.shell:Creating package script '/home/kencheng/notebooks/ros_ws/install/cartographer_ros2/share/cartographer_ros2/package.bash'
+[40.325s] INFO:colcon.colcon_core.shell:Creating package script '/home/kencheng/notebooks/ros_ws/install/cartographer_ros2/share/cartographer_ros2/package.zsh'
+[40.328s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/kencheng/notebooks/ros_ws/install/cartographer_ros2/share/colcon-core/packages/cartographer_ros2)
+[72.611s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/kencheng/notebooks/ros_ws/build/sllidar_ros2' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/kencheng/notebooks/ros_ws/install/driver:/opt/ros/humble CONDA_PROMPT_MODIFIER=(ros2_humble) /usr/bin/cmake --build /home/kencheng/notebooks/ros_ws/build/sllidar_ros2 -- -j4 -l4
+[72.623s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/kencheng/notebooks/ros_ws/build/sllidar_ros2': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/kencheng/notebooks/ros_ws/install/driver:/opt/ros/humble CONDA_PROMPT_MODIFIER=(ros2_humble) /usr/bin/cmake --install /home/kencheng/notebooks/ros_ws/build/sllidar_ros2
+[72.724s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(sllidar_ros2)
+[72.725s] Level 1:colcon.colcon_core.environment:checking '/home/kencheng/notebooks/ros_ws/install/sllidar_ros2' for CMake module files
+[72.727s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/kencheng/notebooks/ros_ws/build/sllidar_ros2' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/kencheng/notebooks/ros_ws/install/driver:/opt/ros/humble CONDA_PROMPT_MODIFIER=(ros2_humble) /usr/bin/cmake --install /home/kencheng/notebooks/ros_ws/build/sllidar_ros2
+[72.730s] Level 1:colcon.colcon_core.environment:checking '/home/kencheng/notebooks/ros_ws/install/sllidar_ros2' for CMake config files
+[72.733s] Level 1:colcon.colcon_core.shell:create_environment_hook('sllidar_ros2', 'cmake_prefix_path')
+[72.734s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/kencheng/notebooks/ros_ws/install/sllidar_ros2/share/sllidar_ros2/hook/cmake_prefix_path.ps1'
+[72.736s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/kencheng/notebooks/ros_ws/install/sllidar_ros2/share/sllidar_ros2/hook/cmake_prefix_path.dsv'
+[72.737s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/kencheng/notebooks/ros_ws/install/sllidar_ros2/share/sllidar_ros2/hook/cmake_prefix_path.sh'
+[72.740s] Level 1:colcon.colcon_core.environment:checking '/home/kencheng/notebooks/ros_ws/install/sllidar_ros2/lib'
+[72.741s] Level 1:colcon.colcon_core.environment:checking '/home/kencheng/notebooks/ros_ws/install/sllidar_ros2/bin'
+[72.741s] Level 1:colcon.colcon_core.environment:checking '/home/kencheng/notebooks/ros_ws/install/sllidar_ros2/lib/pkgconfig/sllidar_ros2.pc'
+[72.742s] Level 1:colcon.colcon_core.environment:checking '/home/kencheng/notebooks/ros_ws/install/sllidar_ros2/lib/python3.10/site-packages'
+[72.743s] Level 1:colcon.colcon_core.environment:checking '/home/kencheng/notebooks/ros_ws/install/sllidar_ros2/bin'
+[72.744s] INFO:colcon.colcon_core.shell:Creating package script '/home/kencheng/notebooks/ros_ws/install/sllidar_ros2/share/sllidar_ros2/package.ps1'
+[72.746s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/kencheng/notebooks/ros_ws/install/sllidar_ros2/share/sllidar_ros2/package.dsv'
+[72.748s] INFO:colcon.colcon_core.shell:Creating package script '/home/kencheng/notebooks/ros_ws/install/sllidar_ros2/share/sllidar_ros2/package.sh'
+[72.750s] INFO:colcon.colcon_core.shell:Creating package script '/home/kencheng/notebooks/ros_ws/install/sllidar_ros2/share/sllidar_ros2/package.bash'
+[72.751s] INFO:colcon.colcon_core.shell:Creating package script '/home/kencheng/notebooks/ros_ws/install/sllidar_ros2/share/sllidar_ros2/package.zsh'
+[72.753s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/kencheng/notebooks/ros_ws/install/sllidar_ros2/share/colcon-core/packages/sllidar_ros2)
+[72.756s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(sllidar_ros2)
+[72.757s] Level 1:colcon.colcon_core.environment:checking '/home/kencheng/notebooks/ros_ws/install/sllidar_ros2' for CMake module files
+[72.760s] Level 1:colcon.colcon_core.environment:checking '/home/kencheng/notebooks/ros_ws/install/sllidar_ros2' for CMake config files
+[72.763s] Level 1:colcon.colcon_core.shell:create_environment_hook('sllidar_ros2', 'cmake_prefix_path')
+[72.764s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/kencheng/notebooks/ros_ws/install/sllidar_ros2/share/sllidar_ros2/hook/cmake_prefix_path.ps1'
+[72.766s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/kencheng/notebooks/ros_ws/install/sllidar_ros2/share/sllidar_ros2/hook/cmake_prefix_path.dsv'
+[72.767s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/kencheng/notebooks/ros_ws/install/sllidar_ros2/share/sllidar_ros2/hook/cmake_prefix_path.sh'
+[72.770s] Level 1:colcon.colcon_core.environment:checking '/home/kencheng/notebooks/ros_ws/install/sllidar_ros2/lib'
+[72.770s] Level 1:colcon.colcon_core.environment:checking '/home/kencheng/notebooks/ros_ws/install/sllidar_ros2/bin'
+[72.770s] Level 1:colcon.colcon_core.environment:checking '/home/kencheng/notebooks/ros_ws/install/sllidar_ros2/lib/pkgconfig/sllidar_ros2.pc'
+[72.771s] Level 1:colcon.colcon_core.environment:checking '/home/kencheng/notebooks/ros_ws/install/sllidar_ros2/lib/python3.10/site-packages'
+[72.772s] Level 1:colcon.colcon_core.environment:checking '/home/kencheng/notebooks/ros_ws/install/sllidar_ros2/bin'
+[72.773s] INFO:colcon.colcon_core.shell:Creating package script '/home/kencheng/notebooks/ros_ws/install/sllidar_ros2/share/sllidar_ros2/package.ps1'
+[72.775s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/kencheng/notebooks/ros_ws/install/sllidar_ros2/share/sllidar_ros2/package.dsv'
+[72.829s] INFO:colcon.colcon_core.shell:Creating package script '/home/kencheng/notebooks/ros_ws/install/sllidar_ros2/share/sllidar_ros2/package.sh'
+[72.833s] INFO:colcon.colcon_core.shell:Creating package script '/home/kencheng/notebooks/ros_ws/install/sllidar_ros2/share/sllidar_ros2/package.bash'
+[72.838s] INFO:colcon.colcon_core.shell:Creating package script '/home/kencheng/notebooks/ros_ws/install/sllidar_ros2/share/sllidar_ros2/package.zsh'
+[72.840s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/kencheng/notebooks/ros_ws/install/sllidar_ros2/share/colcon-core/packages/sllidar_ros2)
+[72.841s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:closing loop
+[72.844s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:loop closed
+[72.846s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:run_until_complete finished with '0'
+[72.847s] DEBUG:colcon.colcon_core.event_reactor:joining thread
+[72.884s] INFO:colcon.colcon_core.plugin_system:Skipping extension 'colcon_notification.desktop_notification.terminal_notifier': Not used on non-Darwin systems
+[72.885s] INFO:colcon.colcon_core.plugin_system:Skipping extension 'colcon_notification.desktop_notification.win32': Not used on non-Windows systems
+[72.885s] INFO:colcon.colcon_notification.desktop_notification:Sending desktop notification using 'notify2'
+[72.885s] DEBUG:colcon.colcon_notification.desktop_notification.notify2:Failed to initialize notify2: org.freedesktop.DBus.Error.NotSupported: Unable to autolaunch a dbus-daemon without a $DISPLAY for X11
+[72.885s] DEBUG:colcon.colcon_core.event_reactor:joined thread
+[72.886s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/kencheng/notebooks/ros_ws/install/local_setup.ps1'
+[72.890s] INFO:colcon.colcon_core.shell:Creating prefix util module '/home/kencheng/notebooks/ros_ws/install/_local_setup_util_ps1.py'
+[72.896s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/kencheng/notebooks/ros_ws/install/setup.ps1'
+[72.901s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/kencheng/notebooks/ros_ws/install/local_setup.sh'
+[72.904s] INFO:colcon.colcon_core.shell:Creating prefix util module '/home/kencheng/notebooks/ros_ws/install/_local_setup_util_sh.py'
+[72.907s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/kencheng/notebooks/ros_ws/install/setup.sh'
+[72.911s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/kencheng/notebooks/ros_ws/install/local_setup.bash'
+[72.913s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/kencheng/notebooks/ros_ws/install/setup.bash'
+[72.917s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/kencheng/notebooks/ros_ws/install/local_setup.zsh'
+[72.919s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/kencheng/notebooks/ros_ws/install/setup.zsh'

@@ -1,0 +1,26 @@
+[0.143s] Invoking command in '/home/kencheng/notebooks/ros_ws/build/cartographer_ros2': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/kencheng/notebooks/ros_ws/install/video_streamer:/home/kencheng/notebooks/ros_ws/install/driver_ros2:/home/kencheng/notebooks/ros_ws/install/driver:/opt/ros/humble CONDA_PROMPT_MODIFIER=(ros2_humble) /usr/bin/cmake --build /home/kencheng/notebooks/ros_ws/build/cartographer_ros2 -- -j4 -l4
+[1.596s] [100%] Built target cartographer_node
+[1.603s] Invoked command in '/home/kencheng/notebooks/ros_ws/build/cartographer_ros2' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/kencheng/notebooks/ros_ws/install/video_streamer:/home/kencheng/notebooks/ros_ws/install/driver_ros2:/home/kencheng/notebooks/ros_ws/install/driver:/opt/ros/humble CONDA_PROMPT_MODIFIER=(ros2_humble) /usr/bin/cmake --build /home/kencheng/notebooks/ros_ws/build/cartographer_ros2 -- -j4 -l4
+[1.646s] Invoking command in '/home/kencheng/notebooks/ros_ws/build/cartographer_ros2': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/kencheng/notebooks/ros_ws/install/video_streamer:/home/kencheng/notebooks/ros_ws/install/driver_ros2:/home/kencheng/notebooks/ros_ws/install/driver:/opt/ros/humble CONDA_PROMPT_MODIFIER=(ros2_humble) /usr/bin/cmake --install /home/kencheng/notebooks/ros_ws/build/cartographer_ros2
+[1.681s] -- Install configuration: ""
+[1.683s] -- Up-to-date: /home/kencheng/notebooks/ros_ws/install/cartographer_ros2/lib/cartographer_ros2/cartographer_node
+[1.684s] -- Up-to-date: /home/kencheng/notebooks/ros_ws/install/cartographer_ros2/share/cartographer_ros2/launch
+[1.685s] -- Up-to-date: /home/kencheng/notebooks/ros_ws/install/cartographer_ros2/share/cartographer_ros2/launch/cartographer_launch.py
+[1.685s] -- Up-to-date: /home/kencheng/notebooks/ros_ws/install/cartographer_ros2/share/cartographer_ros2/launch/.ipynb_checkpoints
+[1.687s] -- Up-to-date: /home/kencheng/notebooks/ros_ws/install/cartographer_ros2/share/cartographer_ros2/launch/.ipynb_checkpoints/cartographer_launch-checkpoint.py
+[1.688s] -- Up-to-date: /home/kencheng/notebooks/ros_ws/install/cartographer_ros2/share/ament_index/resource_index/package_run_dependencies/cartographer_ros2
+[1.689s] -- Up-to-date: /home/kencheng/notebooks/ros_ws/install/cartographer_ros2/share/ament_index/resource_index/parent_prefix_path/cartographer_ros2
+[1.690s] -- Up-to-date: /home/kencheng/notebooks/ros_ws/install/cartographer_ros2/share/cartographer_ros2/environment/ament_prefix_path.sh
+[1.691s] -- Up-to-date: /home/kencheng/notebooks/ros_ws/install/cartographer_ros2/share/cartographer_ros2/environment/ament_prefix_path.dsv
+[1.693s] -- Up-to-date: /home/kencheng/notebooks/ros_ws/install/cartographer_ros2/share/cartographer_ros2/environment/path.sh
+[1.694s] -- Up-to-date: /home/kencheng/notebooks/ros_ws/install/cartographer_ros2/share/cartographer_ros2/environment/path.dsv
+[1.697s] -- Up-to-date: /home/kencheng/notebooks/ros_ws/install/cartographer_ros2/share/cartographer_ros2/local_setup.bash
+[1.698s] -- Up-to-date: /home/kencheng/notebooks/ros_ws/install/cartographer_ros2/share/cartographer_ros2/local_setup.sh
+[1.699s] -- Up-to-date: /home/kencheng/notebooks/ros_ws/install/cartographer_ros2/share/cartographer_ros2/local_setup.zsh
+[1.699s] -- Up-to-date: /home/kencheng/notebooks/ros_ws/install/cartographer_ros2/share/cartographer_ros2/local_setup.dsv
+[1.700s] -- Installing: /home/kencheng/notebooks/ros_ws/install/cartographer_ros2/share/cartographer_ros2/package.dsv
+[1.700s] -- Up-to-date: /home/kencheng/notebooks/ros_ws/install/cartographer_ros2/share/ament_index/resource_index/packages/cartographer_ros2
+[1.701s] -- Up-to-date: /home/kencheng/notebooks/ros_ws/install/cartographer_ros2/share/cartographer_ros2/cmake/cartographer_ros2Config.cmake
+[1.702s] -- Up-to-date: /home/kencheng/notebooks/ros_ws/install/cartographer_ros2/share/cartographer_ros2/cmake/cartographer_ros2Config-version.cmake
+[1.703s] -- Up-to-date: /home/kencheng/notebooks/ros_ws/install/cartographer_ros2/share/cartographer_ros2/package.xml
+[1.711s] Invoked command in '/home/kencheng/notebooks/ros_ws/build/cartographer_ros2' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/kencheng/notebooks/ros_ws/install/video_streamer:/home/kencheng/notebooks/ros_ws/install/driver_ros2:/home/kencheng/notebooks/ros_ws/install/driver:/opt/ros/humble CONDA_PROMPT_MODIFIER=(ros2_humble) /usr/bin/cmake --install /home/kencheng/notebooks/ros_ws/build/cartographer_ros2

@@ -1,0 +1,29 @@
+[4.710s] Invoking command in '/home/kencheng/notebooks/ros_ws/src/video_streamer': CONDA_PROMPT_MODIFIER=(ros2_humble) PYTHONPATH=/home/kencheng/notebooks/ros_ws/build/video_streamer/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/kencheng/notebooks/ros_ws/install/video_streamer/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/video_streamer build --build-base /home/kencheng/notebooks/ros_ws/build/video_streamer/build install --record /home/kencheng/notebooks/ros_ws/build/video_streamer/install.log --single-version-externally-managed install_data
+[5.547s] /home/kencheng/miniconda3/envs/ros2_humble/lib/python3.10/site-packages/setuptools/_distutils/dist.py:270: UserWarning: Unknown distribution option: 'tests_require'
+[5.548s]   warnings.warn(msg)
+[6.195s] running egg_info
+[6.296s] writing ../../build/video_streamer/video_streamer.egg-info/PKG-INFO
+[6.299s] writing dependency_links to ../../build/video_streamer/video_streamer.egg-info/dependency_links.txt
+[6.300s] writing entry points to ../../build/video_streamer/video_streamer.egg-info/entry_points.txt
+[6.302s] writing requirements to ../../build/video_streamer/video_streamer.egg-info/requires.txt
+[6.303s] writing top-level names to ../../build/video_streamer/video_streamer.egg-info/top_level.txt
+[6.526s] reading manifest file '../../build/video_streamer/video_streamer.egg-info/SOURCES.txt'
+[6.532s] writing manifest file '../../build/video_streamer/video_streamer.egg-info/SOURCES.txt'
+[6.533s] running build
+[6.533s] running build_py
+[6.534s] copying video_streamer/__init__.py -> /home/kencheng/notebooks/ros_ws/build/video_streamer/build/lib/video_streamer
+[6.535s] copying video_streamer/video_stream.py -> /home/kencheng/notebooks/ros_ws/build/video_streamer/build/lib/video_streamer
+[6.537s] running install
+[6.560s] running install_lib
+[6.760s] copying /home/kencheng/notebooks/ros_ws/build/video_streamer/build/lib/video_streamer/video_stream.py -> /home/kencheng/notebooks/ros_ws/install/video_streamer/lib/python3.10/site-packages/video_streamer
+[6.763s] byte-compiling /home/kencheng/notebooks/ros_ws/install/video_streamer/lib/python3.10/site-packages/video_streamer/video_stream.py to video_stream.cpython-310.pyc
+[6.767s] running install_data
+[6.768s] copying resource/video_streamer -> /home/kencheng/notebooks/ros_ws/install/video_streamer/share/ament_index/resource_index/packages
+[6.770s] copying package.xml -> /home/kencheng/notebooks/ros_ws/install/video_streamer/share/video_streamer
+[6.771s] running install_egg_info
+[6.866s] removing '/home/kencheng/notebooks/ros_ws/install/video_streamer/lib/python3.10/site-packages/video_streamer-0.0.0-py3.10.egg-info' (and everything under it)
+[6.868s] Copying ../../build/video_streamer/video_streamer.egg-info to /home/kencheng/notebooks/ros_ws/install/video_streamer/lib/python3.10/site-packages/video_streamer-0.0.0-py3.10.egg-info
+[6.873s] running install_scripts
+[7.672s] Installing video_stream script to /home/kencheng/notebooks/ros_ws/install/video_streamer/lib/video_streamer
+[7.673s] writing list of installed files to '/home/kencheng/notebooks/ros_ws/build/video_streamer/install.log'
+[7.810s] Invoked command in '/home/kencheng/notebooks/ros_ws/src/video_streamer' returned '0': CONDA_PROMPT_MODIFIER=(ros2_humble) PYTHONPATH=/home/kencheng/notebooks/ros_ws/build/video_streamer/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/kencheng/notebooks/ros_ws/install/video_streamer/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/video_streamer build --build-base /home/kencheng/notebooks/ros_ws/build/video_streamer/build install --record /home/kencheng/notebooks/ros_ws/build/video_streamer/install.log --single-version-externally-managed install_data

@@ -1,0 +1,2 @@
+[console_scripts]
+video_stream = video_streamer.video_stream:main

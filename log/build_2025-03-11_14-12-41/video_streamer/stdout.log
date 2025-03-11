@@ -1,0 +1,25 @@
+running egg_info
+writing ../../build/video_streamer/video_streamer.egg-info/PKG-INFO
+writing dependency_links to ../../build/video_streamer/video_streamer.egg-info/dependency_links.txt
+writing entry points to ../../build/video_streamer/video_streamer.egg-info/entry_points.txt
+writing requirements to ../../build/video_streamer/video_streamer.egg-info/requires.txt
+writing top-level names to ../../build/video_streamer/video_streamer.egg-info/top_level.txt
+reading manifest file '../../build/video_streamer/video_streamer.egg-info/SOURCES.txt'
+writing manifest file '../../build/video_streamer/video_streamer.egg-info/SOURCES.txt'
+running build
+running build_py
+copying video_streamer/__init__.py -> /home/kencheng/notebooks/ros_ws/build/video_streamer/build/lib/video_streamer
+copying video_streamer/video_stream.py -> /home/kencheng/notebooks/ros_ws/build/video_streamer/build/lib/video_streamer
+running install
+running install_lib
+copying /home/kencheng/notebooks/ros_ws/build/video_streamer/build/lib/video_streamer/video_stream.py -> /home/kencheng/notebooks/ros_ws/install/video_streamer/lib/python3.10/site-packages/video_streamer
+byte-compiling /home/kencheng/notebooks/ros_ws/install/video_streamer/lib/python3.10/site-packages/video_streamer/video_stream.py to video_stream.cpython-310.pyc
+running install_data
+copying resource/video_streamer -> /home/kencheng/notebooks/ros_ws/install/video_streamer/share/ament_index/resource_index/packages
+copying package.xml -> /home/kencheng/notebooks/ros_ws/install/video_streamer/share/video_streamer
+running install_egg_info
+removing '/home/kencheng/notebooks/ros_ws/install/video_streamer/lib/python3.10/site-packages/video_streamer-0.0.0-py3.10.egg-info' (and everything under it)
+Copying ../../build/video_streamer/video_streamer.egg-info to /home/kencheng/notebooks/ros_ws/install/video_streamer/lib/python3.10/site-packages/video_streamer-0.0.0-py3.10.egg-info
+running install_scripts
+Installing video_stream script to /home/kencheng/notebooks/ros_ws/install/video_streamer/lib/video_streamer
+writing list of installed files to '/home/kencheng/notebooks/ros_ws/build/video_streamer/install.log'

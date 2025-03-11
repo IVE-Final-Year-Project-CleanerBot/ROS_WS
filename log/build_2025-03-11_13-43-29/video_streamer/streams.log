@@ -1,0 +1,29 @@
+[4.617s] Invoking command in '/home/kencheng/notebooks/ros_ws/src/video_streamer': CONDA_PROMPT_MODIFIER=(base) PYTHONPATH=/home/kencheng/notebooks/ros_ws/build/video_streamer/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/kencheng/notebooks/ros_ws/install/video_streamer/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/video_streamer build --build-base /home/kencheng/notebooks/ros_ws/build/video_streamer/build install --record /home/kencheng/notebooks/ros_ws/build/video_streamer/install.log --single-version-externally-managed install_data
+[5.440s] /home/kencheng/miniconda3/envs/ros2_humble/lib/python3.10/site-packages/setuptools/_distutils/dist.py:270: UserWarning: Unknown distribution option: 'tests_require'
+[5.440s]   warnings.warn(msg)
+[6.091s] running egg_info
+[6.196s] writing ../../build/video_streamer/video_streamer.egg-info/PKG-INFO
+[6.198s] writing dependency_links to ../../build/video_streamer/video_streamer.egg-info/dependency_links.txt
+[6.199s] writing entry points to ../../build/video_streamer/video_streamer.egg-info/entry_points.txt
+[6.201s] writing requirements to ../../build/video_streamer/video_streamer.egg-info/requires.txt
+[6.201s] writing top-level names to ../../build/video_streamer/video_streamer.egg-info/top_level.txt
+[6.428s] reading manifest file '../../build/video_streamer/video_streamer.egg-info/SOURCES.txt'
+[6.434s] writing manifest file '../../build/video_streamer/video_streamer.egg-info/SOURCES.txt'
+[6.435s] running build
+[6.436s] running build_py
+[6.436s] copying video_streamer/__init__.py -> /home/kencheng/notebooks/ros_ws/build/video_streamer/build/lib/video_streamer
+[6.438s] copying video_streamer/video_stream.py -> /home/kencheng/notebooks/ros_ws/build/video_streamer/build/lib/video_streamer
+[6.440s] running install
+[6.462s] running install_lib
+[6.650s] copying /home/kencheng/notebooks/ros_ws/build/video_streamer/build/lib/video_streamer/video_stream.py -> /home/kencheng/notebooks/ros_ws/install/video_streamer/lib/python3.10/site-packages/video_streamer
+[6.655s] byte-compiling /home/kencheng/notebooks/ros_ws/install/video_streamer/lib/python3.10/site-packages/video_streamer/video_stream.py to video_stream.cpython-310.pyc
+[6.660s] running install_data
+[6.662s] copying resource/video_streamer -> /home/kencheng/notebooks/ros_ws/install/video_streamer/share/ament_index/resource_index/packages
+[6.664s] copying package.xml -> /home/kencheng/notebooks/ros_ws/install/video_streamer/share/video_streamer
+[6.667s] running install_egg_info
+[6.770s] removing '/home/kencheng/notebooks/ros_ws/install/video_streamer/lib/python3.10/site-packages/video_streamer-0.0.0-py3.10.egg-info' (and everything under it)
+[6.772s] Copying ../../build/video_streamer/video_streamer.egg-info to /home/kencheng/notebooks/ros_ws/install/video_streamer/lib/python3.10/site-packages/video_streamer-0.0.0-py3.10.egg-info
+[6.777s] running install_scripts
+[7.592s] Installing video_stream script to /home/kencheng/notebooks/ros_ws/install/video_streamer/lib/video_streamer
+[7.594s] writing list of installed files to '/home/kencheng/notebooks/ros_ws/build/video_streamer/install.log'
+[7.731s] Invoked command in '/home/kencheng/notebooks/ros_ws/src/video_streamer' returned '0': CONDA_PROMPT_MODIFIER=(base) PYTHONPATH=/home/kencheng/notebooks/ros_ws/build/video_streamer/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/kencheng/notebooks/ros_ws/install/video_streamer/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/video_streamer build --build-base /home/kencheng/notebooks/ros_ws/build/video_streamer/build install --record /home/kencheng/notebooks/ros_ws/build/video_streamer/install.log --single-version-externally-managed install_data
