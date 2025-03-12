@@ -23,7 +23,7 @@ setup(
     },
     entry_points={
         'console_scripts': [
-            'driver_node = driver.driver_node:main',
+            'driver_node = driver_ros2.driver_node:main',
         ],
     },
 )

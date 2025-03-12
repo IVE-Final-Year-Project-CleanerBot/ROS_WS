@@ -1,6 +1,6 @@
 from setuptools import find_packages, setup
 
-package_name = 'driver_ros2'
+package_name = 'yolo_control'
 
 setup(
     name=package_name,
@@ -10,7 +10,6 @@ setup(
         ('share/ament_index/resource_index/packages',
             ['resource/' + package_name]),
         ('share/' + package_name, ['package.xml']),
-        ('share/' + package_name + '/launch', ['launch/driver_launch.py']),
     ],
     install_requires=['setuptools'],
     zip_safe=True,
@@ -23,7 +22,7 @@ setup(
     },
     entry_points={
         'console_scripts': [
-            'driver_node = driver_ros2.driver_node:main',
+            'yolo_subscriber = yolo_control.yolo_subscriber:main',
         ],
     },
 )
