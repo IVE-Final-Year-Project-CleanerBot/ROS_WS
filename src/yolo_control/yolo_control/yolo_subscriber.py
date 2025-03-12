@@ -63,6 +63,11 @@ class YOLOSubscriber(Node):
         else:
             self.motor_controller.set_wheel_speeds(*self.motor_controller.get_motor_commands('stop'))  # 停止前进
 
+    def shutdown(self):
+        # 停止所有马达并将机械臂移动到初始位置
+        self.motor_controller.stop_all_motors()
+        self.arm_controller.move_to_initial_position()
+
 yolo_subscriber = None
 
 @app.route('/yolo_results', methods=['POST'])
@@ -84,12 +89,15 @@ def main(args=None):
     flask_thread_instance = threading.Thread(target=flask_thread)
     flask_thread_instance.start()
 
-    rclpy.spin(yolo_subscriber)
-
-    yolo_subscriber.motor_controller.stop_all_motors()
-    yolo_subscriber.destroy_node()
-    if rclpy.ok():
-        rclpy.shutdown()
+    try:
+        rclpy.spin(yolo_subscriber)
+    except KeyboardInterrupt:
+        print("Shutting down...")
+    finally:
+        yolo_subscriber.shutdown()
+        yolo_subscriber.destroy_node()
+        if rclpy.ok():
+            rclpy.shutdown()
 
 if __name__ == '__main__':
     main()
