@@ -5,6 +5,8 @@ import driver_ros2.ros_robot_controller_sdk as rrc
 from flask import Flask, request
 import threading
 import json
+from .motor_controller import MotorController  # 导入 MotorController
+from .arm_controller import ArmController  # 导入 ArmController
 
 app = Flask(__name__)
 
@@ -12,8 +14,8 @@ class YOLOSubscriber(Node):
     def __init__(self):
         super().__init__('yolo_subscriber')
         self.publisher_ = self.create_publisher(String, 'yolo_results', 10)
-        self.board = rrc.Board()
-        self.board.enable_reception(True)  # 启用接收模式
+        self.motor_controller = MotorController()  # 初始化 MotorController
+        self.arm_controller = ArmController()  # 初始化 ArmController
         self.target_detected = False
         self.target_position = None
         self.focal_length = 800  # 假设的焦距，需要根据实际情况校准
@@ -49,39 +51,17 @@ class YOLOSubscriber(Node):
             # 打印调试信息
             print(f"x_center: {x_center}, frame_center: {frame_center}, box_height: {box_height}, distance: {distance}")
 
-            if distance < self.stop_distance:  # 距离小于50厘米
-                self.set_wheel_speeds(*self.get_motor_commands('stop'))  # 停止前进
+            if distance < self.stop_distance:  # 距离小于30厘米
+                self.motor_controller.set_wheel_speeds(*self.motor_controller.get_motor_commands('stop'))  # 停止前进
+                self.arm_controller.pick_up()  # 执行机械臂拾取动作
             elif x_center < frame_center - self.center_threshold:
-                self.set_wheel_speeds(*self.get_motor_commands('rotateLeft'))  # 向左转
+                self.motor_controller.set_wheel_speeds(*self.motor_controller.get_motor_commands('rotateLeft'))  # 向左转
             elif x_center > frame_center + self.center_threshold:
-                self.set_wheel_speeds(*self.get_motor_commands('rotateRight'))  # 向右转
+                self.motor_controller.set_wheel_speeds(*self.motor_controller.get_motor_commands('rotateRight'))  # 向右转
             else:
-                self.set_wheel_speeds(*self.get_motor_commands('forward'))  # 向前移动
+                self.motor_controller.set_wheel_speeds(*self.motor_controller.get_motor_commands('forward'))  # 向前移动
         else:
-            self.set_wheel_speeds(*self.get_motor_commands('stop'))  # 停止前进
-
-    def get_motor_commands(self, Id):
-        SPEED = 15
-        switcher = {
-            'forward': [SPEED, SPEED, -SPEED, -SPEED],
-            'backward': [-SPEED, -SPEED, SPEED, SPEED],
-            'right': [-SPEED, SPEED, -SPEED, SPEED],
-            'left': [SPEED, -SPEED, SPEED, -SPEED],
-            'forwardLeft': [SPEED, 0, 0, -SPEED],
-            'forwardRight': [0, SPEED, -SPEED, 0],
-            'backwardLeft': [-SPEED, 0, 0, SPEED],
-            'backwardRight': [0, -SPEED, SPEED, 0],
-            'rotateLeft': [-SPEED, -SPEED, -SPEED, -SPEED],
-            'rotateRight': [SPEED, SPEED, SPEED, SPEED],
-            'stop': [0, 0, 0, 0]
-        }
-        return switcher.get(Id, [0, 0, 0, 0])
-
-    def set_wheel_speeds(self, v1, v2, v3, v4):
-        self.board.set_motor_duty([[1, v1], [2, v2], [3, v3], [4, v4]])
-
-    def stop_all_motors(self):
-        self.board.set_motor_duty([[1, 0], [2, 0], [3, 0], [4, 0]])
+            self.motor_controller.set_wheel_speeds(*self.motor_controller.get_motor_commands('stop'))  # 停止前进
 
 yolo_subscriber = None
 
@@ -106,7 +86,7 @@ def main(args=None):
 
     rclpy.spin(yolo_subscriber)
 
-    yolo_subscriber.stop_all_motors()
+    yolo_subscriber.motor_controller.stop_all_motors()
     yolo_subscriber.destroy_node()
     if rclpy.ok():
         rclpy.shutdown()
