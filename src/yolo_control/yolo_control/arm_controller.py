@@ -7,15 +7,15 @@ class ArmController:
         self.board.enable_reception(True)  # 启用接收模式
 
     def angle_to_pulse(self, angle):
-        # 将角度转换为脉宽
-        return 11.1 * angle + 500
+        # 将角度转换为脉宽，并确保返回整数
+        return int(11.1 * angle + 500)
 
     def pulse_to_angle(self, pulse_width):
         # 将脉宽转换为角度
         return (pulse_width - 500) / 11.1
 
     def move_to_position(self, positions, duration=1):
-        # 将角度转换为脉宽
+        # 将角度转换为脉宽，并确保返回整数
         pulse_positions = [[channel, self.angle_to_pulse(angle)] for channel, angle in positions]
         self.board.pwm_servo_set_position(duration, pulse_positions)
 
