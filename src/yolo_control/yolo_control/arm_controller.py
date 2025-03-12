@@ -22,11 +22,11 @@ class ArmController:
     def pick_up(self):
         # 示例：机械臂拾取动作
         # 你需要根据实际情况调整这些位置和时间
-        self.move_to_position([[1, 90], [2, 90], [3, 90], [4, 90], [5, 90], [6, 0]], duration=1)
+        self.move_to_position([[1, 90], [2, 25], [3, 45], [4, 45], [5, 90], [6, 0]], duration=1)
         time.sleep(1)
-        self.move_to_position([[1, 45], [2, 45], [3, 45], [4, 45], [5, 45], [6, 0]], duration=1)
+        self.move_to_position([[1, 90], [2, 25], [3, 45], [4, 45], [5, 45], [6, 0]], duration=1)
         time.sleep(1)
-        self.move_to_position([[1, 90], [2, 90], [3, 90], [4, 90], [5, 90], [6, 0]], duration=1)
+        self.move_to_position([[1, 90], [2, 25], [3, 45], [4, 45], [5, 90], [6, 90]], duration=1)
         time.sleep(1)
 
     def release(self):
@@ -34,3 +34,7 @@ class ArmController:
         # 你需要根据实际情况调整这些位置和时间
         self.move_to_position([[1, 120], [2, 120], [3, 120], [4, 120], [5, 120], [6, 120]], duration=1)
         time.sleep(1)
+
+    def move_to_initial_position(self):
+        # 将机械臂移动到初始位置
+        self.move_to_position([[1, 90], [2, 25], [3, 45], [4, 45], [5, 90], [6, 0]], duration=1)
