@@ -54,7 +54,6 @@ class YOLOSubscriber(Node):
             if distance < self.stop_distance:  # 距离小于30厘米
                 self.motor_controller.set_wheel_speeds(*self.motor_controller.get_motor_commands('stop'))  # 停止前进
                 self.arm_controller.pick_up()  # 执行机械臂拾取动作
-                self.target_detected = False  # 重置目标检测状态
             elif x_center < frame_center - self.center_threshold:
                 self.motor_controller.set_wheel_speeds(*self.motor_controller.get_motor_commands('rotateLeft'))  # 向左转
             elif x_center > frame_center + self.center_threshold:
