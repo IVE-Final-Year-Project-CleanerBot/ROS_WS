@@ -79,7 +79,7 @@ def yolo_results():
     return "Results received", 200
 
 def flask_thread():
-    app.run(host='0.0.0.0', port=5000)
+    app.run(host='0.0.0.0', port=5200)
 
 def main(args=None):
     global yolo_subscriber
