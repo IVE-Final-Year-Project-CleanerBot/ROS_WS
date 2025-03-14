@@ -3,7 +3,6 @@ from rclpy.node import Node
 from std_msgs.msg import String
 import driver_ros2.ros_robot_controller_sdk as rrc
 from flask import Flask, request
-import threading
 import json
 from .motor_controller import MotorController  # 导入 MotorController
 from .arm_controller import ArmController  # 导入 ArmController
@@ -78,19 +77,13 @@ def yolo_results():
     yolo_subscriber.control_robot()
     return "Results received", 200
 
-def flask_thread():
-    app.run(host='0.0.0.0', port=5200)
-
 def main(args=None):
     global yolo_subscriber
     rclpy.init(args=args)
     yolo_subscriber = YOLOSubscriber()
 
-    flask_thread_instance = threading.Thread(target=flask_thread)
-    flask_thread_instance.start()
-
     try:
-        rclpy.spin(yolo_subscriber)
+        app.run(host='0.0.0.0', port=5200)
     except KeyboardInterrupt:
         print("Shutting down...")
     finally:
