@@ -24,9 +24,9 @@ class ArmController:
         # 你需要根据实际情况调整这些位置和时间
         self.move_to_position([[1, 90], [2, 0], [3, 45], [4, 45], [5, 90], [6, 0]], duration=1)
         time.sleep(1)
-        self.move_to_position([[1, 90], [2, 25], [3, 45], [4, 60], [5, 90], [6, 0]], duration=1)
+        self.move_to_position([[1, 90], [2, 20], [3, 45], [4, 60], [5, 90], [6, 0]], duration=1)
         time.sleep(1)
-        self.move_to_position([[1, 90], [2, 25], [3, 45], [4, 60], [5, 90], [6, 90]], duration=1)
+        self.move_to_position([[1, 90], [2, 20], [3, 45], [4, 60], [5, 90], [6, 90]], duration=1)
         time.sleep(1)
         self.move_to_position([[1, 90], [2, 0], [3, 0], [4, 45], [5, 90], [6, 90]], duration=1)
         time.sleep(1)
@@ -39,4 +39,4 @@ class ArmController:
 
     def move_to_initial_position(self):
         # 将机械臂移动到初始位置
-        self.move_to_position([[1, 90], [2, 0], [3, 45], [4, 45], [5, 90], [6, 0]], duration=1)
+        self.move_to_position([[1, 90], [2, 0], [3, 45], [4, 20], [5, 90], [6, 0]], duration=1)
