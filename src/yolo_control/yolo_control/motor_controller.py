@@ -12,7 +12,7 @@ class MotorController:
         self.set_wheel_speeds(0, 0, 0, 0)
 
     def get_motor_commands(self, Id):
-        SPEED = 15
+        SPEED = 10
         switcher = {
             'forward': [SPEED, SPEED, -SPEED, -SPEED],
             'backward': [-SPEED, -SPEED, SPEED, SPEED],
