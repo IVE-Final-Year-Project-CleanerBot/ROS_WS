@@ -4,6 +4,7 @@ from std_msgs.msg import String
 import driver_ros2.ros_robot_controller_sdk as rrc
 from flask import Flask, request
 import json
+import time
 from .motor_controller import MotorController  # 导入 MotorController
 from .arm_controller import ArmController  # 导入 ArmController
 
@@ -59,6 +60,8 @@ class YOLOSubscriber(Node):
             if distance < self.stop_distance:
                 if not self.pickup_executed:
                     self.pickup_executed = True  # 标记已执行
+                    self.motor_controller.set_wheel_speeds(*self.motor_controller.get_motor_commands('forward'))
+                    time.sleep(1)
                     self.motor_controller.set_wheel_speeds(*self.motor_controller.get_motor_commands('stop'))
                     self.arm_controller.pick_up()
             else:
