@@ -99,5 +99,8 @@ async def main(args=None):
             rclpy.shutdown()
         await flask_task
 
-if __name__ == '__main__':
+def main_sync():
     asyncio.run(main())
+
+if __name__ == '__main__':
+    main_sync()
