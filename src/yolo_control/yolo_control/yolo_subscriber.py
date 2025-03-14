@@ -21,7 +21,7 @@ class YOLOSubscriber(Node):
         self.focal_length = 800  # 假设的焦距，需要根据实际情况校准
         self.real_height = 0.2  # 目标的实际高度（米），需要根据实际情况校准
         self.frame_width = 1280  # 假设图像宽度为640
-        self.center_threshold = 20  # 中心阈值
+        self.center_threshold = 50  # 中心阈值
         self.stop_distance = 30  # 停止距离（厘米）
 
     def publish_results(self, results):
