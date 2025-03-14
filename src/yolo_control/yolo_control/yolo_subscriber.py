@@ -21,7 +21,7 @@ class YOLOSubscriber(Node):
         self.real_height = 0.2  
         self.frame_width = 1280  
         self.center_threshold = 50  
-        self.stop_distance = 30  
+        self.stop_distance = 20  
         # 新增状态标志，防止重复下发控制命令
         self.pickup_executed = False
 
