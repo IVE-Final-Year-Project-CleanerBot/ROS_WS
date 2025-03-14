@@ -2,13 +2,13 @@ import rclpy
 from rclpy.node import Node
 from std_msgs.msg import String
 import driver_ros2.ros_robot_controller_sdk as rrc
-from quart import Quart, request  # 使用 Quart 代替 Flask
-import asyncio
+from flask import Flask, request
+import threading
 import json
 from .motor_controller import MotorController  # 导入 MotorController
 from .arm_controller import ArmController  # 导入 ArmController
 
-app = Quart(__name__)
+app = Flask(__name__)
 
 class YOLOSubscriber(Node):
     def __init__(self):
@@ -71,25 +71,26 @@ class YOLOSubscriber(Node):
 yolo_subscriber = None
 
 @app.route('/yolo_results', methods=['POST'])
-async def yolo_results():
-    data = await request.json
+def yolo_results():
+    data = request.json
     results = data['results']
     yolo_subscriber.publish_results(results)
     yolo_subscriber.control_robot()
     return "Results received", 200
 
-async def flask_thread():
-    await app.run_task('0.0.0.0', 5200)
+def flask_thread():
+    app.run(host='0.0.0.0', port=5200)
 
-async def main(args=None):
+def main(args=None):
     global yolo_subscriber
     rclpy.init(args=args)
     yolo_subscriber = YOLOSubscriber()
 
-    flask_task = asyncio.create_task(flask_thread())
+    flask_thread_instance = threading.Thread(target=flask_thread)
+    flask_thread_instance.start()
 
     try:
-        await rclpy.spin(yolo_subscriber)
+        rclpy.spin(yolo_subscriber)
     except KeyboardInterrupt:
         print("Shutting down...")
     finally:
@@ -97,10 +98,6 @@ async def main(args=None):
         yolo_subscriber.destroy_node()
         if rclpy.ok():
             rclpy.shutdown()
-        await flask_task
-
-def main_sync():
-    asyncio.run(main())
 
 if __name__ == '__main__':
-    main_sync()
+    main()
