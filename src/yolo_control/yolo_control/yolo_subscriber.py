@@ -58,9 +58,9 @@ class YOLOSubscriber(Node):
             # 当目标距离小于停止距离时只执行一次拾取动作
             if distance < self.stop_distance:
                 if not self.pickup_executed:
+                    self.pickup_executed = True  # 标记已执行
                     self.motor_controller.set_wheel_speeds(*self.motor_controller.get_motor_commands('stop'))
                     self.arm_controller.pick_up()
-                    self.pickup_executed = True  # 标记已执行
             else:
                 # 如果距离恢复到大于阈值，则重置标志，允许再次检测和控制
                 self.pickup_executed = False
