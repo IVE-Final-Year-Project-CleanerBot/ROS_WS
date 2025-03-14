@@ -17,50 +17,61 @@ class YOLOSubscriber(Node):
         self.arm_controller = ArmController()  # 初始化 ArmController
         self.target_detected = False
         self.target_position = None
-        self.focal_length = 800  # 假设的焦距，需要根据实际情况校准
-        self.real_height = 0.2  # 目标的实际高度（米），需要根据实际情况校准
-        self.frame_width = 1280  # 假设图像宽度为640
-        self.center_threshold = 50  # 中心阈值
-        self.stop_distance = 30  # 停止距离（厘米）
+        self.focal_length = 800  
+        self.real_height = 0.2  
+        self.frame_width = 1280  
+        self.center_threshold = 50  
+        self.stop_distance = 30  
+        # 新增状态标志，防止重复下发控制命令
+        self.pickup_executed = False
 
     def publish_results(self, results):
         if not results:
             print("No results to publish")
             return
         msg = String()
-        msg.data = json.dumps(results)  # 确保发送的是 JSON 字符串
+        msg.data = json.dumps(results)
         self.publisher_.publish(msg)
         self.process_yolo_results(results)
 
     def process_yolo_results(self, results):
-        # 解析检测结果并设置目标位置
+        # 如果有检测结果，保存第一个检测到的对象作为目标
         if results:
             self.target_detected = True
             self.target_position = results[0]
         else:
             self.target_detected = False
             self.target_position = None
+            # 目标丢失时重置标志
+            self.pickup_executed = False
 
     def control_robot(self):
         if self.target_detected:
-            x_center = self.target_position['boxes'][0][0] + (self.target_position['boxes'][0][2] - self.target_position['boxes'][0][0]) / 2
+            x1, y1, x2, y2 = self.target_position['boxes'][0]
+            x_center = x1 + (x2 - x1) / 2
             frame_center = self.frame_width / 2
-            box_height = self.target_position['boxes'][0][3] - self.target_position['boxes'][0][1]
-            distance = (self.real_height * self.focal_length) / box_height * 100  # 使用焦距和实际高度计算距离，并转换为厘米
-            # 打印调试信息
+            box_height = y2 - y1
+            # 计算距离（单位：厘米）
+            distance = (self.real_height * self.focal_length) / box_height * 100  
             print(f"x_center: {x_center}, frame_center: {frame_center}, box_height: {box_height}, distance: {distance}")
 
-            if distance < self.stop_distance:  # 距离小于30厘米
-                self.motor_controller.set_wheel_speeds(*self.motor_controller.get_motor_commands('stop'))  # 停止前进
-                self.arm_controller.pick_up()  # 执行机械臂拾取动作
-            elif x_center < frame_center - self.center_threshold:
-                self.motor_controller.set_wheel_speeds(*self.motor_controller.get_motor_commands('rotateLeft'))  # 向左转
-            elif x_center > frame_center + self.center_threshold:
-                self.motor_controller.set_wheel_speeds(*self.motor_controller.get_motor_commands('rotateRight'))  # 向右转
+            # 当目标距离小于停止距离时只执行一次拾取动作
+            if distance < self.stop_distance:
+                if not self.pickup_executed:
+                    self.motor_controller.set_wheel_speeds(*self.motor_controller.get_motor_commands('stop'))
+                    self.arm_controller.pick_up()
+                    self.pickup_executed = True  # 标记已执行
             else:
-                self.motor_controller.set_wheel_speeds(*self.motor_controller.get_motor_commands('forward'))  # 向前移动
+                # 如果距离恢复到大于阈值，则重置标志，允许再次检测和控制
+                self.pickup_executed = False
+                if x_center < frame_center - self.center_threshold:
+                    self.motor_controller.set_wheel_speeds(*self.motor_controller.get_motor_commands('rotateLeft'))
+                elif x_center > frame_center + self.center_threshold:
+                    self.motor_controller.set_wheel_speeds(*self.motor_controller.get_motor_commands('rotateRight'))
+                else:
+                    self.motor_controller.set_wheel_speeds(*self.motor_controller.get_motor_commands('forward'))
         else:
-            self.motor_controller.set_wheel_speeds(*self.motor_controller.get_motor_commands('stop'))  # 停止前进
+            self.motor_controller.set_wheel_speeds(*self.motor_controller.get_motor_commands('stop'))
 
     def shutdown(self):
         # 停止所有马达并将机械臂移动到初始位置
