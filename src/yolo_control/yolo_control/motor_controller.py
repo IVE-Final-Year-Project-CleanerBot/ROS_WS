@@ -1,4 +1,4 @@
-import driver_ros2.ros_robot_controller_sdk as rrc
+import yolo_control.ros_robot_controller_sdk as rrc
 
 class MotorController:
     def __init__(self):
