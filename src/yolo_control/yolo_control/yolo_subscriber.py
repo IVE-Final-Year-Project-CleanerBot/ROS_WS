@@ -35,9 +35,6 @@ class YOLOSubscriber(Node):
             10
         )
 
-        # 定时器，每秒检查一次是否需要避障
-        self.timer = self.create_timer(1.0, self.check_and_avoid_obstacles)
-
     def publish_results(self, results):
         if not results:
             print("No results to publish")
@@ -82,11 +79,6 @@ class YOLOSubscriber(Node):
                 else:
                     self.motor_controller.set_wheel_speeds(*self.motor_controller.get_motor_commands('forward'))
         else:
-            self.obstacle_avoidance.avoid_obstacles()
-
-    def check_and_avoid_obstacles(self):
-        if not self.target_detected:
-            print("No target detected, avoiding obstacles")
             self.obstacle_avoidance.avoid_obstacles()
 
     def shutdown(self):
