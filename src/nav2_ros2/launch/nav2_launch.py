@@ -4,8 +4,9 @@ from launch import LaunchDescription
 from launch_ros.actions import Node
 
 def generate_launch_description():
+    use_sim_time = LaunchConfiguration('use_sim_time', default='false')
     
-    map_file = os.path.join(get_package_share_directory('map_server'), 'config', 'my_area.yaml')
+    map_file = os.path.expanduser('~/map/rm349.yaml')
 
     return LaunchDescription([
         Node(
@@ -13,7 +14,7 @@ def generate_launch_description():
             executable='map_server',
             name='map_server',
             output='screen',
-            parameters=[{'use_sim_time': True}, 
+            parameters=[{'use_sim_time': use_sim_time}, 
                         {'yaml_filename':map_file} 
                        ]),
 
@@ -22,7 +23,7 @@ def generate_launch_description():
             executable='lifecycle_manager',
             name='lifecycle_manager_mapper',
             output='screen',
-            parameters=[{'use_sim_time': True},
+            parameters=[{'use_sim_time': use_sim_time},
                         {'autostart': True},
                         {'node_names': ['map_server']}])            
         ])
