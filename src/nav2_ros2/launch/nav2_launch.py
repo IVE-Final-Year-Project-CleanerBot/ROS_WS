@@ -7,7 +7,7 @@ from launch.substitutions import LaunchConfiguration
 def generate_launch_description():
     use_sim_time = LaunchConfiguration('use_sim_time', default='false')
     
-    map_file = os.path.expanduser('~/notebook/map/rm349.yaml')
+    map_file = os.path.expanduser('~/notebooks/map/rm349.yaml')
 
     return LaunchDescription([
         Node(
