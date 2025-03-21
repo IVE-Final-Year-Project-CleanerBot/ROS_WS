@@ -9,6 +9,7 @@ def generate_launch_description():
     
     map_file = os.path.join(get_package_share_directory('nav2_ros2'), 'maps', 'rm349.yaml')
     controller_params_file = os.path.join(get_package_share_directory('nav2_ros2'), 'config', 'controller_params.yaml')
+    costmap_params_file = os.path.join(get_package_share_directory('nav2_ros2'), 'config', 'costmap_params.yaml')
 
     return LaunchDescription([
         # 地图服务器
@@ -18,8 +19,8 @@ def generate_launch_description():
             name='map_server',
             output='screen',
             parameters=[{'use_sim_time': use_sim_time}, 
-                        {'yaml_filename': map_file} 
-                       ]),
+                        {'yaml_filename': map_file}]
+        ),
 
         # 路径规划器
         Node(
@@ -27,7 +28,8 @@ def generate_launch_description():
             executable='planner_server',
             name='planner_server',
             output='screen',
-            parameters=[{'use_sim_time': use_sim_time}]
+            parameters=[{'use_sim_time': use_sim_time},
+                        costmap_params_file]
         ),
 
         # 控制器服务器
@@ -37,7 +39,8 @@ def generate_launch_description():
             name='controller_server',
             output='screen',
             parameters=[{'use_sim_time': use_sim_time},
-                        controller_params_file]
+                        controller_params_file,
+                        costmap_params_file]
         ),
 
         # AMCL（自适应蒙特卡洛定位）
@@ -57,5 +60,6 @@ def generate_launch_description():
             output='screen',
             parameters=[{'use_sim_time': use_sim_time},
                         {'autostart': True},
-                        {'node_names': ['map_server', 'planner_server', 'controller_server', 'amcl']}])
+                        {'node_names': ['map_server', 'planner_server', 'controller_server', 'amcl']}]
+        )
     ])
