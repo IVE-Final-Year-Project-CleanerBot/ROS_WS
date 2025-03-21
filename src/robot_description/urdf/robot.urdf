@@ -1,9 +1,19 @@
 <robot name="simple_robot">
+  <!-- 定义 base_footprint -->
+  <link name="base_footprint"/>
+
   <!-- 定义 base_link -->
   <link name="base_link"/>
 
   <!-- 定义 laser 坐标系 -->
   <link name="laser"/>
+
+  <!-- 定义 base_footprint 和 base_link 之间的固定关节 -->
+  <joint name="footprint_to_base" type="fixed">
+    <parent link="base_footprint"/>
+    <child link="base_link"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+  </joint>
 
   <!-- 定义 base_link 和 laser 之间的固定关节 -->
   <joint name="base_to_laser" type="fixed">
