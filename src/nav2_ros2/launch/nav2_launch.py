@@ -8,6 +8,7 @@ def generate_launch_description():
     use_sim_time = LaunchConfiguration('use_sim_time', default='false')
     
     map_file = os.path.join(get_package_share_directory('nav2_ros2'), 'maps', 'rm349.yaml')
+    controller_params_file = os.path.join(get_package_share_directory('nav2_ros2'), 'config', 'controller_params.yaml')
 
     return LaunchDescription([
         # 地图服务器
@@ -35,7 +36,8 @@ def generate_launch_description():
             executable='controller_server',
             name='controller_server',
             output='screen',
-            parameters=[{'use_sim_time': use_sim_time}]
+            parameters=[{'use_sim_time': use_sim_time},
+                        controller_params_file]
         ),
 
         # AMCL（自适应蒙特卡洛定位）
