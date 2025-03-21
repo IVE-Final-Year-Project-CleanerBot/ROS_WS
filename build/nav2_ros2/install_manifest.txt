@@ -1,6 +1,12 @@
 /home/kencheng/notebooks/ros_ws/install/nav2_ros2/lib/nav2_ros2/nav2_node
 /home/kencheng/notebooks/ros_ws/install/nav2_ros2/share/nav2_ros2/launch/nav2_launch.py
 /home/kencheng/notebooks/ros_ws/install/nav2_ros2/share/nav2_ros2/launch/bringup_launch.py
+/home/kencheng/notebooks/ros_ws/install/nav2_ros2/share/nav2_ros2/maps/rm349.yaml
+/home/kencheng/notebooks/ros_ws/install/nav2_ros2/share/nav2_ros2/maps/rm349.pgm
+/home/kencheng/notebooks/ros_ws/install/nav2_ros2/share/nav2_ros2/config/nav2_params.yaml
+/home/kencheng/notebooks/ros_ws/install/nav2_ros2/share/nav2_ros2/config/navigate_w_replanning_and_recovery.xml
+/home/kencheng/notebooks/ros_ws/install/nav2_ros2/share/nav2_ros2/config/costmap_params.yaml
+/home/kencheng/notebooks/ros_ws/install/nav2_ros2/share/nav2_ros2/config/controller_params.yaml
 /home/kencheng/notebooks/ros_ws/install/nav2_ros2/share/ament_index/resource_index/package_run_dependencies/nav2_ros2
 /home/kencheng/notebooks/ros_ws/install/nav2_ros2/share/ament_index/resource_index/parent_prefix_path/nav2_ros2
 /home/kencheng/notebooks/ros_ws/install/nav2_ros2/share/nav2_ros2/environment/ament_prefix_path.sh

@@ -1,5 +1,6 @@
 /home/kencheng/notebooks/ros_ws/install/sllidar_ros2/share/sllidar_ros2/launch/view_sllidar_c1_launch.py
 /home/kencheng/notebooks/ros_ws/install/sllidar_ros2/share/sllidar_ros2/launch/sllidar_c1_launch.py
+/home/kencheng/notebooks/ros_ws/install/sllidar_ros2/share/sllidar_ros2/launch/.ipynb_checkpoints/sllidar_c1_launch-checkpoint.py
 /home/kencheng/notebooks/ros_ws/install/sllidar_ros2/share/sllidar_ros2/launch/.ipynb_checkpoints/motor_controll-checkpoint.py
 /home/kencheng/notebooks/ros_ws/install/sllidar_ros2/share/sllidar_ros2/rviz/sllidar_ros2.rviz
 /home/kencheng/notebooks/ros_ws/install/sllidar_ros2/lib/sllidar_ros2/sllidar_node
