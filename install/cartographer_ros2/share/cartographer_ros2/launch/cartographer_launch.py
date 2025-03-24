@@ -40,11 +40,11 @@ def generate_launch_description():
         name='rviz2',
         output='screen')
 
-    static_transform_publisher = Node(
-        package='tf2_ros',
-        executable='static_transform_publisher',
-        arguments=['0', '0', '0', '0', '0', '0', 'base_link', 'laser']
-    )
+    # static_transform_publisher = Node(
+    #     package='tf2_ros',
+    #     executable='static_transform_publisher',
+    #     arguments=['0', '0', '0', '0', '0', '0', 'base_link', 'laser']
+    # )
     
     return LaunchDescription([
         DeclareLaunchArgument(
@@ -54,5 +54,5 @@ def generate_launch_description():
         rviz_node,
         cartographer_node,
         cartographer_occupancy_grid_node,
-        static_transform_publisher,
+        # static_transform_publisher,
     ])

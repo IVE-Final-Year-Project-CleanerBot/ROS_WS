@@ -52,6 +52,16 @@ def generate_launch_description():
             parameters=[{'use_sim_time': use_sim_time}]
         ),
 
+        # 机器人状态发布器
+        Node(
+            package='robot_state_publisher',
+            executable='robot_state_publisher',
+            name='robot_state_publisher',
+            output='screen',
+            parameters=[{'use_sim_time': use_sim_time}],
+            arguments=[os.path.join(get_package_share_directory('robot_description'), 'urdf', 'robot.urdf')]
+        ),
+
         # 生命周期管理器
         Node(
             package='nav2_lifecycle_manager',
