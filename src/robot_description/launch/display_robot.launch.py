@@ -5,11 +5,8 @@ import os
 
 def generate_launch_description():
     # 获取 URDF 文件路径
-    urdf_file = os.path.join(
-        get_package_share_directory('robot_description'),
-        'urdf',
-        'robot.urdf'
-    )
+    urdf_package_path = get_package_share_directory('robot_description')
+    urdf_file = os.path.join(urdf_package_path, 'urdf', 'robot.urdf')
 
     # 确保 URDF 文件存在
     if not os.path.exists(urdf_file):

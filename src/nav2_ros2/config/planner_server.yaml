@@ -3,7 +3,6 @@ planner_server:
     expected_planner_frequency: 20.0
     use_sim_time: false
     planner_plugins: ["GridBased"]
-    costmap_update_timeout: 1.0
     GridBased:
       plugin: "nav2_navfn_planner/NavfnPlanner"
       tolerance: 0.5
