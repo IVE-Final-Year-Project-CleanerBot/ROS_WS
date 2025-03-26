@@ -45,8 +45,14 @@ class TwistMotorControlNode(Node):
         angular_z = msg.angular.z  # 角速度
 
         # 计算左右轮组的速度
-        left_speed = linear_x - (angular_z * self.wheel_base / 2.0)
-        right_speed = linear_x + (angular_z * self.wheel_base / 2.0)
+        # 如果线速度为负（后退），忽略角速度的影响
+        if linear_x < 0:
+            left_speed = linear_x
+            right_speed = linear_x
+        else:
+            # 正常计算左右轮速度
+            left_speed = linear_x - (angular_z * self.wheel_base / 2.0)
+            right_speed = linear_x + (angular_z * self.wheel_base / 2.0)
 
         # 如果右轮方向反了，反转右轮速度
         right_speed = -right_speed  # 反转右轮速度
