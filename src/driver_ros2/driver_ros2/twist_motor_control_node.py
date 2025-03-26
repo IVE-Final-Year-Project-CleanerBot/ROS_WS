@@ -27,7 +27,7 @@ class TwistMotorControlNode(Node):
         linear_x = msg.linear.x  # 线速度
         angular_z = msg.angular.z  # 角速度
 
-        # 计算左右电机速度
+        # 计算左右轮组的速度
         left_speed = linear_x - (angular_z * self.wheel_base / 2.0)
         right_speed = linear_x + (angular_z * self.wheel_base / 2.0)
 
@@ -35,8 +35,13 @@ class TwistMotorControlNode(Node):
         left_duty = max(min(left_speed * self.max_speed, 100.0), -100.0)
         right_duty = max(min(right_speed * self.max_speed, 100.0), -100.0)
 
-        # 设置电机速度
-        motor_speeds = [[1, left_duty], [2, right_duty]]
+        # 设置 4 个轮子的速度
+        motor_speeds = [
+            [1, left_duty],   # 左前轮
+            [2, left_duty],   # 左后轮
+            [3, right_duty],  # 右前轮
+            [4, right_duty],  # 右后轮
+        ]
         self.board.set_motor_duty(motor_speeds)
 
         # 打印日志
