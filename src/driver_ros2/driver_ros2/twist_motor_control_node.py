@@ -14,6 +14,9 @@ class TwistMotorControlNode(Node):
         self.max_speed = 100.0  # 最大电机速度（单位：占空比，范围 -100 到 100）
         self.timeout = 0.5  # 超时时间（单位：秒）
 
+        # 状态标志
+        self.is_stopped = False  # 用于标记是否已经停止
+
         # 订阅 /cmd_vel 话题
         self.subscription = self.create_subscription(
             Twist,
@@ -32,6 +35,11 @@ class TwistMotorControlNode(Node):
         # 更新最后接收到指令的时间
         self.last_cmd_time = self.get_clock().now()
 
+        # 如果之前处于停止状态，恢复标志并打印日志
+        if self.is_stopped:
+            self.is_stopped = False
+            self.get_logger().info("Command received. Resuming motors.")
+
         # 提取线速度和角速度
         linear_x = msg.linear.x  # 线速度
         angular_z = msg.angular.z  # 角速度
@@ -39,6 +47,9 @@ class TwistMotorControlNode(Node):
         # 计算左右轮组的速度
         left_speed = linear_x - (angular_z * self.wheel_base / 2.0)
         right_speed = linear_x + (angular_z * self.wheel_base / 2.0)
+
+        # 如果右轮方向反了，反转右轮速度
+        right_speed = -right_speed  # 反转右轮速度
 
         # 将速度转换为占空比（范围 -100 到 100）
         left_duty = max(min(left_speed * self.max_speed, 100.0), -100.0)
@@ -48,8 +59,8 @@ class TwistMotorControlNode(Node):
         motor_speeds = [
             [1, left_duty],   # 左前轮
             [2, left_duty],   # 左后轮
-            [3, -right_duty],  # 右前轮
-            [4, -right_duty],  # 右后轮
+            [3, right_duty],  # 右前轮
+            [4, right_duty],  # 右后轮
         ]
         self.board.set_motor_duty(motor_speeds)
 
@@ -60,15 +71,18 @@ class TwistMotorControlNode(Node):
         # 检查是否超时
         now = self.get_clock().now()
         if (now - self.last_cmd_time).nanoseconds * 1e-9 > self.timeout:
-            # 超时，停止电机
-            motor_speeds = [
-                [1, 0.0],  # 左前轮
-                [2, 0.0],  # 左后轮
-                [3, 0.0],  # 右前轮
-                [4, 0.0],  # 右后轮
-            ]
-            self.board.set_motor_duty(motor_speeds)
-            self.get_logger().info("No command received. Stopping motors.")
+            # 如果已经停止，则不重复打印日志
+            if not self.is_stopped:
+                # 超时，停止电机
+                motor_speeds = [
+                    [1, 0.0],  # 左前轮
+                    [2, 0.0],  # 左后轮
+                    [3, 0.0],  # 右前轮
+                    [4, 0.0],  # 右后轮
+                ]
+                self.board.set_motor_duty(motor_speeds)
+                self.get_logger().info("No command received. Stopping motors.")
+                self.is_stopped = True  # 标记为已停止
 
 def main(args=None):
     rclpy.init(args=args)
