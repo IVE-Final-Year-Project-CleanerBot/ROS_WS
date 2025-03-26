@@ -27,6 +27,7 @@ setup(
             'motor_control_node = driver_ros2.motor_control_node:main',
             'battery_status_node = driver_ros2.battery_status_node:main',
             'pwm_servo_control_node = driver_ros2.pwm_servo_control_node:main',
+            'twist_motor_control_node = driver_ros2.twist_motor_control_node:main',
         ],
     },
 )
