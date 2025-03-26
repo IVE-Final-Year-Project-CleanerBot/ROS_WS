@@ -39,8 +39,8 @@ class TwistMotorControlNode(Node):
         motor_speeds = [
             [1, left_duty],   # 左前轮
             [2, left_duty],   # 左后轮
-            [3, right_duty],  # 右前轮
-            [4, right_duty],  # 右后轮
+            [3, -right_duty],  # 右前轮
+            [4, -right_duty],  # 右后轮
         ]
         self.board.set_motor_duty(motor_speeds)
 
