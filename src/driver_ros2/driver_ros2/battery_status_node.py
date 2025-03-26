@@ -1,7 +1,7 @@
 import rclpy
 from rclpy.node import Node
 from std_msgs.msg import Float32
-from ros_robot_controller_sdk import Board
+from driver_ros2.ros_robot_controller_sdk import Board
 
 class BatteryStatusNode(Node):
     def __init__(self):
