@@ -1,2 +1,0 @@
-[0.140s] Invoking command in '/home/kencheng/notebooks/ros_ws/build/cartographer_ros2': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/kencheng/notebooks/ros_ws/install/video_streamer:/home/kencheng/notebooks/ros_ws/install/driver_ros2:/opt/ros/humble CONDA_PROMPT_MODIFIER=(ros2_humble) /usr/bin/cmake --build /home/kencheng/notebooks/ros_ws/build/cartographer_ros2 -- -j4 -l4
-[1.311s] [100%] Built target cartographer_node
