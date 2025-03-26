@@ -14,13 +14,13 @@ def generate_launch_description():
         output='screen',
     )
 
-    twist_motor_control_node = Node(
-        package='driver_ros2',
-        executable='twist_motor_control_node',
-        name='twist_motor_control_node',
-        parameters=[{'use_sim_time': use_sim_time}],
-        output='screen',
-    )
+    # twist_motor_control_node = Node(
+    #     package='driver_ros2',
+    #     executable='twist_motor_control_node',
+    #     name='twist_motor_control_node',
+    #     parameters=[{'use_sim_time': use_sim_time}],
+    #     output='screen',
+    # )
 
     pwm_servo_control_node = Node(
         package='driver_ros2',
@@ -36,6 +36,6 @@ def generate_launch_description():
             default_value='false',
             description='Use simulation (Gazebo) clock if true'),
         motor_control_node,
-        twist_motor_control_node,
+        # twist_motor_control_node,
         pwm_servo_control_node,
     ])
