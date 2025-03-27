@@ -22,7 +22,7 @@ def generate_launch_description():
 
     map2odomtf = launch_ros.actions.Node(
         package='robot_bringup',
-        executable='map2odom',
+        executable='map2odomtf',
         output='screen'
     )
 
