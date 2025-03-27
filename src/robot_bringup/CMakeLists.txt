@@ -33,8 +33,15 @@ add_executable(odom2tf src/odom2tf.cpp)
 ament_target_dependencies(odom2tf
   rclcpp tf2  nav_msgs  geometry_msgs  tf2_ros
 )
-install(TARGETS odom2tf
-  DESTINATION lib/${PROJECT_NAME})
+
+add_executable(map2odomtf src/map2odomtf.cpp)
+ament_target_dependencies(
+  map2odomtf rclcpp tf2_ros geometry_msgs
+)
+
+install(TARGETS odom2tf map2odomtf
+  DESTINATION lib/${PROJECT_NAME}
+)
 
 
 install(DIRECTORY launch
