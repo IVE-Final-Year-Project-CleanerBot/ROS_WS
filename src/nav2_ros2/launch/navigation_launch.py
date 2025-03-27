@@ -9,38 +9,15 @@ from launch.substitutions import LaunchConfiguration
 from launch.actions import TimerAction
 
 def generate_launch_description():
-    use_sim_time = LaunchConfiguration('use_sim_time', default='false')
 
     nav2_bringup_dir = get_package_share_directory('nav2_bringup')
     my_nav2_dir = get_package_share_directory('nav2_ros2')
     rviz2_config_dir = os.path.join(nav2_bringup_dir, 'rviz', 'nav2_default_view.rviz')
     
-    map_yaml_path = LaunchConfiguration('map', default=os.path.join(my_nav2_dir, 'maps', 'my_home.yaml'))
-    nav2_param_path = LaunchConfiguration('map', default=os.path.join(my_nav2_dir, 'config', 'nav2_params.yaml'))
 
-    # planner_yaml = os.path.join(get_package_share_directory('nav2_ros2'), 'config', 'planner_server.yaml')
-    # costmap_config = os.path.join(get_package_share_directory('nav2_ros2'), 'config', 'costmap.yaml')
-    
-    # lifecycle_node = Node(
-    #         package='nav2_lifecycle_manager',
-    #         executable='lifecycle_manager',
-    #         name='lifecycle_manager_pathplanner',
-    #         output='screen',
-    #         parameters=[{'use_sim_time': use_sim_time},
-    #                     {'autostart': True},
-    #                     {'node_names': ['planner_server']}])
-    
-    # planner_node = TimerAction(
-    #     period=5.0,  # 延迟启动 (seconds)
-    #     actions=[
-    #         Node(
-    #         package='nav2_planner',
-    #         executable='planner_server',
-    #         name='planner_server',
-    #         output='screen',
-    #         parameters=[planner_yaml, costmap_config])
-    #     ]
-    # )
+    use_sim_time = LaunchConfiguration('use_sim_time', default='false')
+    map_yaml_path = LaunchConfiguration('map', default=os.path.join(my_nav2_dir, 'maps', 'my_home.yaml'))
+    nav2_param_path = LaunchConfiguration('params_file', default=os.path.join(my_nav2_dir, 'config', 'nav2_params.yaml'))
 
     bringup_launch = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
