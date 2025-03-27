@@ -25,7 +25,7 @@ def generate_launch_description():
             [lidar_ros2_dir, '/launch', '/sllidar_c1_launch.py']),
     )
 
-    # 使用 TimerAction 启动后 5 秒执行 ydlidar 节点
+    # 使用 TimerAction 启动后 5 秒执行 lidar 节点
     lidar_delay = launch.actions.TimerAction(period=5.0, actions=[lidar])
     
     return launch.LaunchDescription([
