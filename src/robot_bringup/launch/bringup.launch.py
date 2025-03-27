@@ -20,11 +20,11 @@ def generate_launch_description():
         output='screen'
     )
 
-    map2odomtf = launch_ros.actions.Node(
-        package='robot_bringup',
-        executable='map2odomtf',
-        output='screen'
-    )
+    # map2odomtf = launch_ros.actions.Node(
+    #     package='robot_bringup',
+    #     executable='map2odomtf',
+    #     output='screen'
+    # )
 
     lidar = launch.actions.IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
@@ -37,6 +37,6 @@ def generate_launch_description():
     return launch.LaunchDescription([
         urdf2tf,
         odom2tf,
-        map2odomtf,
+        # map2odomtf,
         lidar_delay
     ])
