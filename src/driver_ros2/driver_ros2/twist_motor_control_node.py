@@ -46,16 +46,17 @@ class TwistMotorControlNode(Node):
 
         # 计算左右轮组的速度
         # 如果线速度为负（后退），忽略角速度的影响
-        if linear_x < 0:
-            left_speed = linear_x
-            right_speed = linear_x
-        else:
-            # 正常计算左右轮速度
-            left_speed = linear_x - (angular_z * self.wheel_base / 2.0)
-            right_speed = linear_x + (angular_z * self.wheel_base / 2.0)
+        # if linear_x < 0:
+        #     left_speed = linear_x
+        #     right_speed = linear_x
+        # else:
+        #     # 正常计算左右轮速度
+        #     left_speed = linear_x - (angular_z * self.wheel_base / 2.0)
+        #     right_speed = linear_x + (angular_z * self.wheel_base / 2.0)
 
-        # 如果右轮方向反了，反转右轮速度
-        right_speed = -right_speed  # 反转右轮速度
+        # 正常计算左右轮速度
+        left_speed = linear_x - (angular_z * self.wheel_base / 2.0)
+        right_speed = linear_x + (angular_z * self.wheel_base / 2.0)
 
         # 将速度转换为占空比（范围 -100 到 100）
         left_duty = max(min(left_speed * self.max_speed, 100.0), -100.0)
