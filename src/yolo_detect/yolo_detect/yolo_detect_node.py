@@ -21,7 +21,7 @@ class YoloDetectNode(Node):
             self.listener_callback,
             10)
         self.bridge = CvBridge()
-        self.model = YOLO(model_file)  # 替换为您的 YOLO 模型路径
+        self.model = YOLO(model_file)  
 
     def listener_callback(self, msg):
         # 将 ROS 图像消息转换为 OpenCV 图像
