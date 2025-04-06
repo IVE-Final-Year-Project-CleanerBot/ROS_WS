@@ -125,7 +125,8 @@ def main(args=None):
     except KeyboardInterrupt:
         pass
     finally:
-        rclpy.shutdown()
+        if rclpy.ok():  # 确保 rclpy 仍然处于运行状态
+            rclpy.shutdown()
 
 
 if __name__ == '__main__':
