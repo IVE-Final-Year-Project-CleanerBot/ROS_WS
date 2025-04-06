@@ -21,10 +21,18 @@ class PWMServoControlNode(Node):
         positions = []
         for i in range(0, len(msg.data), 2):
             servo_id = msg.data[i]
-            position = msg.data[i + 1]
-            positions.append([servo_id, position])
+            angle = msg.data[i + 1]
+
+            # 将角度转换为脉宽
+            pulse_width = int(11.1 * angle + 500)
+
+            # 限制脉宽范围在 500 到 2500 之间
+            pulse_width = max(500, min(2500, pulse_width))
+
+            positions.append([servo_id, pulse_width])
         
-        self.board.pwm_servo_set_position(0.5, positions)
+        # 设置舵机位置
+        self.board.pwm_servo_set_position(1, positions)
         self.get_logger().info(f"Set PWM servo positions: {positions}")
 
 def main(args=None):
