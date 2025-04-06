@@ -45,12 +45,12 @@ class YoloDetectNode(Node):
                 label = f"{self.model.names[class_id]} {confidence:.2f}"
 
                 # 如果检测到的是塑料瓶，发布其位置
-                if self.model.names[class_id] == "plastic_bottle":
+                if self.model.names[class_id] == "PET Bottle":
                     detected_point = PointStamped()
                     detected_point.header.frame_id = "camera_frame"
                     detected_point.point.x = (x1 + x2) / 2
                     detected_point.point.y = (y1 + y2) / 2
-                    detected_point.point.z = 0.0  # 假设在平面上
+                    detected_point.point.z = 0.0  
                     self.publisher.publish(detected_point)
                     self.get_logger().info(f"Detected plastic bottle at: {detected_point.point}")
 
