@@ -14,7 +14,12 @@ setup(
             'config/model/yolo11.pt',
         ])
     ],
-    install_requires=['setuptools'],
+    install_requires=[
+        'setuptools',
+        'opencv-python',
+        'ultralytics',
+        'cv_bridge',
+        ],
     zip_safe=True,
     maintainer='macvmccw',
     maintainer_email='ooklibaioo@gmail.com',
