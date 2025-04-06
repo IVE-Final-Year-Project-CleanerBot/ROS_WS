@@ -46,10 +46,10 @@ def generate_launch_description():
             [camera_stream_dir, '/launch', '/camera_publisher.launch.py']),
     )
 
-    # 启动控制节点（twist_motor_control_node 和 pwm_servo_control_node）
-    control_nodes = launch.actions.IncludeLaunchDescription(
+    # 启动Driver节点
+    driver_nodes = launch.actions.IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            [driver_ros2_dir, '/launch', '/control_nodes.launch.py']),
+            [driver_ros2_dir, '/launch', '/driver.launch.py']),
     )
     
     return launch.LaunchDescription([
@@ -58,5 +58,5 @@ def generate_launch_description():
         # map2odomtf,
         lidar_delay,
         camera_publisher,
-        control_nodes,
+        driver_nodes,
     ])
