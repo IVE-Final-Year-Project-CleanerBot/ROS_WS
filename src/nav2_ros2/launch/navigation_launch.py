@@ -19,8 +19,8 @@ def generate_launch_description():
     map_yaml_path = LaunchConfiguration('map', default=os.path.join(my_nav2_dir, 'maps', 'my_home.yaml'))
     nav2_param_path = LaunchConfiguration('params_file', default=os.path.join(my_nav2_dir, 'config', 'nav2_params.yaml'))
     
-    angle_min = LaunchConfiguration('angle_min', default='-1.57')  # 默认 -90°
-    angle_max = LaunchConfiguration('angle_max', default='1.57')   # 默认 90°
+    # angle_min = LaunchConfiguration('angle_min', default='-1.57')  # 默认 -90°
+    # angle_max = LaunchConfiguration('angle_max', default='1.57')   # 默认 90°
 
     bringup_launch = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
@@ -30,8 +30,8 @@ def generate_launch_description():
             'map': map_yaml_path,
             'use_sim_time': use_sim_time,
             'params_file': nav2_param_path,
-            'angle_min': angle_min,  # 传递 angle_min
-            'angle_max': angle_max   # 传递 angle_max
+            # 'angle_min': angle_min,  # 传递 angle_min
+            # 'angle_max': angle_max   # 传递 angle_max
         }.items(),
     )
 
@@ -57,16 +57,16 @@ def generate_launch_description():
             'params_file',
             default_value=nav2_param_path,
             description='Full path to param file to load'),
-        DeclareLaunchArgument(
-            'angle_min',
-            default_value='-1.57',
-            description='Minimum angle for laser scan (in radians)'
-        ),
-        DeclareLaunchArgument(
-            'angle_max',
-            default_value='1.57',
-            description='Maximum angle for laser scan (in radians)'
-        ),
+        # DeclareLaunchArgument(
+        #     'angle_min',
+        #     default_value='-1.57',
+        #     description='Minimum angle for laser scan (in radians)'
+        # ),
+        # DeclareLaunchArgument(
+        #     'angle_max',
+        #     default_value='1.57',
+        #     description='Maximum angle for laser scan (in radians)'
+        # ),
         bringup_launch,
         rviz2_launch,
     ])
