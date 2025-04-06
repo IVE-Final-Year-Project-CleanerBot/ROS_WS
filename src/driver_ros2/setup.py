@@ -12,8 +12,6 @@ setup(
         ('share/' + package_name, ['package.xml']),
         ('share/' + package_name + '/launch', [
             'launch/driver.launch.py',
-            'launch/control_nodes.launch.py',
-            'launch/status_nodes.launch.py',
         ]),
     ],
     install_requires=['setuptools'],
