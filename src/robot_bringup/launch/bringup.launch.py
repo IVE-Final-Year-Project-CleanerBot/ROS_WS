@@ -10,6 +10,7 @@ def generate_launch_description():
         'sllidar_ros2')
     camera_stream_dir = get_package_share_directory(
         'camera_stream')
+    driver_ros2_dir = get_package_share_directory('driver_ros2')
 
     # 启动 URDF 转换
     urdf2tf = launch.actions.IncludeLaunchDescription(
@@ -44,6 +45,12 @@ def generate_launch_description():
         PythonLaunchDescriptionSource(
             [camera_stream_dir, '/launch', '/camera_publisher.launch.py']),
     )
+
+    # 启动控制节点（twist_motor_control_node 和 pwm_servo_control_node）
+    control_nodes = launch.actions.IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            [driver_ros2_dir, '/launch', '/control_nodes.launch.py']),
+    )
     
     return launch.LaunchDescription([
         urdf2tf,
@@ -51,4 +58,5 @@ def generate_launch_description():
         # map2odomtf,
         lidar_delay,
         camera_publisher,
+        control_nodes,
     ])
