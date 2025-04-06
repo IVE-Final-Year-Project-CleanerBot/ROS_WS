@@ -51,9 +51,9 @@ class ServoController:
         """移动机械臂到拾取位置"""
         positions = [
             [1, self.angle_to_pulse_width(90)],  # 舵机 1 设置为 90°
-            [2, self.angle_to_pulse_width(145)], # 舵机 2 设置为 120°
-            [3, self.angle_to_pulse_width(145)], # 舵机 3 设置为 100°
-            [4, self.angle_to_pulse_width(90)],  # 舵机 4 设置为 85°
+            [2, self.angle_to_pulse_width(155)], # 舵机 2 设置为 120°
+            [3, self.angle_to_pulse_width(155)], # 舵机 3 设置为 100°
+            [4, self.angle_to_pulse_width(80)],  # 舵机 4 设置为 85°
             [5, self.angle_to_pulse_width(90)],  # 舵机 5 设置为 45°（夹爪）
         ]
         self.board.pwm_servo_set_position(1, positions)
