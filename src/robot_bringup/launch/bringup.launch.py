@@ -8,12 +8,16 @@ def generate_launch_description():
         'robot_bringup')
     lidar_ros2_dir = get_package_share_directory(
         'sllidar_ros2')
+    camera_stream_dir = get_package_share_directory(
+        'camera_stream')
 
+    # 启动 URDF 转换
     urdf2tf = launch.actions.IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             [bot_bringup_dir, '/launch', '/urdf2tf.launch.py']),
     )
 
+    # 启动里程计到 TF 的转换
     odom2tf = launch_ros.actions.Node(
         package='robot_bringup',
         executable='odom2tf',
@@ -26,6 +30,7 @@ def generate_launch_description():
     #     output='screen'
     # )
 
+    # 启动激光雷达
     lidar = launch.actions.IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             [lidar_ros2_dir, '/launch', '/sllidar_c1_launch.py']),
@@ -33,10 +38,17 @@ def generate_launch_description():
 
     # 使用 TimerAction 启动后 5 秒执行 lidar 节点
     lidar_delay = launch.actions.TimerAction(period=5.0, actions=[lidar])
+
+    # 启动摄像头发布节点
+    camera_publisher = launch.actions.IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            [camera_stream_dir, '/launch', '/camera_publisher.launch.py']),
+    )
     
     return launch.LaunchDescription([
         urdf2tf,
         odom2tf,
         # map2odomtf,
-        lidar_delay
+        lidar_delay,
+        camera_publisher,
     ])
