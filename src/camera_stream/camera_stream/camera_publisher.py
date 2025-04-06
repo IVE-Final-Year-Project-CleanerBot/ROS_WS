@@ -38,7 +38,8 @@ def main(args=None):
         pass
     finally:
         node.destroy_node()
-        rclpy.shutdown()
+        if rclpy.ok():  # 确保 rclpy 仍然处于运行状态
+            rclpy.shutdown()
 
 if __name__ == '__main__':
     main()
