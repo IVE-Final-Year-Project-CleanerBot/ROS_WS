@@ -8,7 +8,7 @@ def generate_launch_description():
 
     driver_node = Node(
         package='driver_ros2',
-        executable='driver',
+        executable='driver_node',
         name='driver_node',
         parameters=[{'use_sim_time': use_sim_time}],
         output='screen',
