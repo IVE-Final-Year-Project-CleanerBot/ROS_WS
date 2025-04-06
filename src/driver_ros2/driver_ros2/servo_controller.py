@@ -1,4 +1,5 @@
 from std_msgs.msg import Int32MultiArray, String
+import time
 
 class ServoController:
     def __init__(self, node, board):
@@ -51,14 +52,14 @@ class ServoController:
         """移动机械臂到拾取位置"""
         positions = [
             [1, self.angle_to_pulse_width(90)],  # 舵机 1 设置为 90°
-            [2, self.angle_to_pulse_width(120)], # 舵机 2 设置为 120°
+            [2, self.angle_to_pulse_width(130)], # 舵机 2 设置为 120°
             [3, self.angle_to_pulse_width(100)], # 舵机 3 设置为 100°
             [4, self.angle_to_pulse_width(45)],  # 舵机 4 设置为 85°
             [5, self.angle_to_pulse_width(90)],  # 舵机 5 设置为 45°（夹爪）
         ]
         self.board.pwm_servo_set_position(1, positions)
         self.node.get_logger().info("Moved arm to pick position.")
-
+        time.sleep(1)  # 等待舵机到达位置
         self.close_gripper()
 
     def move_to_place_position(self):
@@ -72,7 +73,7 @@ class ServoController:
         ]
         self.board.pwm_servo_set_position(1, positions)
         self.node.get_logger().info("Moved arm to place position.")
-
+        time.sleep(1)
         self.open_gripper()
 
     def reset_arm_position(self):
