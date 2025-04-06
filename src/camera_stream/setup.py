@@ -18,7 +18,7 @@ setup(
     maintainer_email='ooklibaioo@gmail.com',
     description='TODO: Package description',
     license='TODO: License declaration',
-    tests_require=['pytest'],
+    # tests_require=['pytest'],
     entry_points={
         'console_scripts': [
             'camera_publisher = camera_stream.camera_publisher:main',
