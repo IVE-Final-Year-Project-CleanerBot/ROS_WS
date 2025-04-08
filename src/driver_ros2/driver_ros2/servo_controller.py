@@ -57,14 +57,11 @@ class ServoController:
             [4, self.angle_to_pulse_width(35)],  
             [5, self.angle_to_pulse_width(135)], 
         ]
-        self.board.pwm_servo_set_position(1, positions)
+        self.board.pwm_servo_set_position(2, positions)
         self.node.get_logger().info("Moved arm to pick position.")
-        time.sleep(1)  # 等待舵机到达位置
-        positions = [
-            [5, self.angle_to_pulse_width(180)]  
-        ]
-        self.board.pwm_servo_set_position(1, positions)
-        time.sleep(1)  # 等待夹爪闭合
+        time.sleep(2)  # 等待舵机到达位置
+        self.close_gripper()  # 关闭夹爪以夹取物体
+        time.sleep(2)  # 等待夹爪闭合
 
     def move_to_place_position(self):
         """移动机械臂到放置位置"""
@@ -74,14 +71,11 @@ class ServoController:
             [3, self.angle_to_pulse_width(95)], 
             [4, self.angle_to_pulse_width(35)], 
         ]
-        self.board.pwm_servo_set_position(1, positions)
+        self.board.pwm_servo_set_position(2, positions)
         self.node.get_logger().info("Moved arm to place position.")
-        time.sleep(1)
-        positions = [
-            [5, self.angle_to_pulse_width(90)]
-        ]
-        self.board.pwm_servo_set_position(1, positions)
-        time.sleep(1)
+        time.sleep(2)
+        self.open_gripper()  # 打开夹爪以释放物体
+        time.sleep(2)
 
     def reset_arm_position(self):
         """重置机械臂到初始位置"""
@@ -92,8 +86,24 @@ class ServoController:
             [4, self.angle_to_pulse_width(45)], 
             [5, self.angle_to_pulse_width(180)], 
         ]
-        self.board.pwm_servo_set_position(1, positions)
+        self.board.pwm_servo_set_position(2, positions)
         self.node.get_logger().info("Reset arm to initial position.")
+
+    def close_gripper(self):
+        """关闭夹爪以夹取物体"""
+        gripper_position = [
+            [5, self.angle_to_pulse_width(180)]  # 舵机 5 设置为 45°（夹爪闭合）
+        ]
+        self.board.pwm_servo_set_position(2, gripper_position)
+        self.node.get_logger().info("Gripper closed to pick up the object.")
+
+    def open_gripper(self):
+        """打开夹爪以释放物体"""
+        gripper_position = [
+            [5, self.angle_to_pulse_width(90)]  # 舵机 5 设置为 90°（夹爪打开）
+        ]
+        self.board.pwm_servo_set_position(2, gripper_position)
+        self.node.get_logger().info("Gripper opened to release the object.")
 
     def angle_to_pulse_width(self, angle):
         """将角度转换为舵机的脉宽值"""
