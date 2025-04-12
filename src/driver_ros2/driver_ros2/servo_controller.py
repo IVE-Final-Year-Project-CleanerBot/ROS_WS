@@ -53,7 +53,7 @@ class ServoController:
         positions = [
             [1, self.angle_to_pulse_width(90)],  
             [2, self.angle_to_pulse_width(140)], 
-            [3, self.angle_to_pulse_width(75)], 
+            [3, self.angle_to_pulse_width(80)], 
             [4, self.angle_to_pulse_width(45)] 
         ]
         self.board.pwm_servo_set_position(2, positions)
