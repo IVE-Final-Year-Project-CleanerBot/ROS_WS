@@ -101,6 +101,10 @@ class YoloDetectNode(Node):
                     # 判断中心点是否在镜头中间
                     if abs(bbox_center_x - image_width / 2) <= self.x_tolerance and bbox_center_y >= image_height * self.y_threshold_factor:
                         self.get_logger().info("Bottle is in position, picking up...")
+                        # 停止机器人移动
+                        self.stop_robot()
+
+                        # 执行机械臂拾取动作
                         self.pick_up_bottle()
                     else:
                         # 控制机器人移动到瓶子面前
@@ -115,6 +119,14 @@ class YoloDetectNode(Node):
         if cv2.waitKey(1) & 0xFF == ord('q'):
             rclpy.shutdown()
 
+    def stop_robot(self):
+        """停止机器人移动"""
+        twist = Twist()
+        twist.linear.x = 0.0
+        twist.angular.z = 0.0
+        self.cmd_vel_publisher.publish(twist)
+        self.get_logger().info("Robot stopped.")
+
     def stop_robot_and_reset_arm(self):
         """停止机器人并重置机械臂"""
         twist = Twist()
@@ -128,6 +140,7 @@ class YoloDetectNode(Node):
         """控制机械臂拾取瓶子"""
         self.arm_command_publisher.publish(String(data="move_to_pick"))
         self.get_logger().info("Sent pick-up command to the arm.")
+
 
 
 def main(args=None):
