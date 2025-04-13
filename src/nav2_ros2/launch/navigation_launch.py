@@ -44,13 +44,15 @@ def generate_launch_description():
         output='screen',
         parameters=[
             {'use_sim_time': use_sim_time},
-            {'--bt_xml_file', behavior_tree_file},
+            {'bt_xml_file': behavior_tree_file},  # 修正参数名
             {'plugin_lib_names': [
-            'check_for_bottles_bt_node',
-            'control_arm_bt_node',
-            'stop_navigation_bt_node',
-            'approach_object_bt_node',
-            'resume_navigation_bt_node'
+                'nav2_compute_path_to_pose_action_bt_node',
+                'nav2_follow_path_action_bt_node',
+                'nav2_recovery_node_bt_node',
+                'nav2_spin_action_bt_node',
+                'nav2_wait_action_bt_node',
+                'nav2_clear_costmap_service_bt_node',
+                'behavior_tree_nodes'  # 注册自定义插件库
             ]}
         ],
     )

@@ -5,6 +5,8 @@
 #include <rclcpp/rclcpp.hpp>
 #include <std_msgs/msg/string.hpp>
 #include <std_srvs/srv/set_bool.hpp>
+#include "nav2_msgs/action/navigate_to_pose.hpp"
+#include "rclcpp_action/rclcpp_action.hpp"
 
 // 检测瓶子节点
 class CheckForBottles : public BT::ConditionNode {
