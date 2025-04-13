@@ -7,11 +7,15 @@ def generate_launch_description():
         Node(
             package='yolo_detect',
             executable='bottle_navigation_smach',
-            output='screen'
+            output='screen',
+            parameters=[{'use_sim_time': False}],
+            arguments=['--ros-args', '--log-level', 'error']  # 设置日志级别为 error
         ),
         Node(
             package='yolo_detect',
             executable='bottle_detector',
-            output='screen'
+            output='screen',
+            parameters=[{'use_sim_time': False}],
+            arguments=['--ros-args', '--log-level', 'error']  # 设置日志级别为 error
         )
     ])
