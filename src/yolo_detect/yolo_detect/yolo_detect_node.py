@@ -78,6 +78,10 @@ class YoloDetectNode(Node):
                 class_id = int(box.cls[0])
                 label = f"{self.model.names[class_id]} {confidence:.2f}"
 
+                # 绘制检测框
+                cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 255, 0), 2)  # 绿色边框
+                cv2.putText(frame, label, (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)  # 标签文字
+
                 # 如果检测到的是塑料瓶，发布其位置
                 if self.model.names[class_id] == "PET Bottle":
                     # 计算检测框的中心点
