@@ -4,7 +4,6 @@ from sensor_msgs.msg import Image
 from cv_bridge import CvBridge
 import cv2
 import multiprocessing as mp
-import numpy as np
 from multiprocessing import Queue, Event
 
 class CameraCapture(mp.Process):
@@ -24,8 +23,10 @@ class CameraCapture(mp.Process):
         while not self.stop_event.is_set():
             ret, frame = cap.read()
             if ret:
-                # 使用numpy数组提高传输效率
-                self.output_queue.put(frame.copy())
+                if not self.output_queue.full():
+                    self.output_queue.put(frame.copy())
+                else:
+                    print("Frame queue is full, dropping frame")
             else:
                 print("Capture process: Failed to read frame")
 
@@ -61,16 +62,19 @@ def publisher_process(input_queue, stop_event):
     rclpy.shutdown()
     print("Publisher process exited")
 
-if __name__ == '__main__':
-    # 进程间通信队列（设置最大缓存3帧）
+def main(args=None):
+    # 初始化 ROS 2
+    rclpy.init(args=args)
+
+    # 创建进程间通信队列和停止事件
     frame_queue = Queue(maxsize=3)
     stop_event = Event()
 
-    # 启动采集进程
+    # 启动摄像头捕获进程
     capture_proc = CameraCapture(frame_queue, stop_event)
     capture_proc.start()
 
-    # 启动发布进程
+    # 启动图像发布进程
     publisher_proc = mp.Process(
         target=publisher_process,
         args=(frame_queue, stop_event)
@@ -83,8 +87,8 @@ if __name__ == '__main__':
     except KeyboardInterrupt:
         print("\nShutting down...")
         stop_event.set()
-        
-        # 清空队列保证快速退出
+
+        # 清空队列以确保快速退出
         while not frame_queue.empty():
             frame_queue.get()
 
@@ -92,3 +96,6 @@ if __name__ == '__main__':
         publisher_proc.join(timeout=1.0)
 
     print("Main process exited")
+
+if __name__ == '__main__':
+    main()
