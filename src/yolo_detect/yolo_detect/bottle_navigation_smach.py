@@ -5,13 +5,15 @@ from smach import StateMachine, State
 from smach_ros import IntrospectionServer
 from geometry_msgs.msg import Twist
 from std_msgs.msg import String, Float32MultiArray
-import time  # 导入 time 模块
+from rclpy.action import ActionClient
+from nav2_msgs.action import NavigateToPose
 
 class WanderState(State):
     def __init__(self, node):
         State.__init__(self, outcomes=['bottle_detected'])
         self.node = node
         self.cmd_vel_publisher = self.node.create_publisher(Twist, '/cmd_vel', 10)
+        self.nav_cancel_client = ActionClient(node, NavigateToPose, 'navigate_to_pose')  # Nav2 目标取消客户端
         self.bottle_detected = False
 
         # 订阅瓶子检测状态
@@ -40,15 +42,30 @@ class WanderState(State):
                 self.pause_navigation()
                 return 'bottle_detected'
 
-            # 使用 time.sleep 进行睡眠
-            time.sleep(0.1)
+            # 使用 rclpy.spin_once 代替 time.sleep
+            rclpy.spin_once(self.node, timeout_sec=0.1)
 
     def pause_navigation(self):
         """暂停导航"""
+        # 取消当前导航目标
+        self.node.get_logger().info("Cancelling Nav2 goal...")
+        if not self.nav_cancel_client.wait_for_server(timeout_sec=5.0):
+            self.node.get_logger().error("Nav2 action server not available!")
+            return
+
+        # 发送取消请求
+        cancel_future = self.nav_cancel_client.cancel_all_goals()
+        rclpy.spin_until_future_complete(self.node, cancel_future)
+        if cancel_future.result():
+            self.node.get_logger().info("Nav2 goal cancelled successfully.")
+        else:
+            self.node.get_logger().error("Failed to cancel Nav2 goal.")
+
+        # 停止机器人
         twist = Twist()
         twist.linear.x = 0.0
         twist.angular.z = 0.0
-        self.cmd_vel_publisher.publish(twist)  # 发布零速度停止机器人
+        self.cmd_vel_publisher.publish(twist)
 
 class PickupState(State):
     def __init__(self, node):
@@ -104,13 +121,13 @@ class PickupState(State):
                 self.cmd_vel_publisher.publish(twist)
                 self.node.get_logger().info("Bottle is in position, picking up...")
                 self.arm_command_publisher.publish(String(data="move_to_pick"))
-                time.sleep(2.0)  # 使用 time.sleep 代替 Duration
+                rclpy.spin_once(self.node, timeout_sec=2.0)  # 等待拾取完成
                 self.resume_navigation()  # 恢复导航
                 return 'done'
 
             # 发布速度指令
             self.cmd_vel_publisher.publish(twist)
-            time.sleep(0.1)  # 使用 time.sleep 代替 Duration
+            rclpy.spin_once(self.node, timeout_sec=0.1)
 
     def resume_navigation(self):
         """恢复导航"""
