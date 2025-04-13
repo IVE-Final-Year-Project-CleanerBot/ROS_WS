@@ -1,5 +1,6 @@
 #include <behaviortree_cpp_v3/bt_factory.h>
 #include <rclcpp/rclcpp.hpp>
+#include <ament_index_cpp/get_package_share_directory.hpp>
 #include "behavior_tree/behavior_tree_nodes.hpp"
 
 int main(int argc, char** argv) {
