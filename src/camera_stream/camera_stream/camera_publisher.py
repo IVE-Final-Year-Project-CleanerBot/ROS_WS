@@ -8,7 +8,7 @@ class CameraPublisher(Node):
     def __init__(self):
         super().__init__('camera_publisher')
         self.publisher_ = self.create_publisher(Image, '/camera/image_raw', 10)
-        self.timer = self.create_timer(0.1, self.timer_callback)  # 10 Hz
+        self.timer = self.create_timer(0.05, self.timer_callback)
         self.cap = cv2.VideoCapture(0)  # 打开 USB 摄像头
         self.bridge = CvBridge()
 
