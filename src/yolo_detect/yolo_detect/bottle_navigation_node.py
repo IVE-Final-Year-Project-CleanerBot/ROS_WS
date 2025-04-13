@@ -157,7 +157,7 @@ class YoloDetectNode(Node):
             return
     
         # 获取当前目标的句柄
-        goal_handle_future = self.nav_cancel_client._get_result()
+        goal_handle_future = self.nav_cancel_client.send_goal_async(NavigateToPose.Goal())
         rclpy.spin_until_future_complete(self, goal_handle_future)
     
         if goal_handle_future.result() is not None:
