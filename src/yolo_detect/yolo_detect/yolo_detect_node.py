@@ -34,7 +34,34 @@ class YoloDetectNode(Node):
             10
         )
 
+        # 可调整参数
+        self.x_tolerance = 50  # 中心点 x 的容忍范围（像素）
+        self.y_threshold_factor = 2 / 3  # 中心点 y 的阈值比例（图像高度的 2/3）
+        self.linear_speed = 0.1  # 线速度
+        self.angular_speed_factor = -0.002  # 角速度调整因子
+
         self.get_logger().info("YoloDetectNode has been started.")
+
+    def drive_to_target(self, bbox_center_x, image_width, bbox_center_y, image_height):
+        """根据目标位置控制机器人移动"""
+        twist = Twist()
+
+        # 计算 y 阈值
+        y_threshold = image_height * self.y_threshold_factor
+
+        if bbox_center_y < y_threshold:  # 如果中心点 y 小于阈值，向前移动
+            twist.linear.x = self.linear_speed
+
+            # 只有当 y 小于阈值时才调整角速度
+            offset_x = bbox_center_x - (image_width / 2)
+            twist.angular.z = self.angular_speed_factor * offset_x  # 调整旋转速度
+        else:
+            twist.linear.x = 0.0  # 停止移动
+            twist.angular.z = 0.0  # 停止旋转
+
+        # 发布速度指令
+        self.cmd_vel_publisher.publish(twist)
+        self.get_logger().info(f"Driving to target: linear.x={twist.linear.x}, angular.z={twist.angular.z}")
 
     def listener_callback(self, msg):
         # 将 ROS 图像消息转换为 OpenCV 图像
@@ -72,10 +99,7 @@ class YoloDetectNode(Node):
                     self.get_logger().info(f"Center Y: {bbox_center_y}")
 
                     # 判断中心点是否在镜头中间
-                    x_tolerance = 50  # 中心点 x 的容忍范围（像素）
-                    y_threshold = image_height * 1 / 2  # 中心点 y 的阈值（图像高度的 2/3）
-
-                    if abs(bbox_center_x - image_width / 2) <= x_tolerance and bbox_center_y >= y_threshold:
+                    if abs(bbox_center_x - image_width / 2) <= self.x_tolerance and bbox_center_y >= image_height * self.y_threshold_factor:
                         self.get_logger().info("Bottle is in position, picking up...")
                         self.pick_up_bottle()
                     else:
@@ -93,46 +117,15 @@ class YoloDetectNode(Node):
 
     def stop_robot_and_reset_arm(self):
         """停止机器人并重置机械臂"""
-        # 停止机器人移动
         twist = Twist()
         twist.linear.x = 0.0
         twist.angular.z = 0.0
         self.cmd_vel_publisher.publish(twist)
-        # self.get_logger().info("Robot stopped due to no detection.")
 
-        # 重置机械臂
         self.arm_command_publisher.publish(String(data="reset"))
-        # self.get_logger().info("Arm reset command sent.")
-
-    def drive_to_target(self, bbox_center_x, image_width, bbox_center_y, image_height):
-        """根据目标位置控制机器人移动"""
-        twist = Twist()
-
-        # 计算水平偏移量
-        offset_x = bbox_center_x - (image_width / 2)
-
-        # 根据偏移量调整机器人角速度
-        twist.angular.z = -0.002 * offset_x  # 调整旋转速度，负号表示方向
-
-        # 根据中心点 y 值调整机器人线速度
-        y_threshold = image_height * 2 / 3  # 中心点 y 的阈值（图像高度的 2/3）
-        if bbox_center_y < y_threshold:  # 如果中心点 y 小于阈值，向前移动
-            twist.linear.x = 0.1
-
-            # 只有当 y 小于阈值时才调整角速度
-            offset_x = bbox_center_x - (image_width / 2)
-            twist.angular.z = -0.002 * offset_x  # 调整旋转速度，负号表示方向
-        else:
-            twist.linear.x = 0.0  # 停止移动
-            twist.angular.z = 0.0  # 停止旋转
-
-        # 发布速度指令
-        self.cmd_vel_publisher.publish(twist)
-        self.get_logger().info(f"Driving to target: linear.x={twist.linear.x}, angular.z={twist.angular.z}")
 
     def pick_up_bottle(self):
         """控制机械臂拾取瓶子"""
-        # 发布拾取指令
         self.arm_command_publisher.publish(String(data="move_to_pick"))
         self.get_logger().info("Sent pick-up command to the arm.")
 
