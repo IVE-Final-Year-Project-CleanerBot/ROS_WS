@@ -1,55 +1,37 @@
 #include "behavior_tree/behavior_tree_nodes.hpp"
 
 // 检测瓶子节点实现
-BT::NodeStatus CheckForBottles::tick()
-{
-    auto request = std::make_shared<std_srvs::srv::SetBool::Request>();
-    request->data = true;
-
-    if (!client_->wait_for_service(std::chrono::seconds(1)))
-    {
-        RCLCPP_ERROR(node_->get_logger(), "Service not available");
-        return BT::NodeStatus::FAILURE;
-    }
-
-    auto result = client_->async_send_request(request);
-    if (rclcpp::spin_until_future_complete(node_, result) ==
-        rclcpp::FutureReturnCode::SUCCESS)
-    {
-        bool detected = result.get()->success;
-        setOutput("detected", detected);
-        return detected ? BT::NodeStatus::SUCCESS : BT::NodeStatus::FAILURE;
-    }
-
-    return BT::NodeStatus::FAILURE;
+BT::NodeStatus CheckForBottles::tick() {
+  RCLCPP_INFO(rclcpp::get_logger("CheckForBottles"), "Checking for bottles...");
+  return BT::NodeStatus::SUCCESS;
 }
 
 // 控制机械臂节点实现
-BT::NodeStatus ControlArm::tick()
-{
-    auto action = getInput<std::string>("action");
-    if (!action)
-    {
-        throw BT::RuntimeError("Missing required input [action]");
-    }
-
-    auto msg = std_msgs::msg::String();
-    msg.data = action.value();
-    publisher_->publish(msg);
-
-    RCLCPP_INFO(node_->get_logger(), "Sent arm command: %s", action.value().c_str());
-    return BT::NodeStatus::SUCCESS;
+BT::NodeStatus ControlArm::tick() {
+  RCLCPP_INFO(rclcpp::get_logger("ControlArm"), "Controlling arm...");
+  return BT::NodeStatus::SUCCESS;
 }
 
-BT::NodeStatus NavigateToPose::tick()
-{
-    auto goal = getInput<std::string>("goal");
-    if (!goal)
-    {
-        throw BT::RuntimeError("Missing required input [goal]");
-    }
+// 导航到目标点节点实现
+BT::NodeStatus NavigateToPose::tick() {
+  RCLCPP_INFO(rclcpp::get_logger("NavigateToPose"), "Navigating to pose...");
+  return BT::NodeStatus::SUCCESS;
+}
 
-    RCLCPP_INFO(rclcpp::get_logger("NavigateToPose"), "Navigating to goal: %s", goal.value().c_str());
-    // TODO: 调用导航功能
-    return BT::NodeStatus::SUCCESS;
+// 停止导航节点实现
+BT::NodeStatus StopNavigation::tick() {
+  RCLCPP_INFO(rclcpp::get_logger("StopNavigation"), "Stopping navigation...");
+  return BT::NodeStatus::SUCCESS;
+}
+
+// 视觉伺服对准节点实现
+BT::NodeStatus ApproachObject::tick() {
+  RCLCPP_INFO(rclcpp::get_logger("ApproachObject"), "Approaching object...");
+  return BT::NodeStatus::SUCCESS;
+}
+
+// 恢复导航节点实现
+BT::NodeStatus ResumeNavigation::tick() {
+  RCLCPP_INFO(rclcpp::get_logger("ResumeNavigation"), "Resuming navigation...");
+  return BT::NodeStatus::SUCCESS;
 }
