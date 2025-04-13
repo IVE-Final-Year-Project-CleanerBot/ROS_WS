@@ -53,12 +53,12 @@ class YoloDetectNode(Node):
             twist.linear.x = self.linear_speed
 
             # 只有当 y 小于阈值时才调整角速度
-            offset_x = bbox_center_x - (image_width / 2)
-            twist.angular.z = self.angular_speed_factor * offset_x  # 调整旋转速度
+            # offset_x = bbox_center_x - (image_width / 2)
+            # twist.angular.z = self.angular_speed_factor * offset_x  # 调整旋转速度
         else:
             twist.linear.x = 0.0  # 停止移动
             # twist.angular.z = 0.0  # 停止旋转
-            
+
         offset_x = bbox_center_x - (image_width / 2)
         twist.angular.z = self.angular_speed_factor * offset_x  # 调整旋转速度
 
