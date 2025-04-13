@@ -23,7 +23,7 @@ class YoloDetectNode(Node):
         # 初始化 YOLO 模型
         package_dir = get_package_share_directory("yolo_detect")
         model_file = os.path.join(package_dir, "config", "model", "yolo11.pt")
-        self.model = YOLO(model_file)
+        self.model = YOLO(model_file, verbose=False)  # 加载 YOLO 模型
 
         # 初始化图像处理
         self.bridge = CvBridge()
@@ -86,9 +86,9 @@ class YoloDetectNode(Node):
             self.stop_robot_and_reset_arm()
 
         # 显示检测结果
-        # cv2.imshow("YOLO Detection", frame)
-        # if cv2.waitKey(1) & 0xFF == ord('q'):
-        #     rclpy.shutdown()
+        cv2.imshow("YOLO Detection", frame)
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            rclpy.shutdown()
 
     def stop_robot_and_reset_arm(self):
         """停止机器人并重置机械臂"""
@@ -97,11 +97,11 @@ class YoloDetectNode(Node):
         twist.linear.x = 0.0
         twist.angular.z = 0.0
         self.cmd_vel_publisher.publish(twist)
-        self.get_logger().info("Robot stopped due to no detection.")
+        # self.get_logger().info("Robot stopped due to no detection.")
 
         # 重置机械臂
         self.arm_command_publisher.publish(String(data="reset"))
-        self.get_logger().info("Arm reset command sent.")
+        # self.get_logger().info("Arm reset command sent.")
 
     def drive_to_target(self, bbox_center_x, image_width, distance):
         """根据目标位置控制机器人移动"""
