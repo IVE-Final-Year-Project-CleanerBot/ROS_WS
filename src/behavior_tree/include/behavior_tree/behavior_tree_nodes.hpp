@@ -7,15 +7,18 @@
 #include <std_srvs/srv/set_bool.hpp>
 
 // 检测瓶子节点
-class CheckForBottles : public BT::ConditionNode {
+class CheckForBottles : public BT::ConditionNode
+{
 public:
-  CheckForBottles(const std::string& name, const BT::NodeConfiguration& config)
-    : ConditionNode(name, config) {
+  CheckForBottles(const std::string &name, const BT::NodeConfiguration &config)
+      : ConditionNode(name, config)
+  {
     node_ = rclcpp::Node::make_shared("check_for_bottles_node");
     client_ = node_->create_client<std_srvs::srv::SetBool>("/detection_status");
   }
 
-  static BT::PortsList providedPorts() {
+  static BT::PortsList providedPorts()
+  {
     return {BT::OutputPort<bool>("detected")};
   }
 
@@ -27,15 +30,18 @@ private:
 };
 
 // 控制机械臂节点
-class ControlArm : public BT::SyncActionNode {
+class ControlArm : public BT::SyncActionNode
+{
 public:
-  ControlArm(const std::string& name, const BT::NodeConfiguration& config)
-    : SyncActionNode(name, config) {
+  ControlArm(const std::string &name, const BT::NodeConfiguration &config)
+      : SyncActionNode(name, config)
+  {
     node_ = rclcpp::Node::make_shared("control_arm_node");
     publisher_ = node_->create_publisher<std_msgs::msg::String>("/arm_command", 10);
   }
 
-  static BT::PortsList providedPorts() {
+  static BT::PortsList providedPorts()
+  {
     return {BT::InputPort<std::string>("action")};
   }
 
@@ -44,6 +50,20 @@ public:
 private:
   rclcpp::Node::SharedPtr node_;
   rclcpp::Publisher<std_msgs::msg::String>::SharedPtr publisher_;
+};
+
+class NavigateToPose : public BT::SyncActionNode
+{
+public:
+  NavigateToPose(const std::string &name, const BT::NodeConfiguration &config)
+      : SyncActionNode(name, config) {}
+
+  static BT::PortsList providedPorts()
+  {
+    return {BT::InputPort<std::string>("goal")};
+  }
+
+  BT::NodeStatus tick() override;
 };
 
 #endif // BEHAVIOR_TREE_NODES_HPP

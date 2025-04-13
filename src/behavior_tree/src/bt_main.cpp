@@ -12,6 +12,7 @@ int main(int argc, char** argv) {
   // 注册自定义节点
   factory.registerNodeType<CheckForBottles>("CheckForBottles");
   factory.registerNodeType<ControlArm>("ControlArm");
+  factory.registerNodeType<NavigateToPose>("NavigateToPose"); 
 
   // 加载行为树 XML 文件
   std::string tree_file = ament_index_cpp::get_package_share_directory("behavior_tree") + "/config/recycle_bt.xml";
