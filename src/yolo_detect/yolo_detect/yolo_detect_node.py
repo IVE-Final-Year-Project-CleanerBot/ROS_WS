@@ -7,6 +7,8 @@ from cv_bridge import CvBridge
 import cv2
 from ultralytics import YOLO
 import os
+import math
+import sys
 
 class YoloDetectNode(Node):
     def __init__(self):
@@ -27,6 +29,25 @@ class YoloDetectNode(Node):
         self.publisher = self.create_publisher(PointStamped, '/detected_objects', 10)
 
         self.get_logger().info("YoloDetectNode has been started.")
+
+    def calculate_3d_position(self, bbox_center_x, bbox_height):
+        # 已知参数（需实际测量校准）
+        REAL_HEIGHT = 22.0  # 塑料瓶实际高度（厘米）
+        FOCAL_LENGTH = 720  # 摄像头焦距（像素）通过标定获得
+    
+        # 图像中心点（分辨率为 640 x 480）
+        image_center_x = 640 / 2  # 图像宽度的一半
+        # image_center_y = 480 / 2  # 如果需要计算 y 方向，可以使用
+    
+        # 距离计算公式：distance = (真实高度 × 焦距) / 检测框高度
+        distance = (REAL_HEIGHT * FOCAL_LENGTH) / bbox_height
+    
+        # 坐标系转换（假设摄像头水平安装）
+        angle = math.atan2(bbox_center_x - image_center_x, FOCAL_LENGTH)
+        x = distance * math.cos(angle)
+        y = distance * math.sin(angle)
+    
+        return x, y, distance
 
     def listener_callback(self, msg):
         # 将 ROS 图像消息转换为 OpenCV 图像
