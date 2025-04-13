@@ -40,13 +40,13 @@ class YoloDetectNode(Node):
         # 将 ROS 图像消息转换为 OpenCV 图像
         frame = self.bridge.imgmsg_to_cv2(msg, desired_encoding='bgr8')
         image_height, image_width, _ = frame.shape  # 获取图像分辨率
-    
+
         # 运行 YOLO 检测
         results = self.model(frame)
-    
+
         # 标志变量，用于判断是否检测到 "PET Bottle"
         detected_bottle = False
-    
+
         # 遍历检测结果并驱动机器人移动
         for result in results:
             boxes = result.boxes
@@ -55,38 +55,40 @@ class YoloDetectNode(Node):
                 confidence = box.conf[0]
                 class_id = int(box.cls[0])
                 label = f"{self.model.names[class_id]} {confidence:.2f}"
-    
+
                 # 绘制检测框
                 cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 255, 0), 2)  # 绿色边框
                 cv2.putText(frame, label, (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)  # 标签文字
-    
+
                 # 如果检测到的是塑料瓶
                 if self.model.names[class_id] == "PET Bottle":
                     detected_bottle = True  # 标记为检测到瓶子
-    
+
                     # 计算检测框的中心点
                     bbox_center_x = (x1 + x2) / 2
                     bbox_center_y = (y1 + y2) / 2
-    
+                    # 输出中心点的 y 值
+                    self.get_logger().info(f"Center Y: {bbox_center_y}")
+
                     # 判断中心点是否在镜头中间
                     x_tolerance = 50  # 中心点 x 的容忍范围（像素）
                     y_threshold = image_height * 2 / 3  # 中心点 y 的阈值（图像高度的 2/3）
-    
+
                     if abs(bbox_center_x - image_width / 2) <= x_tolerance and bbox_center_y >= y_threshold:
                         self.get_logger().info("Bottle is in position, picking up...")
                         self.pick_up_bottle()
                     else:
                         # 控制机器人移动到瓶子面前
                         self.drive_to_target(bbox_center_x, image_width, 0)
-    
+
         # 如果没有检测到 "PET Bottle"，停止机器人并重置机械臂
         if not detected_bottle:
             self.stop_robot_and_reset_arm()
-    
+
         # 显示检测结果
-        cv2.imshow("YOLO Detection", frame)
-        if cv2.waitKey(1) & 0xFF == ord('q'):
-            rclpy.shutdown()
+        # cv2.imshow("YOLO Detection", frame)
+        # if cv2.waitKey(1) & 0xFF == ord('q'):
+        #     rclpy.shutdown()
 
     def stop_robot_and_reset_arm(self):
         """停止机器人并重置机械臂"""
