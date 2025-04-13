@@ -36,7 +36,7 @@ class YoloDetectNode(Node):
 
         # 可调整参数
         self.x_tolerance = 50  # 中心点 x 的容忍范围（像素）
-        self.y_threshold_factor = 1 / 2  # 中心点 y 的阈值比例（图像高度的 2/3）
+        self.y_threshold_factor = 1 / 2  # 中心点 y 的阈值比例（图像高度的 1/2）
         self.linear_speed = 0.1  # 线速度
         self.angular_speed_factor = -0.002  # 角速度调整因子
 
@@ -49,18 +49,20 @@ class YoloDetectNode(Node):
         # 计算 y 阈值
         y_threshold = image_height * self.y_threshold_factor
 
+        # 计算 x 偏移量
+        offset_x = bbox_center_x - (image_width / 2)
+
+        # 只有当 x 偏移量大于 x_tolerance 时才调整角速度
+        if abs(offset_x) > self.x_tolerance:
+            twist.angular.z = self.angular_speed_factor * offset_x  # 调整旋转速度
+        else:
+            twist.angular.z = 0.0  # 停止旋转
+
         if bbox_center_y < y_threshold:  # 如果中心点 y 小于阈值，向前移动
             twist.linear.x = self.linear_speed
-
-            # 只有当 y 小于阈值时才调整角速度
-            # offset_x = bbox_center_x - (image_width / 2)
-            # twist.angular.z = self.angular_speed_factor * offset_x  # 调整旋转速度
         else:
             twist.linear.x = 0.0  # 停止移动
-            # twist.angular.z = 0.0  # 停止旋转
-
-        offset_x = bbox_center_x - (image_width / 2)
-        twist.angular.z = self.angular_speed_factor * offset_x  # 调整旋转速度
+            twist.angular.z = 0.0  # 停止旋转
 
         # 发布速度指令
         self.cmd_vel_publisher.publish(twist)
@@ -98,8 +100,8 @@ class YoloDetectNode(Node):
                     bbox_center_x = (x1 + x2) / 2
                     bbox_center_y = (y1 + y2) / 2
 
-                    # 输出中心点的 y 值
-                    self.get_logger().info(f"Center Y: {bbox_center_y}")
+                    # 输出中心点的 x 和 y 值
+                    self.get_logger().info(f"Center X: {bbox_center_x}, Center Y: {bbox_center_y}")
 
                     # 判断中心点是否在镜头中间
                     if abs(bbox_center_x - image_width / 2) <= self.x_tolerance and bbox_center_y >= image_height * self.y_threshold_factor:
