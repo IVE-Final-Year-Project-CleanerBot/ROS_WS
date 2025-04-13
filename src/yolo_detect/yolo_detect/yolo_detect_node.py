@@ -36,7 +36,7 @@ class YoloDetectNode(Node):
 
         # 可调整参数
         self.x_tolerance = 50  # 中心点 x 的容忍范围（像素）
-        self.y_threshold_factor = 2 / 3  # 中心点 y 的阈值比例（图像高度的 2/3）
+        self.y_threshold_factor = 1 / 2  # 中心点 y 的阈值比例（图像高度的 2/3）
         self.linear_speed = 0.1  # 线速度
         self.angular_speed_factor = -0.002  # 角速度调整因子
 
