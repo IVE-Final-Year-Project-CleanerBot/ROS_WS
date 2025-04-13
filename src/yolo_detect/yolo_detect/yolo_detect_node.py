@@ -8,11 +8,17 @@ import rclpy
 from rclpy.node import Node
 import os
 import cv2
+from std_srvs.srv import SetBool
 
 
 class YoloDetectNode(Node):
     def __init__(self):
         super().__init__('yolo_detect_node')
+        # 添加检测状态服务
+        self.detection_service = self.create_service(
+            SetBool, '/detection_status',
+            self.detection_callback)
+        self.current_detection = False
 
         # 初始化电机控制发布器
         self.cmd_vel_publisher = self.create_publisher(Twist, '/cmd_vel', 10)
@@ -42,6 +48,11 @@ class YoloDetectNode(Node):
         self.angular_speed_factor = -0.005  # 动态角速度调整因子
 
         self.get_logger().info("YoloDetectNode has been started.")
+
+    def detection_callback(self, request, response):
+        self.current_detection = request.data
+        response.success = True
+        return response
 
     def drive_to_target(self, bbox_center_x, image_width, bbox_center_y, image_height):
         """根据目标位置控制机器人移动"""

@@ -100,6 +100,8 @@ bt_navigator:
       - nav2_assisted_teleop_cancel_bt_node
       - nav2_drive_on_heading_cancel_bt_node
       - nav2_is_battery_charging_condition_bt_node
+      - check_for_bottles_bt_node
+      - control_arm_bt_node
 
 bt_navigator_navigate_through_poses_rclcpp_node:
   ros__parameters:
