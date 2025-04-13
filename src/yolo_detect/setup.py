@@ -14,7 +14,7 @@ setup(
             'config/model/yolo11.pt',
         ]),
         ('share/' + package_name + '/launch', [
-            '/launch/navigation_launch.py',
+        'launch/navigation_launch.py',
         ]),
     ],
     install_requires=[
