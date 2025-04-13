@@ -39,14 +39,15 @@ class BottleDetector(Node):
 
 def main(args=None):
     rclpy.init(args=args)
+    detector = BottleDetector()
     try:
-        detector = BottleDetector()
         rclpy.spin(detector)
     except KeyboardInterrupt:
         pass
     finally:
-        detector.destroy_node()
-        rclpy.shutdown()
+        if rclpy.ok():  # 确保只调用一次 shutdown
+            detector.destroy_node()
+            rclpy.shutdown()
 
 if __name__ == '__main__':
     main()

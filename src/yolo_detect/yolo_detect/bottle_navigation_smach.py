@@ -5,7 +5,7 @@ from smach import StateMachine, State
 from smach_ros import IntrospectionServer
 from geometry_msgs.msg import Twist
 from std_msgs.msg import String
-from sensor_msgs.msg import Float32MultiArray
+from std_msgs.msg import Float32MultiArray
 
 class WanderState(State):
     def __init__(self, node):
