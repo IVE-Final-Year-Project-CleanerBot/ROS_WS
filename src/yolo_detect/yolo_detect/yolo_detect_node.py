@@ -10,6 +10,7 @@ import rclpy
 import os
 import math
 import sys
+import cv2
 
 class YoloDetectNode(Node):
     def __init__(self):
