@@ -2,72 +2,118 @@
 import rclpy
 from rclpy.node import Node
 from smach import StateMachine, State
-from smach_ros import IntrospectionServer  # 修改为 smach_ros
-from geometry_msgs.msg import PoseStamped
-from std_srvs.srv import Trigger
-from nav2_msgs.action import NavigateToPose
-from rclpy.action import ActionClient
+from smach_ros import IntrospectionServer
+from geometry_msgs.msg import Twist
 from std_msgs.msg import String
+from sensor_msgs.msg import Float32MultiArray
 
-# 定义全局变量存储目标点
-current_goal = None
-
-class NavigationState(State):
+class WanderState(State):
     def __init__(self, node):
-        State.__init__(self, outcomes=['bottle_detected', 'goal_reached'])
+        State.__init__(self, outcomes=['bottle_detected'])
         self.node = node
-        self.nav_client = ActionClient(node, NavigateToPose, 'navigate_to_pose')
+        self.cmd_vel_publisher = self.node.create_publisher(Twist, '/cmd_vel', 10)
         self.bottle_detected = False
 
-        # 订阅瓶子检测服务
+        # 订阅瓶子检测状态
         self.detection_sub = self.node.create_subscription(
-            String,
-            '/bottle_detection_status',
+            Float32MultiArray,
+            '/bottle_detection_data',
             self.detection_callback,
             10
         )
 
     def detection_callback(self, msg):
-        if msg.data == "detected":
+        # 如果检测到瓶子，保存检测数据
+        if len(msg.data) == 4:  # 确保接收到有效的检测框数据
             self.bottle_detected = True
+            self.bbox_data = msg.data
 
     def execute(self, userdata):
-        global current_goal
         self.bottle_detected = False
-        
-        # 发送导航目标
-        goal_msg = NavigateToPose.Goal()
-        goal_msg.pose = current_goal
-        self.nav_client.wait_for_server()
-        future = self.nav_client.send_goal_async(goal_msg)
-        rclpy.spin_until_future_complete(self.node, future)
-        goal_handle = future.result()
+        self.node.get_logger().info("Wandering...")
 
-        # 轮询检测状态
+        # 让 Nav2 控制机器人移动
         while rclpy.ok():
             if self.bottle_detected:
-                goal_handle.cancel_goal_async()
+                # 暂停导航
+                self.node.get_logger().info("Bottle detected, pausing navigation...")
+                self.pause_navigation()
                 return 'bottle_detected'
-            
-            if goal_handle.status == GoalStatus.STATUS_SUCCEEDED:
-                return 'goal_reached'
-            
+
             self.node.get_clock().sleep_for(0.1)
+
+    def pause_navigation(self):
+        """暂停导航"""
+        twist = Twist()
+        twist.linear.x = 0.0
+        twist.angular.z = 0.0
+        self.cmd_vel_publisher.publish(twist)  # 发布零速度停止机器人
 
 class PickupState(State):
     def __init__(self, node):
         State.__init__(self, outcomes=['done'])
         self.node = node
-        self.arm_client = ActionClient(node, ControlArm, 'control_arm')
+        self.cmd_vel_publisher = self.node.create_publisher(Twist, '/cmd_vel', 10)
+        self.arm_command_publisher = self.node.create_publisher(String, '/arm_command', 10)
+
+        # 可调整参数
+        self.x_tolerance = 50  # 中心点 x 的容忍范围（像素）
+        self.y_threshold_factor = 1.5 / 3  # 中心点 y 的阈值比例（图像高度的 1/2）
+        self.linear_speed = 0.1  # 线速度
+        self.fixed_angular_speed = 0.45  # 固定角速度
 
     def execute(self, userdata):
-        # 执行抓取动作
-        goal_msg = ControlArm.Goal()
-        goal_msg.action = "pick"
-        self.arm_client.wait_for_server()
-        future = self.arm_client.send_goal_async(goal_msg)
-        rclpy.spin_until_future_complete(self.node, future)
-        return 'done'
+        self.node.get_logger().info("Aligning with bottle and picking up...")
+
+        # 使用检测框数据对齐和靠近瓶子
+        while rclpy.ok():
+            # 从检测节点获取检测框数据
+            bbox_data = self.node.get_parameter_or('bbox_data', None)
+            if bbox_data is None:
+                self.node.get_logger().warn("No bounding box data received.")
+                return 'done'
+
+            x1, y1, x2, y2 = bbox_data
+            bbox_center_x = (x1 + x2) / 2
+            bbox_center_y = (y1 + y2) / 2
+            bbox_height = y2 - y1
+            image_width = 640
+            image_height = 480
+
+            # 计算偏移量
+            offset_x = bbox_center_x - (image_width / 2)
+            y_threshold = image_height * self.y_threshold_factor
+
+            twist = Twist()
+
+            # 阶段 1：水平对齐
+            if abs(offset_x) > self.x_tolerance:
+                twist.angular.z = self.fixed_angular_speed if offset_x < 0 else -self.fixed_angular_speed
+                twist.linear.x = 0.0
+                self.node.get_logger().info(f"Aligning X... Angular.z={twist.angular.z}")
+            # 阶段 2：向前移动
+            elif bbox_height < y_threshold:
+                twist.angular.z = 0.0
+                twist.linear.x = self.linear_speed
+                self.node.get_logger().info("Moving forward...")
+            # 阶段 3：执行拾取
+            else:
+                twist.angular.z = 0.0
+                twist.linear.x = 0.0
+                self.cmd_vel_publisher.publish(twist)
+                self.node.get_logger().info("Bottle is in position, picking up...")
+                self.arm_command_publisher.publish(String(data="move_to_pick"))
+                self.node.get_clock().sleep_for(2.0)  # 模拟拾取时间
+                self.resume_navigation()  # 恢复导航
+                return 'done'
+
+            # 发布速度指令
+            self.cmd_vel_publisher.publish(twist)
+            self.node.get_clock().sleep_for(0.1)
+
+    def resume_navigation(self):
+        """恢复导航"""
+        self.node.get_logger().info("Resuming navigation...")
 
 def main(args=None):
     rclpy.init(args=args)
@@ -75,17 +121,15 @@ def main(args=None):
 
     # 初始化状态机
     sm = StateMachine(outcomes=['finished'])
-    sm.userdata.goal = current_goal  # 从全局变量获取目标
 
     with sm:
-        StateMachine.add('NAVIGATE', 
-                        NavigationState(node),
-                        transitions={'bottle_detected': 'PICKUP',
-                                    'goal_reached': 'finished'})
+        StateMachine.add('WANDER', 
+                        WanderState(node),
+                        transitions={'bottle_detected': 'PICKUP'})
         
         StateMachine.add('PICKUP',
                         PickupState(node),
-                        transitions={'done': 'NAVIGATE'})
+                        transitions={'done': 'WANDER'})
 
     # 创建状态机调试器
     sis = IntrospectionServer('state_machine', sm, '/SM_ROOT')
