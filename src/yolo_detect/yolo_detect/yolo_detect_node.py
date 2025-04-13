@@ -52,17 +52,22 @@ class YoloDetectNode(Node):
         # 计算 x 偏移量
         offset_x = bbox_center_x - (image_width / 2)
 
-        # 只有当 x 偏移量大于 x_tolerance 时才调整角速度
+        # 阶段 1：水平对齐
         if abs(offset_x) > self.x_tolerance:
             twist.angular.z = self.angular_speed_factor * offset_x  # 调整旋转速度
-        else:
+            twist.linear.x = 0.0  # 停止向前移动
+            self.get_logger().info("Aligning X...")
+        # 阶段 2：向前移动
+        elif bbox_center_y < y_threshold:
             twist.angular.z = 0.0  # 停止旋转
-
-        if bbox_center_y < y_threshold:  # 如果中心点 y 小于阈值，向前移动
-            twist.linear.x = self.linear_speed
+            twist.linear.x = self.linear_speed  # 向前移动
+            self.get_logger().info("Moving forward...")
+        # 阶段 3：执行机械臂操作
         else:
-            twist.linear.x = 0.0  # 停止移动
-            twist.angular.z = 0.0  # 停止旋转
+            self.stop_robot()  # 停止机器人移动
+            self.get_logger().info("Bottle is in position, picking up...")
+            self.pick_up_bottle()
+            return  # 结束函数，避免重复发布速度指令
 
         # 发布速度指令
         self.cmd_vel_publisher.publish(twist)
