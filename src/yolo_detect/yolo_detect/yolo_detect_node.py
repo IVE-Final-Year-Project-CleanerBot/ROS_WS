@@ -60,27 +60,24 @@ class YoloDetectNode(Node):
                 cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 255, 0), 2)  # 绿色边框
                 cv2.putText(frame, label, (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)  # 标签文字
     
-                # 如果检测到的是塑料瓶，驱动机器人移动到瓶子面前
+                # 如果检测到的是塑料瓶
                 if self.model.names[class_id] == "PET Bottle":
                     detected_bottle = True  # 标记为检测到瓶子
     
                     # 计算检测框的中心点
                     bbox_center_x = (x1 + x2) / 2
-                    bbox_height = y2 - y1  # 检测框的高度
+                    bbox_center_y = (y1 + y2) / 2
     
-                    # 已知参数（需实际测量校准）
-                    REAL_HEIGHT = 22.0  # 塑料瓶实际高度（厘米）
-                    FOCAL_LENGTH = 720  # 摄像头焦距（像素），通过标定获得
+                    # 判断中心点是否在镜头中间
+                    x_tolerance = 50  # 中心点 x 的容忍范围（像素）
+                    y_threshold = image_height * 2 / 3  # 中心点 y 的阈值（图像高度的 2/3）
     
-                    # 估算深度信息
-                    distance = (REAL_HEIGHT * FOCAL_LENGTH) / bbox_height
-    
-                    # 控制机器人移动
-                    self.drive_to_target(bbox_center_x, image_width, distance)
-    
-                    # 如果距离小于一定阈值，控制机械臂拾取瓶子
-                    if distance <= 30:  # 距离阈值为 30 cm
+                    if abs(bbox_center_x - image_width / 2) <= x_tolerance and bbox_center_y >= y_threshold:
+                        self.get_logger().info("Bottle is in position, picking up...")
                         self.pick_up_bottle()
+                    else:
+                        # 控制机器人移动到瓶子面前
+                        self.drive_to_target(bbox_center_x, image_width, 0)
     
         # 如果没有检测到 "PET Bottle"，停止机器人并重置机械臂
         if not detected_bottle:
