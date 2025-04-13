@@ -12,6 +12,7 @@ find_package(behaviortree_cpp_v3 REQUIRED)
 find_package(std_msgs REQUIRED)
 find_package(std_srvs REQUIRED)
 find_package(geometry_msgs REQUIRED) 
+find_package(nav2_msgs REQUIRED)
 find_package(ament_index_cpp REQUIRED)
 
 if(BUILD_TESTING)
@@ -29,15 +30,14 @@ endif()
 include_directories(include)
 
 # 添加行为树节点库
-add_library(behavior_tree_nodes SHARED
-  src/behavior_tree_nodes.cpp
-)
+add_library(behavior_tree_nodes SHARED src/behavior_tree_nodes.cpp)
 ament_target_dependencies(behavior_tree_nodes
   behaviortree_cpp_v3
   rclcpp
   std_msgs
   std_srvs
   geometry_msgs
+  nav2_msgs # 添加这一行
   ament_index_cpp
 )
 
@@ -50,6 +50,7 @@ ament_target_dependencies(bt_main
   std_msgs
   std_srvs
   geometry_msgs
+  nav2_msgs # 添加这一行
   ament_index_cpp
 )
 
