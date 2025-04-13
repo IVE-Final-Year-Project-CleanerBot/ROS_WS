@@ -9,9 +9,8 @@ from rclpy.node import Node
 import os
 import cv2
 from nav2_msgs.action import NavigateToPose
-from rclpy.action import ActionClient
+from rclpy.action import ActionClient, GoalResponse
 from action_msgs.msg import GoalStatus
-from action_msgs.srv import GoalResponse
 
 
 class YoloDetectNode(Node):
