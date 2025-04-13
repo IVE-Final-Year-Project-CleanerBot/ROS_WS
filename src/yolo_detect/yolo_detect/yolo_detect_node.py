@@ -119,7 +119,21 @@ def main(args=None):
     except KeyboardInterrupt:
         pass
     finally:
+        # 停止机器人移动
+        twist = Twist()
+        twist.linear.x = 0.0
+        twist.angular.z = 0.0
+        node.cmd_vel_publisher.publish(twist)
+        node.get_logger().info("Robot stopped.")
+
+        # 重置机械臂
+        node.arm_command_publisher.publish(String(data="reset"))
+        node.get_logger().info("Arm reset command sent.")
+
+        # 关闭 OpenCV 窗口
         cv2.destroyAllWindows()
+
+        # 关闭 ROS2 节点
         rclpy.shutdown()
 
 if __name__ == '__main__':
