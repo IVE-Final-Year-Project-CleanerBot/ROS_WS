@@ -1,6 +1,9 @@
 <root main_tree_to_execute="MainTree">
   <BehaviorTree ID="MainTree">
     <Sequence>
+      <!-- 设置目标点 -->
+      <SetBlackboard output_key="target_pose" value="1.0,2.0,0.0"/>
+
       <!-- 导航到目标点 -->
       <NavigateToPose goal="{target_pose}"/>
 
