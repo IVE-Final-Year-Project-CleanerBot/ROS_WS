@@ -42,8 +42,7 @@ public:
 class NavigateToPose : public BT::SyncActionNode
 {
 public:
-  NavigateToPose(const std::string &name, const BT::NodeConfiguration &config, rclcpp::Node::SharedPtr node)
-      : SyncActionNode(name, config), node_(node) {}
+  NavigateToPose(const std::string &name, const BT::NodeConfiguration &config);
 
   static BT::PortsList providedPorts()
   {
@@ -53,7 +52,7 @@ public:
   BT::NodeStatus tick() override;
 
 private:
-  rclcpp::Node::SharedPtr node_; // 添加 ROS 2 节点成员变量
+  rclcpp::Node::SharedPtr node_; // ROS 2 节点成员变量
 };
 
 // 停止导航节点

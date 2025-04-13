@@ -16,10 +16,8 @@ int main(int argc, char** argv) {
   factory.registerNodeType<ApproachObject>("ApproachObject");
   factory.registerNodeType<ResumeNavigation>("ResumeNavigation");
 
-  // 注册 NavigateToPose 节点，传递 ROS 2 节点
-  factory.registerSimpleAction("NavigateToPose", [&node](const BT::NodeConfiguration& config) {
-    return std::make_unique<NavigateToPose>("NavigateToPose", config, node);
-  });
+  // 注册 NavigateToPose 节点
+  factory.registerNodeType<NavigateToPose>("NavigateToPose");
 
   // 注册行为树文件
   std::string tree_file = ament_index_cpp::get_package_share_directory("behavior_tree") + "/config/recycle_bt.xml";
@@ -27,6 +25,7 @@ int main(int argc, char** argv) {
 
   // 创建行为树
   auto blackboard = BT::Blackboard::create();
+  blackboard->set("node", node); // 将 ROS 2 节点传递到黑板中
   auto tree = factory.createTree("MainTree", blackboard);
 
   // 执行行为树
