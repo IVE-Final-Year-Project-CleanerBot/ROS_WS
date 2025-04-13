@@ -50,8 +50,9 @@ class YoloDetectNode(Node):
         self.get_logger().info("YoloDetectNode has been started.")
 
     def detection_callback(self, request, response):
-        self.current_detection = request.data
-        response.success = True
+        # 根据当前检测状态返回结果
+        response.success = self.current_detection
+        response.message = "Bottle detected" if self.current_detection else "No bottle detected"
         return response
 
     def drive_to_target(self, bbox_center_x, image_width, bbox_center_y, image_height):
@@ -133,6 +134,9 @@ class YoloDetectNode(Node):
                     else:
                         # 控制机器人移动到瓶子面前
                         self.drive_to_target(bbox_center_x, image_width, bbox_center_y, image_height)
+
+        
+        self.current_detection = detected_bottle  # 更新检测状态
 
         # 如果没有检测到 "PET Bottle"，停止机器人并重置机械臂
         if not detected_bottle:
