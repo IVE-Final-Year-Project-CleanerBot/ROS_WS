@@ -12,10 +12,14 @@ int main(int argc, char** argv) {
   // 注册自定义节点
   factory.registerNodeType<CheckForBottles>("CheckForBottles");
   factory.registerNodeType<ControlArm>("ControlArm");
-  factory.registerNodeType<NavigateToPose>("NavigateToPose");
   factory.registerNodeType<StopNavigation>("StopNavigation");
   factory.registerNodeType<ApproachObject>("ApproachObject");
   factory.registerNodeType<ResumeNavigation>("ResumeNavigation");
+
+  // 注册 NavigateToPose 节点，传递 ROS 2 节点
+  factory.registerSimpleAction("NavigateToPose", [&node](const BT::NodeConfiguration& config) {
+    return std::make_unique<NavigateToPose>("NavigateToPose", config, node);
+  });
 
   // 注册行为树文件
   std::string tree_file = ament_index_cpp::get_package_share_directory("behavior_tree") + "/config/recycle_bt.xml";

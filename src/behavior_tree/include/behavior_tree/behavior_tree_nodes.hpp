@@ -9,12 +9,14 @@
 #include "rclcpp_action/rclcpp_action.hpp"
 
 // 检测瓶子节点
-class CheckForBottles : public BT::ConditionNode {
+class CheckForBottles : public BT::ConditionNode
+{
 public:
-  CheckForBottles(const std::string& name, const BT::NodeConfiguration& config)
-    : ConditionNode(name, config) {}
+  CheckForBottles(const std::string &name, const BT::NodeConfiguration &config)
+      : ConditionNode(name, config) {}
 
-  static BT::PortsList providedPorts() {
+  static BT::PortsList providedPorts()
+  {
     return {BT::OutputPort<bool>("detected")};
   }
 
@@ -22,12 +24,14 @@ public:
 };
 
 // 控制机械臂节点
-class ControlArm : public BT::SyncActionNode {
+class ControlArm : public BT::SyncActionNode
+{
 public:
-  ControlArm(const std::string& name, const BT::NodeConfiguration& config)
-    : SyncActionNode(name, config) {}
+  ControlArm(const std::string &name, const BT::NodeConfiguration &config)
+      : SyncActionNode(name, config) {}
 
-  static BT::PortsList providedPorts() {
+  static BT::PortsList providedPorts()
+  {
     return {BT::InputPort<std::string>("action")};
   }
 
@@ -35,25 +39,32 @@ public:
 };
 
 // 导航到目标点节点
-class NavigateToPose : public BT::SyncActionNode {
+class NavigateToPose : public BT::SyncActionNode
+{
 public:
-  NavigateToPose(const std::string& name, const BT::NodeConfiguration& config)
-    : SyncActionNode(name, config) {}
+  NavigateToPose(const std::string &name, const BT::NodeConfiguration &config, rclcpp::Node::SharedPtr node)
+      : SyncActionNode(name, config), node_(node) {}
 
-  static BT::PortsList providedPorts() {
+  static BT::PortsList providedPorts()
+  {
     return {BT::InputPort<std::string>("goal")};
   }
 
   BT::NodeStatus tick() override;
+
+private:
+  rclcpp::Node::SharedPtr node_; // 添加 ROS 2 节点成员变量
 };
 
 // 停止导航节点
-class StopNavigation : public BT::SyncActionNode {
+class StopNavigation : public BT::SyncActionNode
+{
 public:
-  StopNavigation(const std::string& name, const BT::NodeConfiguration& config)
-    : SyncActionNode(name, config) {}
+  StopNavigation(const std::string &name, const BT::NodeConfiguration &config)
+      : SyncActionNode(name, config) {}
 
-  static BT::PortsList providedPorts() {
+  static BT::PortsList providedPorts()
+  {
     return {}; // 无输入或输出端口
   }
 
@@ -61,12 +72,14 @@ public:
 };
 
 // 视觉伺服对准节点
-class ApproachObject : public BT::SyncActionNode {
+class ApproachObject : public BT::SyncActionNode
+{
 public:
-  ApproachObject(const std::string& name, const BT::NodeConfiguration& config)
-    : SyncActionNode(name, config) {}
+  ApproachObject(const std::string &name, const BT::NodeConfiguration &config)
+      : SyncActionNode(name, config) {}
 
-  static BT::PortsList providedPorts() {
+  static BT::PortsList providedPorts()
+  {
     return {}; // 无输入或输出端口
   }
 
@@ -74,12 +87,14 @@ public:
 };
 
 // 恢复导航节点
-class ResumeNavigation : public BT::SyncActionNode {
+class ResumeNavigation : public BT::SyncActionNode
+{
 public:
-  ResumeNavigation(const std::string& name, const BT::NodeConfiguration& config)
-    : SyncActionNode(name, config) {}
+  ResumeNavigation(const std::string &name, const BT::NodeConfiguration &config)
+      : SyncActionNode(name, config) {}
 
-  static BT::PortsList providedPorts() {
+  static BT::PortsList providedPorts()
+  {
     return {}; // 无输入或输出端口
   }
 
