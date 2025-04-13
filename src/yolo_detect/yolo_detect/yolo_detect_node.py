@@ -8,17 +8,11 @@ import rclpy
 from rclpy.node import Node
 import os
 import cv2
-from std_srvs.srv import SetBool
 
 
 class YoloDetectNode(Node):
     def __init__(self):
         super().__init__('yolo_detect_node')
-        # 添加检测状态服务
-        self.detection_service = self.create_service(
-            SetBool, '/detection_status',
-            self.detection_callback)
-        self.current_detection = False
 
         # 初始化电机控制发布器
         self.cmd_vel_publisher = self.create_publisher(Twist, '/cmd_vel', 10)
@@ -135,8 +129,6 @@ class YoloDetectNode(Node):
                         # 控制机器人移动到瓶子面前
                         self.drive_to_target(bbox_center_x, image_width, bbox_center_y, image_height)
 
-        
-        self.current_detection = detected_bottle  # 更新检测状态
 
         # 如果没有检测到 "PET Bottle"，停止机器人并重置机械臂
         if not detected_bottle:

@@ -29,7 +29,8 @@ setup(
     entry_points={
         'console_scripts': [
             'yolo_detect_node = yolo_detect.yolo_detect_node:main',
-            'navigation_node = yolo_detect.navigation_node:main',
+            'bottle_detector = yolo_detect.bottle_detector:main',
+            'bottle_navigation_smach = yolo_detect.bottle_navigation_smach:main',
         ],
     },
 )
