@@ -39,4 +39,23 @@
     <origin xyz="0 0 0.075" rpy="0 0 0" />
   </joint>
 
+  <!-- camera link -->
+  <link name="camera_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <box size="0.05 0.05 0.05" /> <!-- 摄像头的形状 -->
+      </geometry>
+      <material name="gray">
+        <color rgba="0.5 0.5 0.5 1.0" />
+      </material>
+    </visual>
+  </link>
+
+  <joint name="camera_joint" type="fixed">
+    <parent link="base_link" />
+    <child link="camera_link" />
+    <origin xyz="0.0 0.0 0.15" rpy="0 0 0" /> <!-- 摄像头相对于 base_link 的位置 -->
+  </joint>
+
 </robot>
