@@ -64,10 +64,11 @@ class YoloDetectNode(Node):
     def listener_callback(self, msg):
         # 将 ROS 图像消息转换为 OpenCV 图像
         frame = self.bridge.imgmsg_to_cv2(msg, desired_encoding='bgr8')
-
+        image_height, image_width, _ = frame.shape  # 获取图像分辨率
+    
         # 运行 YOLO 检测
         results = self.model(frame)
-
+    
         # 遍历检测结果并发布目标位置
         for result in results:
             boxes = result.boxes
@@ -76,15 +77,28 @@ class YoloDetectNode(Node):
                 confidence = box.conf[0]
                 class_id = int(box.cls[0])
                 label = f"{self.model.names[class_id]} {confidence:.2f}"
-
+    
                 # 如果检测到的是塑料瓶，发布其位置
                 if self.model.names[class_id] == "PET Bottle":
+                    # 计算检测框的中心点
+                    bbox_center_x = (x1 + x2) / 2
+                    bbox_center_y = (y1 + y2) / 2
+                    bbox_height = y2 - y1  # 检测框的高度
+    
+                    # 已知参数（需实际测量校准）
+                    REAL_HEIGHT = 22.0  # 塑料瓶实际高度（厘米）
+                    FOCAL_LENGTH = 720  # 摄像头焦距（像素），通过标定获得
+    
+                    # 估算深度信息
+                    distance = (REAL_HEIGHT * FOCAL_LENGTH) / bbox_height
+    
+                    # 创建 PointStamped 消息
                     detected_point = PointStamped()
                     detected_point.header.frame_id = "camera_link"
-                    detected_point.point.x = (x1 + x2) / 2
-                    detected_point.point.y = (y1 + y2) / 2
-                    detected_point.point.z = 0.0
-
+                    detected_point.point.x = bbox_center_x - (image_width / 2)  # 转换为相对于图像中心的坐标
+                    detected_point.point.y = bbox_center_y - (image_height / 2)
+                    detected_point.point.z = distance  # 深度信息
+    
                     # 转换并发布导航目标
                     self.publish_goal_to_map(detected_point)
 
