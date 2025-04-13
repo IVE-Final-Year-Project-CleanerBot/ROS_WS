@@ -4,8 +4,8 @@ from rclpy.node import Node
 from smach import StateMachine, State
 from smach_ros import IntrospectionServer
 from geometry_msgs.msg import Twist
-from std_msgs.msg import String
-from std_msgs.msg import Float32MultiArray
+from std_msgs.msg import String, Float32MultiArray
+from rclpy.duration import Duration  # 导入 Duration
 
 class WanderState(State):
     def __init__(self, node):
@@ -40,7 +40,8 @@ class WanderState(State):
                 self.pause_navigation()
                 return 'bottle_detected'
 
-            self.node.get_clock().sleep_for(0.1)
+            # 使用 Duration 对象进行睡眠
+            self.node.get_clock().sleep_for(Duration(seconds=0.1))
 
     def pause_navigation(self):
         """暂停导航"""
@@ -68,7 +69,7 @@ class PickupState(State):
         # 使用检测框数据对齐和靠近瓶子
         while rclpy.ok():
             # 从检测节点获取检测框数据
-            bbox_data = self.node.get_parameter_or('bbox_data', None)
+            bbox_data = self.bbox_data
             if bbox_data is None:
                 self.node.get_logger().warn("No bounding box data received.")
                 return 'done'
@@ -103,13 +104,13 @@ class PickupState(State):
                 self.cmd_vel_publisher.publish(twist)
                 self.node.get_logger().info("Bottle is in position, picking up...")
                 self.arm_command_publisher.publish(String(data="move_to_pick"))
-                self.node.get_clock().sleep_for(2.0)  # 模拟拾取时间
+                self.node.get_clock().sleep_for(Duration(seconds=2.0))  # 使用 Duration 对象
                 self.resume_navigation()  # 恢复导航
                 return 'done'
 
             # 发布速度指令
             self.cmd_vel_publisher.publish(twist)
-            self.node.get_clock().sleep_for(0.1)
+            self.node.get_clock().sleep_for(Duration(seconds=0.1))  # 使用 Duration 对象
 
     def resume_navigation(self):
         """恢复导航"""
