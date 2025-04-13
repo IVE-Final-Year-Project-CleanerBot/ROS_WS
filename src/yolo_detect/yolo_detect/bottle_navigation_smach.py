@@ -30,11 +30,14 @@ class WanderState(State):
         if len(msg.data) == 4:  # 确保接收到有效的检测框数据
             self.bottle_detected = True
             self.bbox_data = msg.data
+            self.node.get_logger().info(f"Detected PET Bottle with bbox: {self.bbox_data}")
+        else:
+            self.bottle_detected = False
 
     def execute(self, userdata):
         self.bottle_detected = False
         self.node.get_logger().info("Wandering...")
-
+    
         # 让 Nav2 控制机器人移动
         while rclpy.ok():
             if self.bottle_detected:
@@ -43,25 +46,34 @@ class WanderState(State):
                 self.pause_navigation()
                 userdata.bbox_data = self.bbox_data  # 将检测框数据传递给下一个状态
                 return 'bottle_detected'
-
+    
             # 使用 rclpy.spin_once 代替 time.sleep
             rclpy.spin_once(self.node, timeout_sec=0.1)
 
     def pause_navigation(self):
         """暂停导航"""
-        # 取消当前导航目标
         self.node.get_logger().info("Cancelling Nav2 goal...")
+
+        # 等待 Nav2 Action Server 可用
         if not self.nav_cancel_client.wait_for_server(timeout_sec=5.0):
             self.node.get_logger().error("Nav2 action server not available!")
             return
 
-        # 发送取消请求
-        cancel_future = self.nav_cancel_client.cancel_all_goals()
-        rclpy.spin_until_future_complete(self.node, cancel_future)
-        if cancel_future.result():
-            self.node.get_logger().info("Nav2 goal cancelled successfully.")
+        # 获取当前目标的句柄
+        goal_handle_future = self.nav_cancel_client.get_result()
+        rclpy.spin_until_future_complete(self.node, goal_handle_future)
+
+        if goal_handle_future.result() is not None:
+            goal_handle = goal_handle_future.result()
+            # 取消当前目标
+            cancel_future = goal_handle.cancel_goal_async()
+            rclpy.spin_until_future_complete(self.node, cancel_future)
+            if cancel_future.result():
+                self.node.get_logger().info("Nav2 goal cancelled successfully.")
+            else:
+                self.node.get_logger().error("Failed to cancel Nav2 goal.")
         else:
-            self.node.get_logger().error("Failed to cancel Nav2 goal.")
+            self.node.get_logger().warn("No active goal to cancel.")
 
         # 停止机器人
         twist = Twist()
