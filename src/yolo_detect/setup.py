@@ -12,7 +12,10 @@ setup(
         ('share/' + package_name, ['package.xml']),
         ('share/' + package_name + '/config/model', [
             'config/model/yolo11.pt',
-        ])
+        ]),
+        ('share/' + package_name + '/config/launch', [
+            'config/launch/navigation_launch.py',
+        ]),
     ],
     install_requires=[
         'setuptools',
