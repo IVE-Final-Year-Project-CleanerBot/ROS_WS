@@ -1,6 +1,0 @@
-[submodule "src/BehaviorTree.CPP"]
-	path = src/BehaviorTree.CPP
-	url = https://github.com/BehaviorTree/BehaviorTree.CPP.git
-[submodule "src/sllidar_ros2"]
-    path = src/sllidar_ros2
-    url = https://github.com/Slamtec/sllidar_ros2.git
