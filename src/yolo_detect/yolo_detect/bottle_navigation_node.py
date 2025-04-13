@@ -150,17 +150,27 @@ class YoloDetectNode(Node):
     def cancel_nav_goal(self):
         """取消 Nav2 的导航目标"""
         self.get_logger().info("Cancelling Nav2 goal...")
+    
+        # 等待 Nav2 Action Server 可用
         if not self.nav_cancel_client.wait_for_server(timeout_sec=5.0):
             self.get_logger().error("Nav2 action server not available!")
             return
-
-        # 发送取消请求
-        cancel_future = self.nav_cancel_client.cancel_goal_async()
-        rclpy.spin_until_future_complete(self, cancel_future)
-        if cancel_future.result():
-            self.get_logger().info("Nav2 goal cancelled successfully.")
+    
+        # 获取当前目标的句柄
+        goal_handle_future = self.nav_cancel_client.get_result()
+        rclpy.spin_until_future_complete(self, goal_handle_future)
+    
+        if goal_handle_future.result() is not None:
+            goal_handle = goal_handle_future.result()
+            # 取消当前目标
+            cancel_future = goal_handle._cancel_goal_async()
+            rclpy.spin_until_future_complete(self, cancel_future)
+            if cancel_future.result():
+                self.get_logger().info("Nav2 goal cancelled successfully.")
+            else:
+                self.get_logger().error("Failed to cancel Nav2 goal.")
         else:
-            self.get_logger().error("Failed to cancel Nav2 goal.")
+            self.get_logger().warn("No active goal to cancel.")
 
     def stop_robot(self):
         """停止机器人移动"""
