@@ -29,6 +29,7 @@ setup(
     entry_points={
         'console_scripts': [
             'yolo_detect_node = yolo_detect.yolo_detect_node:main',
+            'navigate_node = yolo_detect.navigate_node:main',
         ],
     },
 )
