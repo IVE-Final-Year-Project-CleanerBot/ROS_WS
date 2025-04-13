@@ -1,23 +1,18 @@
 from ament_index_python.packages import get_package_share_directory
-from geometry_msgs.msg import PointStamped, Twist
+from geometry_msgs.msg import Twist
 from std_msgs.msg import String
-from sensor_msgs.msg import Image  # 添加这一行
-from tf2_ros import Buffer, TransformListener
+from sensor_msgs.msg import Image
 from cv_bridge import CvBridge
 from ultralytics import YOLO
 import rclpy
 from rclpy.node import Node
 import os
-import math
 import cv2
+
 
 class YoloDetectNode(Node):
     def __init__(self):
         super().__init__('yolo_detect_node')
-
-        # 初始化 TF2
-        self.tf_buffer = Buffer()
-        self.tf_listener = TransformListener(self.tf_buffer, self)
 
         # 初始化电机控制发布器
         self.cmd_vel_publisher = self.create_publisher(Twist, '/cmd_vel', 10)
@@ -25,10 +20,12 @@ class YoloDetectNode(Node):
         # 初始化机械臂控制发布器
         self.arm_command_publisher = self.create_publisher(String, '/arm_command', 10)
 
-        # 初始化其他组件
+        # 初始化 YOLO 模型
         package_dir = get_package_share_directory("yolo_detect")
         model_file = os.path.join(package_dir, "config", "model", "yolo11.pt")
         self.model = YOLO(model_file)
+
+        # 初始化图像处理
         self.bridge = CvBridge()
         self.subscription = self.create_subscription(
             Image,
@@ -47,6 +44,9 @@ class YoloDetectNode(Node):
         # 运行 YOLO 检测
         results = self.model(frame)
 
+        # 标志变量，用于判断是否检测到 "PET Bottle"
+        detected_bottle = False
+
         # 遍历检测结果并驱动机器人移动
         for result in results:
             boxes = result.boxes
@@ -62,9 +62,10 @@ class YoloDetectNode(Node):
 
                 # 如果检测到的是塑料瓶，驱动机器人移动到瓶子面前
                 if self.model.names[class_id] == "PET Bottle":
+                    detected_bottle = True  # 标记为检测到瓶子
+
                     # 计算检测框的中心点
                     bbox_center_x = (x1 + x2) / 2
-                    bbox_center_y = (y1 + y2) / 2
                     bbox_height = y2 - y1  # 检测框的高度
 
                     # 已知参数（需实际测量校准）
@@ -80,10 +81,27 @@ class YoloDetectNode(Node):
                     # 控制机械臂拾取瓶子
                     self.pick_up_bottle()
 
+        # 如果没有检测到 "PET Bottle"，停止机器人并重置机械臂
+        if not detected_bottle:
+            self.stop_robot_and_reset_arm()
+
         # 显示检测结果
         cv2.imshow("YOLO Detection", frame)
         if cv2.waitKey(1) & 0xFF == ord('q'):
             rclpy.shutdown()
+
+    def stop_robot_and_reset_arm(self):
+        """停止机器人并重置机械臂"""
+        # 停止机器人移动
+        twist = Twist()
+        twist.linear.x = 0.0
+        twist.angular.z = 0.0
+        self.cmd_vel_publisher.publish(twist)
+        self.get_logger().info("Robot stopped due to no detection.")
+
+        # 重置机械臂
+        self.arm_command_publisher.publish(String(data="reset"))
+        self.get_logger().info("Arm reset command sent.")
 
     def drive_to_target(self, bbox_center_x, image_width, distance):
         """根据目标位置控制机器人移动"""
@@ -111,6 +129,7 @@ class YoloDetectNode(Node):
         self.arm_command_publisher.publish(String(data="move_to_pick"))
         self.get_logger().info("Sent pick-up command to the arm.")
 
+
 def main(args=None):
     rclpy.init(args=args)
     node = YoloDetectNode()
@@ -135,6 +154,7 @@ def main(args=None):
 
         # 关闭 ROS2 节点
         rclpy.shutdown()
+
 
 if __name__ == '__main__':
     main()
