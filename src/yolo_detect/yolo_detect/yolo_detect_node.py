@@ -58,6 +58,9 @@ class YoloDetectNode(Node):
         else:
             twist.linear.x = 0.0  # 停止移动
             # twist.angular.z = 0.0  # 停止旋转
+            
+        offset_x = bbox_center_x - (image_width / 2)
+        twist.angular.z = self.angular_speed_factor * offset_x  # 调整旋转速度
 
         # 发布速度指令
         self.cmd_vel_publisher.publish(twist)
