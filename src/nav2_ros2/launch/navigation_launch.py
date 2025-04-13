@@ -12,14 +12,12 @@ def generate_launch_description():
 
     nav2_bringup_dir = get_package_share_directory('nav2_bringup')
     my_nav2_dir = get_package_share_directory('nav2_ros2')
-    behavior_tree = get_package_share_directory('behavior_tree')
     rviz2_config_dir = os.path.join(nav2_bringup_dir, 'rviz', 'nav2_default_view.rviz')
     
 
     use_sim_time = LaunchConfiguration('use_sim_time', default='false')
     map_yaml_path = LaunchConfiguration('map', default=os.path.join(my_nav2_dir, 'maps', 'my_home.yaml'))
     nav2_param_path = LaunchConfiguration('params_file', default=os.path.join(my_nav2_dir, 'config', 'nav2_params.yaml'))
-    behavior_tree_file = os.path.join(behavior_tree, 'config', 'recycle_bt.xml')
     
     # angle_min = LaunchConfiguration('angle_min', default='-1.57')  # 默认 -90°
     # angle_max = LaunchConfiguration('angle_max', default='1.57')   # 默认 90°
@@ -35,26 +33,6 @@ def generate_launch_description():
             # 'angle_min': angle_min,  # 传递 angle_min
             # 'angle_max': angle_max   # 传递 angle_max
         }.items(),
-    )
-
-    behavior_tree_launch = Node(
-        package='nav2_bt_navigator',
-        executable='bt_navigator',
-        name='bt_navigator',
-        output='screen',
-        parameters=[
-            {'use_sim_time': use_sim_time},
-            {'bt_xml_file': behavior_tree_file},  # 修正参数名
-            {'plugin_lib_names': [
-                'nav2_compute_path_to_pose_action_bt_node',
-                'nav2_follow_path_action_bt_node',
-                'nav2_recovery_node_bt_node',
-                'nav2_spin_action_bt_node',
-                'nav2_wait_action_bt_node',
-                'nav2_clear_costmap_service_bt_node',
-                'behavior_tree_nodes'  # 注册自定义插件库
-            ]}
-        ],
     )
 
     rviz2_launch = Node(
@@ -91,5 +69,4 @@ def generate_launch_description():
         # ),
         bringup_launch,
         rviz2_launch,
-        behavior_tree_launch,
     ])
