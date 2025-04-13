@@ -8,8 +8,11 @@ class CameraPublisher(Node):
     def __init__(self):
         super().__init__('camera_publisher')
         self.publisher_ = self.create_publisher(Image, '/camera/image_raw', 10)
-        self.timer = self.create_timer(0.05, self.timer_callback)
+        self.timer = self.create_timer(0.0167, self.timer_callback)
         self.cap = cv2.VideoCapture(0)  # 打开 USB 摄像头
+        self.cap.set(cv2.CAP_PROP_FRAME_WIDTH, 640)  # 设置分辨率宽度
+        self.cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)  # 设置分辨率高度
+        self.cap.set(cv2.CAP_PROP_FPS, 60)  # 设置帧率为 60FPS
         self.bridge = CvBridge()
 
         if not self.cap.isOpened():
