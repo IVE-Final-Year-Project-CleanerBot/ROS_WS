@@ -10,6 +10,8 @@ import os
 import cv2
 from nav2_msgs.action import NavigateToPose
 from rclpy.action import ActionClient
+from rclpy.action import GoalStatus
+from action_msgs.msg import GoalResponse
 
 
 class YoloDetectNode(Node):
@@ -150,27 +152,30 @@ class YoloDetectNode(Node):
     def cancel_nav_goal(self):
         """取消 Nav2 的导航目标"""
         self.get_logger().info("Cancelling Nav2 goal...")
-    
-        # 等待 Nav2 Action Server 可用
+
+        # 检查 Action 客户端是否可用
         if not self.nav_cancel_client.wait_for_server(timeout_sec=5.0):
             self.get_logger().error("Nav2 action server not available!")
             return
-    
-        # 获取当前目标的句柄
-        goal_handle_future = self.nav_cancel_client.send_goal_async(NavigateToPose.Goal())
-        rclpy.spin_until_future_complete(self, goal_handle_future)
-    
-        if goal_handle_future.result() is not None:
-            goal_handle = goal_handle_future.result()
-            # 取消当前目标
-            cancel_future = goal_handle._cancel_goal_async()
-            rclpy.spin_until_future_complete(self, cancel_future)
-            if cancel_future.result():
-                self.get_logger().info("Nav2 goal cancelled successfully.")
+
+        # 获取当前所有目标句柄
+        futures = self.nav_cancel_client._action_client.get_pending_goal_async()
+        if not futures:
+            self.get_logger().warn("No active goals to cancel.")
+            return
+
+        # 遍历并取消所有目标
+        for future in futures:
+            goal_handle = future.result()
+            if goal_handle.status == GoalStatus.STATUS_ACCEPTED or goal_handle.status == GoalStatus.STATUS_EXECUTING:
+                cancel_future = goal_handle.cancel_goal_async()
+                rclpy.spin_until_future_complete(self, cancel_future)
+                if cancel_future.result().return_code == GoalResponse.ERROR_NONE:
+                    self.get_logger().info("Successfully cancelled goal.")
+                else:
+                    self.get_logger().error("Failed to cancel goal.")
             else:
-                self.get_logger().error("Failed to cancel Nav2 goal.")
-        else:
-            self.get_logger().warn("No active goal to cancel.")
+                self.get_logger().warn("Goal is not in a cancellable state.")
 
     def stop_robot(self):
         """停止机器人移动"""
