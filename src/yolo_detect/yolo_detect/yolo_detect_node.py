@@ -38,7 +38,8 @@ class YoloDetectNode(Node):
         self.x_tolerance = 50  # 中心点 x 的容忍范围（像素）
         self.y_threshold_factor = 1 / 2  # 中心点 y 的阈值比例（图像高度的 1/2）
         self.linear_speed = 0.1  # 线速度
-        self.angular_speed_factor = -0.005  # 角速度调整因子
+        self.fixed_angular_speed = 0.2  # 固定角速度
+        self.angular_speed_factor = -0.005  # 动态角速度调整因子
 
         self.get_logger().info("YoloDetectNode has been started.")
 
@@ -54,9 +55,9 @@ class YoloDetectNode(Node):
 
         # 阶段 1：水平对齐
         if abs(offset_x) > self.x_tolerance:
-            twist.angular.z = self.angular_speed_factor * offset_x  # 调整旋转速度
+            twist.angular.z = self.fixed_angular_speed if offset_x > 0 else -self.fixed_angular_speed  # 固定角速度
             twist.linear.x = 0.0  # 停止向前移动
-            self.get_logger().info("Aligning X...")
+            self.get_logger().info(f"Aligning X... Angular.z={twist.angular.z}")
         # 阶段 2：向前移动
         elif bbox_center_y < y_threshold:
             twist.angular.z = 0.0  # 停止旋转
@@ -64,7 +65,9 @@ class YoloDetectNode(Node):
             self.get_logger().info("Moving forward...")
         # 阶段 3：执行机械臂操作
         else:
-            self.stop_robot()  # 停止机器人移动
+            twist.angular.z = 0.0  # 停止旋转
+            twist.linear.x = 0.0  # 停止移动
+            self.cmd_vel_publisher.publish(twist)  # 确保机器人停止
             self.get_logger().info("Bottle is in position, picking up...")
             self.pick_up_bottle()
             return  # 结束函数，避免重复发布速度指令
