@@ -17,13 +17,12 @@ int main(int argc, char** argv) {
   factory.registerNodeType<ApproachObject>("ApproachObject");
   factory.registerNodeType<ResumeNavigation>("ResumeNavigation");
 
-  // 注册子树
-  factory.registerBehaviorTreeFromFile(
-    ament_index_cpp::get_package_share_directory("behavior_tree") + "/config/recycle_bt.xml");
-
-  // 加载行为树 XML 文件
+  // 注册行为树文件
   std::string tree_file = ament_index_cpp::get_package_share_directory("behavior_tree") + "/config/recycle_bt.xml";
-  auto tree = factory.createTreeFromFile(tree_file);
+  factory.registerBehaviorTreeFromFile(tree_file);
+
+  // 创建行为树
+  auto tree = factory.createTree("MainTree");
 
   // 执行行为树
   while (rclcpp::ok()) {
