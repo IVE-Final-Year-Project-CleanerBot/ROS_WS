@@ -1,11 +1,12 @@
 from ament_index_python.packages import get_package_share_directory
 from geometry_msgs.msg import PointStamped, Twist
 from std_msgs.msg import String
+from sensor_msgs.msg import Image  # 添加这一行
 from tf2_ros import Buffer, TransformListener
 from cv_bridge import CvBridge
 from ultralytics import YOLO
 import rclpy
-from rclpy.node import Node  # 确保导入 Node
+from rclpy.node import Node
 import os
 import math
 import cv2
