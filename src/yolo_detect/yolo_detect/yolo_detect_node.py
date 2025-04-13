@@ -73,7 +73,7 @@ class YoloDetectNode(Node):
 
                     # 判断中心点是否在镜头中间
                     x_tolerance = 50  # 中心点 x 的容忍范围（像素）
-                    y_threshold = image_height * 2 / 3  # 中心点 y 的阈值（图像高度的 2/3）
+                    y_threshold = image_height * 1 / 2  # 中心点 y 的阈值（图像高度的 2/3）
 
                     if abs(bbox_center_x - image_width / 2) <= x_tolerance and bbox_center_y >= y_threshold:
                         self.get_logger().info("Bottle is in position, picking up...")
@@ -118,7 +118,7 @@ class YoloDetectNode(Node):
         y_threshold = image_height * 2 / 3  # 中心点 y 的阈值（图像高度的 2/3）
         if bbox_center_y < y_threshold:  # 如果中心点 y 小于阈值，向前移动
             twist.linear.x = 0.1
-    
+
             # 只有当 y 小于阈值时才调整角速度
             offset_x = bbox_center_x - (image_width / 2)
             twist.angular.z = -0.002 * offset_x  # 调整旋转速度，负号表示方向
