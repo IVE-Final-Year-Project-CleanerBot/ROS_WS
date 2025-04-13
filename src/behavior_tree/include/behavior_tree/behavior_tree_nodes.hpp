@@ -32,7 +32,7 @@ public:
   BT::NodeStatus tick() override;
 };
 
-// 其他节点声明
+// 导航到目标点节点
 class NavigateToPose : public BT::SyncActionNode {
 public:
   NavigateToPose(const std::string& name, const BT::NodeConfiguration& config)
@@ -45,26 +45,41 @@ public:
   BT::NodeStatus tick() override;
 };
 
+// 停止导航节点
 class StopNavigation : public BT::SyncActionNode {
 public:
   StopNavigation(const std::string& name, const BT::NodeConfiguration& config)
     : SyncActionNode(name, config) {}
 
+  static BT::PortsList providedPorts() {
+    return {}; // 无输入或输出端口
+  }
+
   BT::NodeStatus tick() override;
 };
 
+// 视觉伺服对准节点
 class ApproachObject : public BT::SyncActionNode {
 public:
   ApproachObject(const std::string& name, const BT::NodeConfiguration& config)
     : SyncActionNode(name, config) {}
 
+  static BT::PortsList providedPorts() {
+    return {}; // 无输入或输出端口
+  }
+
   BT::NodeStatus tick() override;
 };
 
+// 恢复导航节点
 class ResumeNavigation : public BT::SyncActionNode {
 public:
   ResumeNavigation(const std::string& name, const BT::NodeConfiguration& config)
     : SyncActionNode(name, config) {}
+
+  static BT::PortsList providedPorts() {
+    return {}; // 无输入或输出端口
+  }
 
   BT::NodeStatus tick() override;
 };
