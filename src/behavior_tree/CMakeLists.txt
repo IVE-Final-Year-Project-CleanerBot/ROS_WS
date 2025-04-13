@@ -8,6 +8,7 @@ endif()
 # find dependencies
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
+find_package(rclcpp_action REQUIRED)
 find_package(behaviortree_cpp_v3 REQUIRED)
 find_package(std_msgs REQUIRED)
 find_package(std_srvs REQUIRED)
@@ -34,10 +35,11 @@ add_library(behavior_tree_nodes SHARED src/behavior_tree_nodes.cpp)
 ament_target_dependencies(behavior_tree_nodes
   behaviortree_cpp_v3
   rclcpp
+  rclcpp_action # 添加这一行
   std_msgs
   std_srvs
   geometry_msgs
-  nav2_msgs # 添加这一行
+  nav2_msgs
   ament_index_cpp
 )
 
@@ -47,10 +49,11 @@ target_link_libraries(bt_main behavior_tree_nodes)
 ament_target_dependencies(bt_main
   behaviortree_cpp_v3
   rclcpp
+  rclcpp_action # 添加这一行
   std_msgs
   std_srvs
   geometry_msgs
-  nav2_msgs # 添加这一行
+  nav2_msgs
   ament_index_cpp
 )
 
