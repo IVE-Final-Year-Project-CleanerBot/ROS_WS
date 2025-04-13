@@ -15,6 +15,7 @@ class WanderState(State):
         self.cmd_vel_publisher = self.node.create_publisher(Twist, '/cmd_vel', 10)
         self.nav_cancel_client = ActionClient(node, NavigateToPose, 'navigate_to_pose')  # Nav2 目标取消客户端
         self.bottle_detected = False
+        self.bbox_data = None
 
         # 订阅瓶子检测状态
         self.detection_sub = self.node.create_subscription(
@@ -25,7 +26,7 @@ class WanderState(State):
         )
 
     def detection_callback(self, msg):
-        # 如果检测到瓶子，保存检测数据
+        # 如果检测到瓶子，保存检测框数据
         if len(msg.data) == 4:  # 确保接收到有效的检测框数据
             self.bottle_detected = True
             self.bbox_data = msg.data
@@ -40,6 +41,7 @@ class WanderState(State):
                 # 暂停导航
                 self.node.get_logger().info("Bottle detected, pausing navigation...")
                 self.pause_navigation()
+                userdata.bbox_data = self.bbox_data  # 将检测框数据传递给下一个状态
                 return 'bottle_detected'
 
             # 使用 rclpy.spin_once 代替 time.sleep

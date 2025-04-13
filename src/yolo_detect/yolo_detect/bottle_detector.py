@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 import rclpy
 from rclpy.node import Node
-from std_msgs.msg import String
+from std_msgs.msg import Float32MultiArray
 from sensor_msgs.msg import Image
 from cv_bridge import CvBridge
 from ultralytics import YOLO
@@ -11,7 +11,7 @@ import os
 class BottleDetector(Node):
     def __init__(self):
         super().__init__('bottle_detector')
-        self.publisher = self.create_publisher(String, '/bottle_detection_status', 10)
+        self.publisher = self.create_publisher(Float32MultiArray, '/bottle_detection_data', 10)
         self.subscription = self.create_subscription(
             Image,
             '/camera/image_raw',
@@ -27,14 +27,19 @@ class BottleDetector(Node):
         cv_image = self.bridge.imgmsg_to_cv2(msg, "bgr8")
         results = self.model(cv_image)
         
-        detection_msg = String()
+        detection_msg = Float32MultiArray()
         for result in results:
-            if 'bottle' in result.names.values():
-                detection_msg.data = "detected"
-                self.publisher.publish(detection_msg)
-                return
+            for box, cls_id in zip(result.boxes, result.boxes.cls):
+                label = result.names[int(cls_id)]  # 获取标签名称
+                if label == "PET Bottle":  # 只处理 "PET Bottle"
+                    # 获取检测框的坐标
+                    x1, y1, x2, y2 = box.xyxy[0].tolist()
+                    detection_msg.data = [x1, y1, x2, y2]
+                    self.publisher.publish(detection_msg)
+                    return
         
-        detection_msg.data = "clear"
+        # 如果没有检测到 "PET Bottle"，发布空消息
+        detection_msg.data = []
         self.publisher.publish(detection_msg)
 
 def main(args=None):
