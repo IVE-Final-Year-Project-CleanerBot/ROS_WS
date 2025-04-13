@@ -12,7 +12,7 @@
     </Sequence>
   </BehaviorTree>
 
-  <SubTree ID="PickUpAction">
+  <BehaviorTree ID="PickUpAction">
     <Sequence>
       <!-- 停止导航 -->
       <StopNavigation/>
@@ -26,5 +26,5 @@
       <!-- 恢复导航 -->
       <ResumeNavigation/>
     </Sequence>
-  </SubTree>
+  </BehaviorTree>
 </root>
