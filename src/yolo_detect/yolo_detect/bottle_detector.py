@@ -5,6 +5,7 @@ from std_msgs.msg import String
 from sensor_msgs.msg import Image
 from cv_bridge import CvBridge
 from ultralytics import YOLO
+from ament_index_python.packages import get_package_share_directory
 
 class BottleDetector(Node):
     def __init__(self):
@@ -16,7 +17,9 @@ class BottleDetector(Node):
             self.image_callback,
             10
         )
-        self.model = YOLO('yolov8n.pt')
+        package_dir = get_package_share_directory("yolo_detect")
+        model_file = os.path.join(package_dir, "config", "model", "yolo11.pt")
+        self.model = YOLO(model_file, verbose=False)  # 加载 YOLO 模型
         self.bridge = CvBridge()
 
     def image_callback(self, msg):
