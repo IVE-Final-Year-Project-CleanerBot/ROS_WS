@@ -1,15 +1,11 @@
 from ament_index_python.packages import get_package_share_directory
-from geometry_msgs.msg import PointStamped, PoseStamped
+from geometry_msgs.msg import PointStamped, Twist
 from tf2_ros import Buffer, TransformListener
-from tf2_geometry_msgs import do_transform_point
-from rclpy.node import Node
-from sensor_msgs.msg import Image
 from cv_bridge import CvBridge
 from ultralytics import YOLO
 import rclpy
 import os
 import math
-import sys
 import cv2
 
 class YoloDetectNode(Node):
@@ -20,8 +16,11 @@ class YoloDetectNode(Node):
         self.tf_buffer = Buffer()
         self.tf_listener = TransformListener(self.tf_buffer, self)
 
-        # 初始化导航目标发布器
-        self.nav_goal_publisher = self.create_publisher(PoseStamped, '/goal_pose', 10)
+        # 初始化电机控制发布器
+        self.cmd_vel_publisher = self.create_publisher(Twist, '/cmd_vel', 10)
+
+        # 初始化机械臂控制发布器
+        self.arm_command_publisher = self.create_publisher(String, '/arm_command', 10)
 
         # 初始化其他组件
         package_dir = get_package_share_directory("yolo_detect")
@@ -34,32 +33,8 @@ class YoloDetectNode(Node):
             self.listener_callback,
             10
         )
-        self.publisher = self.create_publisher(PointStamped, '/detected_objects', 10)
 
         self.get_logger().info("YoloDetectNode has been started.")
-
-    def publish_goal_to_map(self, detected_point):
-        try:
-            # 获取从 camera_link 到 map 的变换
-            transform = self.tf_buffer.lookup_transform('map', 'camera_link', rclpy.time.Time())
-            
-            # 转换目标点到 map 坐标系
-            goal_in_map = do_transform_point(detected_point, transform)
-
-            # 创建导航目标消息
-            goal_pose = PoseStamped()
-            goal_pose.header.frame_id = "map"
-            goal_pose.header.stamp = self.get_clock().now().to_msg()
-            goal_pose.pose.position.x = goal_in_map.point.x
-            goal_pose.pose.position.y = goal_in_map.point.y
-            goal_pose.pose.position.z = 0.0
-            goal_pose.pose.orientation.w = 1.0  # 默认朝向
-
-            # 发布导航目标
-            self.nav_goal_publisher.publish(goal_pose)
-            self.get_logger().info(f"Published navigation goal: {goal_pose.pose.position}")
-        except Exception as e:
-            self.get_logger().error(f"Failed to transform point: {e}")
 
     def listener_callback(self, msg):
         # 将 ROS 图像消息转换为 OpenCV 图像
@@ -69,7 +44,7 @@ class YoloDetectNode(Node):
         # 运行 YOLO 检测
         results = self.model(frame)
 
-        # 遍历检测结果并发布目标位置
+        # 遍历检测结果并驱动机器人移动
         for result in results:
             boxes = result.boxes
             for box in boxes:
@@ -82,7 +57,7 @@ class YoloDetectNode(Node):
                 cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 255, 0), 2)  # 绿色边框
                 cv2.putText(frame, label, (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)  # 标签文字
 
-                # 如果检测到的是塑料瓶，发布其位置
+                # 如果检测到的是塑料瓶，驱动机器人移动到瓶子面前
                 if self.model.names[class_id] == "PET Bottle":
                     # 计算检测框的中心点
                     bbox_center_x = (x1 + x2) / 2
@@ -96,21 +71,42 @@ class YoloDetectNode(Node):
                     # 估算深度信息
                     distance = (REAL_HEIGHT * FOCAL_LENGTH) / bbox_height
 
-                    # 创建 PointStamped 消息
-                    detected_point = PointStamped()
-                    detected_point.header.frame_id = "camera_link"
-                    detected_point.point.x = bbox_center_x - (image_width / 2)  # 转换为相对于图像中心的坐标
-                    detected_point.point.y = bbox_center_y - (image_height / 2)
-                    detected_point.point.z = distance  # 深度信息
+                    # 控制机器人移动
+                    self.drive_to_target(bbox_center_x, image_width, distance)
 
-                    # 转换并发布导航目标
-                    self.publish_goal_to_map(detected_point)
-                    self.get_logger().info(f"Estimated distance: {distance:.2f} cm")
+                    # 控制机械臂拾取瓶子
+                    self.pick_up_bottle()
 
         # 显示检测结果
         cv2.imshow("YOLO Detection", frame)
         if cv2.waitKey(1) & 0xFF == ord('q'):
             rclpy.shutdown()
+
+    def drive_to_target(self, bbox_center_x, image_width, distance):
+        """根据目标位置控制机器人移动"""
+        twist = Twist()
+
+        # 计算水平偏移量
+        offset_x = bbox_center_x - (image_width / 2)
+
+        # 根据偏移量调整机器人角速度
+        twist.angular.z = -0.002 * offset_x  # 调整旋转速度，负号表示方向
+
+        # 根据距离调整机器人线速度
+        if distance > 30:  # 距离大于 30 cm 时向前移动
+            twist.linear.x = 0.1
+        else:
+            twist.linear.x = 0.0  # 停止移动
+
+        # 发布速度指令
+        self.cmd_vel_publisher.publish(twist)
+        self.get_logger().info(f"Driving to target: linear.x={twist.linear.x}, angular.z={twist.angular.z}")
+
+    def pick_up_bottle(self):
+        """控制机械臂拾取瓶子"""
+        # 发布拾取指令
+        self.arm_command_publisher.publish(String(data="move_to_pick"))
+        self.get_logger().info("Sent pick-up command to the arm.")
 
 def main(args=None):
     rclpy.init(args=args)
