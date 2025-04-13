@@ -2,7 +2,7 @@
 import rclpy
 from rclpy.node import Node
 from smach import StateMachine, State
-from smach_ros2 import RosStateMachine
+from smach_ros import IntrospectionServer  # 修改为 smach_ros
 from geometry_msgs.msg import PoseStamped
 from std_srvs.srv import Trigger
 from nav2_msgs.action import NavigateToPose
@@ -86,9 +86,12 @@ def main(args=None):
                         PickupState(node),
                         transitions={'done': 'NAVIGATE'})
 
-    # 创建ROS2状态机执行器
-    sis = RosStateMachine(node, sm)
-    sis.execute()
+    # 创建状态机调试器
+    sis = IntrospectionServer('state_machine', sm, '/SM_ROOT')
+    sis.start()
+
+    # 执行状态机
+    outcome = sm.execute()
 
     rclpy.spin(node)
     node.destroy_node()
