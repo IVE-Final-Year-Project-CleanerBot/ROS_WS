@@ -67,6 +67,7 @@ class YoloDetectNode(Node):
                     # 计算检测框的中心点
                     bbox_center_x = (x1 + x2) / 2
                     bbox_center_y = (y1 + y2) / 2
+
                     # 输出中心点的 y 值
                     self.get_logger().info(f"Center Y: {bbox_center_y}")
 
@@ -79,7 +80,7 @@ class YoloDetectNode(Node):
                         self.pick_up_bottle()
                     else:
                         # 控制机器人移动到瓶子面前
-                        self.drive_to_target(bbox_center_x, image_width, 0)
+                        self.drive_to_target(bbox_center_x, image_width, bbox_center_y, image_height)
 
         # 如果没有检测到 "PET Bottle"，停止机器人并重置机械臂
         if not detected_bottle:
@@ -103,7 +104,7 @@ class YoloDetectNode(Node):
         self.arm_command_publisher.publish(String(data="reset"))
         # self.get_logger().info("Arm reset command sent.")
 
-    def drive_to_target(self, bbox_center_x, image_width, distance):
+    def drive_to_target(self, bbox_center_x, image_width, bbox_center_y, image_height):
         """根据目标位置控制机器人移动"""
         twist = Twist()
 
@@ -113,8 +114,9 @@ class YoloDetectNode(Node):
         # 根据偏移量调整机器人角速度
         twist.angular.z = -0.002 * offset_x  # 调整旋转速度，负号表示方向
 
-        # 根据距离调整机器人线速度
-        if distance > 30:  # 距离大于 30 cm 时向前移动
+        # 根据中心点 y 值调整机器人线速度
+        y_threshold = image_height * 2 / 3  # 中心点 y 的阈值（图像高度的 2/3）
+        if bbox_center_y < y_threshold:  # 如果中心点 y 小于阈值，向前移动
             twist.linear.x = 0.1
         else:
             twist.linear.x = 0.0  # 停止移动
