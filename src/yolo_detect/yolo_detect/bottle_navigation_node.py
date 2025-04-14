@@ -45,7 +45,7 @@ class YoloDetectNode(Node):
         # 可调整参数
         self.x_tolerance = 50  # 中心点 x 的容忍范围（像素）
         self.y_threshold_factor = 1.5 / 3  # 中心点 y 的阈值比例（图像高度的 1/2）
-        self.linear_speed = 0.1  # 线速度
+        self.linear_speed = 0.15  # 线速度
         self.fixed_angular_speed = 0.45  # 固定角速度
         self.angular_speed_factor = -0.005  # 动态角速度调整因子
 
@@ -153,12 +153,12 @@ class YoloDetectNode(Node):
     def cancel_nav_goal(self):
         """取消 Nav2 的导航目标"""
         self.get_logger().info("Cancelling Nav2 goal using ActionClient...")
-    
+
         # 检查 Action 客户端是否可用
         if not self.nav_cancel_client.wait_for_server(timeout_sec=5.0):
             self.get_logger().error("Nav2 action server not available!")
             return
-    
+
         # 假设您在发送目标时保存了目标句柄
         if hasattr(self, 'goal_handle') and self.goal_handle is not None:
             # 取消当前目标
