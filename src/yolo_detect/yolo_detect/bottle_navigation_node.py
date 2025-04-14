@@ -153,11 +153,14 @@ class YoloDetectNode(Node):
     def cancel_nav_goal(self):
         """取消 Nav2 的导航目标"""
         self.get_logger().info("Cancelling Nav2 goal using command...")
-
-        # 使用 subprocess 调用 ROS 2 指令取消目标
+    
+        # 使用 subprocess 调用 ROS 2 指令发送取消目标的请求
         try:
             result = subprocess.run(
-                ["ros2", "action", "cancel", "/navigate_to_pose"],
+                [
+                    "ros2", "action", "send_goal", "/navigate_to_pose",
+                    "--feedback", "--cancel"
+                ],
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
                 text=True,
