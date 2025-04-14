@@ -152,28 +152,24 @@ class YoloDetectNode(Node):
 
     def cancel_nav_goal(self):
         """取消 Nav2 的导航目标"""
-        self.get_logger().info("Cancelling Nav2 goal using command...")
+        self.get_logger().info("Cancelling Nav2 goal using ActionClient...")
     
-        # 使用 subprocess 调用 ROS 2 指令发送取消目标的请求
-        try:
-            result = subprocess.run(
-                [
-                    "ros2", "action", "send_goal", "/navigate_to_pose",
-                    "nav2_msgs/action/NavigateToPose", "{pose: {}}"
-                ],
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE,
-                text=True,
-                timeout=5
-            )
-            if result.returncode == 0:
+        # 检查 Action 客户端是否可用
+        if not self.nav_cancel_client.wait_for_server(timeout_sec=5.0):
+            self.get_logger().error("Nav2 action server not available!")
+            return
+    
+        # 假设您在发送目标时保存了目标句柄
+        if hasattr(self, 'goal_handle') and self.goal_handle is not None:
+            # 取消当前目标
+            cancel_future = self.goal_handle.cancel_goal_async()
+            rclpy.spin_until_future_complete(self, cancel_future)
+            if cancel_future.result():
                 self.get_logger().info("Nav2 goal cancelled successfully.")
             else:
-                self.get_logger().error(f"Failed to cancel Nav2 goal. Error: {result.stderr}")
-        except subprocess.TimeoutExpired:
-            self.get_logger().error("Timeout while trying to cancel Nav2 goal.")
-        except Exception as e:
-            self.get_logger().error(f"An error occurred while cancelling Nav2 goal: {e}")
+                self.get_logger().error("Failed to cancel Nav2 goal.")
+        else:
+            self.get_logger().warn("No active goal to cancel.")
 
     def stop_robot(self):
         """停止机器人移动"""
