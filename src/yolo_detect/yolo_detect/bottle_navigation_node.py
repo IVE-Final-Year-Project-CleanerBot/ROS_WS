@@ -159,7 +159,7 @@ class YoloDetectNode(Node):
             result = subprocess.run(
                 [
                     "ros2", "action", "send_goal", "/navigate_to_pose",
-                    "--feedback", "--cancel"
+                    "nav2_msgs/action/NavigateToPose", "{pose: {}}"
                 ],
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
