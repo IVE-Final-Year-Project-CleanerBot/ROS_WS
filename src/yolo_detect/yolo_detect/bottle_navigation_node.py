@@ -11,6 +11,8 @@ import cv2
 from nav2_msgs.action import NavigateToPose
 from rclpy.action import ActionClient, GoalResponse
 from action_msgs.msg import GoalStatus
+import subprocess
+import time
 
 
 class YoloDetectNode(Node):
@@ -150,31 +152,25 @@ class YoloDetectNode(Node):
 
     def cancel_nav_goal(self):
         """取消 Nav2 的导航目标"""
-        self.get_logger().info("Cancelling Nav2 goal...")
+        self.get_logger().info("Cancelling Nav2 goal using command...")
 
-        # 检查 Action 客户端是否可用
-        if not self.nav_cancel_client.wait_for_server(timeout_sec=5.0):
-            self.get_logger().error("Nav2 action server not available!")
-            return
-
-        # 获取当前所有目标句柄
-        futures = self.nav_cancel_client._action_client.get_pending_goal_async()
-        if not futures:
-            self.get_logger().warn("No active goals to cancel.")
-            return
-
-        # 遍历并取消所有目标
-        for future in futures:
-            goal_handle = future.result()
-            if goal_handle.status == GoalStatus.STATUS_ACCEPTED or goal_handle.status == GoalStatus.STATUS_EXECUTING:
-                cancel_future = goal_handle.cancel_goal_async()
-                rclpy.spin_until_future_complete(self, cancel_future)
-                if cancel_future.result().return_code == GoalResponse.ERROR_NONE:
-                    self.get_logger().info("Successfully cancelled goal.")
-                else:
-                    self.get_logger().error("Failed to cancel goal.")
+        # 使用 subprocess 调用 ROS 2 指令取消目标
+        try:
+            result = subprocess.run(
+                ["ros2", "action", "cancel", "/navigate_to_pose"],
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                text=True,
+                timeout=5
+            )
+            if result.returncode == 0:
+                self.get_logger().info("Nav2 goal cancelled successfully.")
             else:
-                self.get_logger().warn("Goal is not in a cancellable state.")
+                self.get_logger().error(f"Failed to cancel Nav2 goal. Error: {result.stderr}")
+        except subprocess.TimeoutExpired:
+            self.get_logger().error("Timeout while trying to cancel Nav2 goal.")
+        except Exception as e:
+            self.get_logger().error(f"An error occurred while cancelling Nav2 goal: {e}")
 
     def stop_robot(self):
         """停止机器人移动"""
