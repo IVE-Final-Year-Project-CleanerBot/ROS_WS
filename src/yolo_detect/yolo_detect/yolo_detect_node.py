@@ -1,6 +1,4 @@
 from ament_index_python.packages import get_package_share_directory
-from geometry_msgs.msg import Twist
-from std_msgs.msg import String
 from sensor_msgs.msg import Image
 from cv_bridge import CvBridge
 from ultralytics import YOLO
@@ -8,22 +6,33 @@ import rclpy
 from rclpy.node import Node
 import os
 import cv2
+import torch
+from torchvision.transforms import Compose, Resize, ToTensor, Normalize
+import numpy as np
 
 
-class YoloDetectNode(Node):
+class YoloDepthNode(Node):
     def __init__(self):
-        super().__init__('yolo_detect_node')
-
-        # 初始化电机控制发布器
-        self.cmd_vel_publisher = self.create_publisher(Twist, '/cmd_vel', 10)
-
-        # 初始化机械臂控制发布器
-        self.arm_command_publisher = self.create_publisher(String, '/arm_command', 10)
+        super().__init__('yolo_depth_node')
 
         # 初始化 YOLO 模型
         package_dir = get_package_share_directory("yolo_detect")
         model_file = os.path.join(package_dir, "config", "model", "yolo11.pt")
         self.model = YOLO(model_file, verbose=False)  # 加载 YOLO 模型
+
+        # 初始化 MiDaS 深度估计模型
+        self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        model_type = "DPT_Hybrid"  # 可选: "DPT_Large", "DPT_Hybrid", "MiDaS_small"
+        self.depth_model = torch.hub.load("isl-org/MiDaS", model_type)
+        self.depth_model.to(self.device)
+        self.depth_model.eval()
+
+        # 定义 MiDaS 输入图像的预处理
+        midas_transforms = torch.hub.load("isl-org/MiDaS", "transforms")
+        if model_type in ["DPT_Large", "DPT_Hybrid"]:
+            self.transform = midas_transforms.dpt_transform
+        else:
+            self.transform = midas_transforms.small_transform
 
         # 初始化图像处理
         self.bridge = CvBridge()
@@ -34,66 +43,59 @@ class YoloDetectNode(Node):
             10
         )
 
-        # 可调整参数
-        self.x_tolerance = 50  # 中心点 x 的容忍范围（像素）
-        self.y_threshold_factor = 1.5 / 3  # 中心点 y 的阈值比例（图像高度的 1/2）
-        self.linear_speed = 0.1  # 线速度
-        self.fixed_angular_speed = 0.45  # 固定角速度
-        self.angular_speed_factor = -0.005  # 动态角速度调整因子
+        self.get_logger().info("YoloDepthNode has been started.")
 
-        self.get_logger().info("YoloDetectNode has been started.")
+    def estimate_depth(self, image):
+        """使用 MiDaS 模型估计深度"""
+        try:
+            input_image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+            input_tensor = self.transform(input_image).unsqueeze(0).to(self.device)
 
-    def detection_callback(self, request, response):
-        # 根据当前检测状态返回结果
-        response.success = self.current_detection
-        response.message = "Bottle detected" if self.current_detection else "No bottle detected"
-        return response
+            with torch.no_grad():
+                depth_map = self.depth_model(input_tensor)
+                depth_map = torch.nn.functional.interpolate(
+                    depth_map.unsqueeze(1),
+                    size=image.shape[:2],
+                    mode="bicubic",
+                    align_corners=False,
+                ).squeeze().cpu().numpy()
 
-    def drive_to_target(self, bbox_center_x, image_width, bbox_center_y, image_height):
-        """根据目标位置控制机器人移动"""
-        twist = Twist()
+            # 归一化深度图以便可视化
+            depth_map_normalized = cv2.normalize(depth_map, None, 0, 255, cv2.NORM_MINMAX, cv2.CV_8U)
+            return depth_map, depth_map_normalized
+        except Exception as e:
+            self.get_logger().error(f"Depth estimation failed: {e}")
+            return None, None
 
-        # 计算 y 阈值
-        y_threshold = image_height * self.y_threshold_factor
+    def calculate_3d_position(self, bbox_center_x, bbox_center_y, depth, image_width, image_height):
+        """计算物体在相机坐标系下的 3D 坐标"""
+        fx, fy = 800, 800  # 假设的焦距（像素）
+        cx, cy = image_width / 2, image_height / 2  # 主点（图像中心）
 
-        # 计算 x 偏移量
-        offset_x = bbox_center_x - (image_width / 2)
-
-        # 阶段 1：水平对齐
-        if abs(offset_x) > self.x_tolerance:
-            twist.angular.z = self.fixed_angular_speed if offset_x < 0 else -self.fixed_angular_speed  # 固定角速度
-            twist.linear.x = 0.0  # 停止向前移动
-            self.get_logger().info(f"Aligning X... Angular.z={twist.angular.z}")
-        # 阶段 2：向前移动
-        elif bbox_center_y < y_threshold:
-            twist.angular.z = 0.0  # 停止旋转
-            twist.linear.x = self.linear_speed  # 向前移动
-            self.get_logger().info("Moving forward...")
-        # 阶段 3：执行机械臂操作
-        else:
-            twist.angular.z = 0.0  # 停止旋转
-            twist.linear.x = 0.0  # 停止移动
-            self.cmd_vel_publisher.publish(twist)  # 确保机器人停止
-            self.get_logger().info("Bottle is in position, picking up...")
-            self.pick_up_bottle()
-            return  # 结束函数，避免重复发布速度指令
-
-        # 发布速度指令
-        self.cmd_vel_publisher.publish(twist)
-        self.get_logger().info(f"Driving to target: linear.x={twist.linear.x}, angular.z={twist.angular.z}")
+        X = (bbox_center_x - cx) * depth / fx
+        Y = (bbox_center_y - cy) * depth / fy
+        Z = depth
+        return X, Y, Z
 
     def listener_callback(self, msg):
         # 将 ROS 图像消息转换为 OpenCV 图像
-        frame = self.bridge.imgmsg_to_cv2(msg, desired_encoding='bgr8')
+        try:
+            frame = self.bridge.imgmsg_to_cv2(msg, desired_encoding='bgr8')
+        except Exception as e:
+            self.get_logger().error(f"Failed to convert ROS image to OpenCV format: {e}")
+            return
+
         image_height, image_width, _ = frame.shape  # 获取图像分辨率
 
         # 运行 YOLO 检测
         results = self.model(frame)
 
-        # 标志变量，用于判断是否检测到 "PET Bottle"
-        detected_bottle = False
+        # 估算深度
+        depth_map, depth_map_normalized = self.estimate_depth(frame)
+        if depth_map is None:
+            return
 
-        # 遍历检测结果并驱动机器人移动
+        # 遍历检测结果并输出物体位置
         for result in results:
             boxes = result.boxes
             for box in boxes:
@@ -108,80 +110,35 @@ class YoloDetectNode(Node):
 
                 # 如果检测到的是塑料瓶
                 if self.model.names[class_id] == "PET Bottle":
-                    detected_bottle = True  # 标记为检测到瓶子
-
                     # 计算检测框的中心点
                     bbox_center_x = (x1 + x2) / 2
                     bbox_center_y = (y1 + y2) / 2
 
-                    # 输出中心点的 x 和 y 值
-                    self.get_logger().info(f"Center X: {bbox_center_x}, Center Y: {bbox_center_y}")
+                    # 检查中心点是否在深度图范围内
+                    if 0 <= int(bbox_center_y) < depth_map.shape[0] and 0 <= int(bbox_center_x) < depth_map.shape[1]:
+                        depth = depth_map[int(bbox_center_y), int(bbox_center_x)]
+                        self.get_logger().info(f"Center X: {bbox_center_x}, Center Y: {bbox_center_y}, Depth: {depth:.2f}")
 
-                    # 判断中心点是否在镜头中间
-                    if abs(bbox_center_x - image_width / 2) <= self.x_tolerance and bbox_center_y >= image_height * self.y_threshold_factor:
-                        self.get_logger().info("Bottle is in position, picking up...")
-                        # 停止机器人移动
-                        self.stop_robot()
-
-                        # 执行机械臂拾取动作
-                        self.pick_up_bottle()
+                        # 计算 3D 坐标
+                        X, Y, Z = self.calculate_3d_position(bbox_center_x, bbox_center_y, depth, image_width, image_height)
+                        self.get_logger().info(f"Object Position: X={X:.2f}, Y={Y:.2f}, Z={Z:.2f}")
                     else:
-                        # 控制机器人移动到瓶子面前
-                        self.drive_to_target(bbox_center_x, image_width, bbox_center_y, image_height)
+                        self.get_logger().warning("Bounding box center is out of depth map range.")
 
-
-        # 如果没有检测到 "PET Bottle"，停止机器人并重置机械臂
-        if not detected_bottle:
-            self.stop_robot_and_reset_arm()
-
-        # 显示检测结果
+        # 显示检测结果和深度图
         cv2.imshow("YOLO Detection", frame)
+        cv2.imshow("Depth Map", depth_map_normalized)
         if cv2.waitKey(1) & 0xFF == ord('q'):
             rclpy.shutdown()
 
-    def stop_robot(self):
-        """停止机器人移动"""
-        twist = Twist()
-        twist.linear.x = 0.0
-        twist.angular.z = 0.0
-        self.cmd_vel_publisher.publish(twist)
-        self.get_logger().info("Robot stopped.")
-
-    def stop_robot_and_reset_arm(self):
-        """停止机器人并重置机械臂"""
-        twist = Twist()
-        twist.linear.x = 0.0
-        twist.angular.z = 0.0
-        self.cmd_vel_publisher.publish(twist)
-
-        self.arm_command_publisher.publish(String(data="reset"))
-
-    def pick_up_bottle(self):
-        """控制机械臂拾取瓶子"""
-        self.arm_command_publisher.publish(String(data="move_to_pick"))
-        self.get_logger().info("Sent pick-up command to the arm.")
-
-
-
 def main(args=None):
     rclpy.init(args=args)
-    node = YoloDetectNode()
+    node = YoloDepthNode()
     try:
         rclpy.spin(node)
     except KeyboardInterrupt:
         pass
     finally:
-        # 停止机器人移动
-        twist = Twist()
-        twist.linear.x = 0.0
-        twist.angular.z = 0.0
-        node.cmd_vel_publisher.publish(twist)
-        node.get_logger().info("Robot stopped.")
-
-        # 重置机械臂
-        node.arm_command_publisher.publish(String(data="reset"))
-        node.get_logger().info("Arm reset command sent.")
-
         # 关闭 OpenCV 窗口
         cv2.destroyAllWindows()
 
