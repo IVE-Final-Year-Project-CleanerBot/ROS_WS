@@ -22,7 +22,7 @@ class YoloDepthNode(Node):
 
         # 初始化 MiDaS 深度估计模型
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-        model_type = "DPT_Hybrid"  # 可选: "DPT_Large", "DPT_Hybrid", "MiDaS_small"
+        model_type = "MiDaS_small"  # 可选: "DPT_Large", "DPT_Hybrid", "MiDaS_small"
         self.depth_model = torch.hub.load("isl-org/MiDaS", model_type)
         self.depth_model.to(self.device)
         self.depth_model.eval()
