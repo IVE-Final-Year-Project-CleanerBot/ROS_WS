@@ -68,8 +68,8 @@ class ServoController:
         """移动机械臂到放置位置"""
         positions = [
             [1, self.angle_to_pulse_width(90)],  
-            [2, self.angle_to_pulse_width(90)], 
-            [3, self.angle_to_pulse_width(145)]
+            [2, self.angle_to_pulse_width(150)], 
+            [3, self.angle_to_pulse_width(90)]
         ]
         self.board.pwm_servo_set_position(2, positions)
         self.node.get_logger().info("Moved arm to place position.")

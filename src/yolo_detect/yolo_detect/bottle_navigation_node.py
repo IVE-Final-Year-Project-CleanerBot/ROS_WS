@@ -11,6 +11,9 @@ class BottleNavigationNode(Node):
         # 初始化电机控制发布器
         self.cmd_vel_publisher = self.create_publisher(Twist, '/cmd_vel', 10)
 
+        # 发布是否到达瓶子面前的状态
+        self.bottle_at_target_publisher = self.create_publisher(Bool, '/bottle_at_target', 10)
+
         # 订阅瓶子检测结果和位置
         self.create_subscription(Bool, '/bottle_detected', self.bottle_detected_callback, 10)
         self.create_subscription(Point, '/bottle_position', self.bottle_position_callback, 10)
@@ -38,6 +41,9 @@ class BottleNavigationNode(Node):
 
     def navigate_to_bottle(self):
         """根据瓶子位置控制机器人移动"""
+        if not self.bottle_detected or not self.bottle_position:
+            self.get_logger().warn("Bottle not detected or position unavailable. Stopping navigation.")
+            return
         twist = Twist()
 
         # 计算 x 和 y 偏移量
@@ -52,10 +58,12 @@ class BottleNavigationNode(Node):
         elif self.bottle_position.y < y_threshold:
             twist.angular.z = 0.0
             twist.linear.x = self.linear_speed
-        # 阶段 3：停止
+        # 阶段 3：停止并发布到达状态
         else:
             twist.angular.z = 0.0
             twist.linear.x = 0.0
+            self.bottle_at_target_publisher.publish(Bool(data=True))
+            self.get_logger().info("Bottle is at target position.")
 
         # 发布速度指令
         self.cmd_vel_publisher.publish(twist)

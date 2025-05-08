@@ -60,6 +60,10 @@ class BottleDetectionNode(Node):
                     bottle_position.y = (y1 + y2) / 2
                     bottle_position.z = 0.0  # 假设 z 轴为 0
 
+                    # 在图像上绘制检测框和标签
+                    cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 255, 0), 2)  # 绘制绿色矩形框
+                    cv2.putText(frame, "PET Bottle", (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
+
                     break
 
         # 发布检测结果和瓶子位置

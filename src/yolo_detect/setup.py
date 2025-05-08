@@ -35,6 +35,7 @@ setup(
             'bottle_detection_node = yolo_detect.bottle_detection_node:main',
             'bottle_navigation_node = yolo_detect.bottle_navigation_node:main',
             'bottle_pickup_node = yolo_detect.bottle_pickup_node:main',
+            'bottle_place_node = yolo_detect.bottle_place_node:main',
         ],
     },
 )

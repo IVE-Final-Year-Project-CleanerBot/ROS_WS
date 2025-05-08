@@ -10,6 +10,9 @@ setup(
         ('share/ament_index/resource_index/packages',
             ['resource/' + package_name]),
         ('share/' + package_name, ['package.xml']),
+        ('share/' + package_name + '/launch', [
+        'launch/nav2_commander_launch.py',
+        ]),
     ],
     install_requires=['setuptools'],
     zip_safe=True,
@@ -20,7 +23,8 @@ setup(
     # tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'navigation = nav2_commander.navigation:main',
+            'target_node = nav2_commander.target_node:main',
+            'init_node = nav2_commander.init_node:main',
         ],
     },
 )
