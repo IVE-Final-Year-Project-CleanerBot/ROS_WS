@@ -17,7 +17,7 @@ setup(
     maintainer_email='ooklibaioo@gmail.com',
     description='TODO: Package description',
     license='TODO: License declaration',
-    tests_require=['pytest'],
+    # tests_require=['pytest'],
     entry_points={
         'console_scripts': [
             'navigation = nav2_commander.navigation:main',

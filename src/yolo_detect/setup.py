@@ -14,7 +14,7 @@ setup(
             'config/model/yolo11.pt',
         ]),
         ('share/' + package_name + '/launch', [
-        'launch/navigation_launch.py',
+        'launch/yolo_launch.py',
         ]),
     ],
     install_requires=[
@@ -32,9 +32,9 @@ setup(
     entry_points={
         'console_scripts': [
             'yolo_detect_node = yolo_detect.yolo_detect_node:main',
-            'bottle_detector = yolo_detect.bottle_detector:main',
-            'bottle_navigation_smach = yolo_detect.bottle_navigation_smach:main',
+            'bottle_detection_node = yolo_detect.bottle_detection_node:main',
             'bottle_navigation_node = yolo_detect.bottle_navigation_node:main',
+            'bottle_pickup_node = yolo_detect.bottle_pickup_node:main',
         ],
     },
 )
