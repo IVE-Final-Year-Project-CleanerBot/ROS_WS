@@ -76,6 +76,8 @@ class ServoController:
         time.sleep(2)
         self.open_gripper()  # 打开夹爪以释放物体
         time.sleep(2)
+        self.reset_arm_position()  # 重置机械臂到初始位置
+        time.sleep(2)  # 等待舵机到达位置
 
     def reset_arm_position(self):
         """重置机械臂到初始位置"""

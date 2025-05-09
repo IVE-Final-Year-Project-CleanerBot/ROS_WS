@@ -1,5 +1,5 @@
 from geometry_msgs.msg import PoseStamped
-from nav2_simple_commander.robot_navigator import BasicNavigator, TaskResult
+from nav2_commander.robot_navigator import BasicNavigator, TaskResult
 from std_msgs.msg import Bool
 import rclpy
 from rclpy.node import Node

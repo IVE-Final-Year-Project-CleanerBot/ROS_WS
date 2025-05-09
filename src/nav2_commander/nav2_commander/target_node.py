@@ -95,7 +95,7 @@ class SinglePointNavigation(Node):
         target_pose = PoseStamped()
         target_pose.header.frame_id = 'map'
         target_pose.pose.position.x = 0.4  # 目标点的 x 坐标
-        target_pose.pose.position.y = 0.0  # 目标点的 y 坐标
+        target_pose.pose.position.y = 0.2  # 目标点的 y 坐标
         target_pose.pose.orientation.z = 0.0
         target_pose.pose.orientation.w = 3.14
 

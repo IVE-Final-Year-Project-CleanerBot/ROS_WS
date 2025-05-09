@@ -20,7 +20,7 @@ class BottleNavigationNode(Node):
 
         # 可调整参数
         self.x_tolerance = 50  # 中心点 x 的容忍范围（像素）
-        self.y_threshold_factor = 1.5 / 3  # 中心点 y 的阈值比例（图像高度的 1/2）
+        self.y_threshold_factor = 1.3 / 3  # 中心点 y 的阈值比例（图像高度的 1/2）
         self.linear_speed = 0.13  # 线速度
         self.fixed_angular_speed = 0.3  # 固定角速度
 
@@ -61,7 +61,15 @@ class BottleNavigationNode(Node):
         # 阶段 3：停止并发布到达状态
         else:
             twist.angular.z = 0.0
+            twist.linear.x = self.linear_speed
+            self.cmd_vel_publisher.publish(twist)
+            self.get_logger().info("Bottle reached, continuing forward for 1 second.")
+            self.get_clock().sleep_for(rclpy.duration.Duration(seconds=1.3))  # ROS 2 的延迟方法
+
+            # 停止机器人
+            twist.angular.z = 0.0
             twist.linear.x = 0.0
+            self.cmd_vel_publisher.publish(twist)
             self.bottle_at_target_publisher.publish(Bool(data=True))
             self.get_logger().info("Bottle is at target position.")
 
