@@ -21,7 +21,7 @@ def generate_launch_description():
             '-configuration_directory', config_dir,
             '-configuration_basename', 'cartographer.lua'],
         remappings = [
-            ('scan', 'scan')],
+            ('scan', 'scan_filtered')],
         output = 'screen'
         )
 
