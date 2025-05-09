@@ -8,7 +8,7 @@ class MotorController:
         # 电机控制参数
         self.wheel_base = 0.65  # 轮距（单位：米）
         self.max_speed = 100.0  # 最大电机速度（单位：占空比，范围 -100 到 100）
-        self.angular_scale = 0.5  # 缩放比例（0.5 表示减半）
+        self.angular_scale = 0.8  # 缩放比例（0.5 表示减半）
         self.timeout = 0.5  # 超时时间（单位：秒）
         self.is_stopped = False
         self.last_cmd_time = self.node.get_clock().now()
