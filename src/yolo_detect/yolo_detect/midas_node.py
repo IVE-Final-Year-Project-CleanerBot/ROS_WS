@@ -57,8 +57,8 @@ class MiDaSNode(Node):
         self.publisher_.publish(depth_msg)
 
         # 可选：显示深度图
-        cv2.imshow("Depth", depth_uint8)
-        cv2.waitKey(1)
+        # cv2.imshow("Depth", depth_uint8)
+        # cv2.waitKey(1)
 
 def main(args=None):
     rclpy.init(args=args)

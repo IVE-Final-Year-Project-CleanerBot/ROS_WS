@@ -72,9 +72,9 @@ class BottleDetectionNode(Node):
             self.bottle_position_publisher.publish(bottle_position)
 
         # 显示检测结果
-        cv2.imshow("YOLO Detection", frame)
-        if cv2.waitKey(1) & 0xFF == ord('q'):
-            rclpy.shutdown()
+        # cv2.imshow("YOLO Detection", frame)
+        # if cv2.waitKey(1) & 0xFF == ord('q'):
+        #     rclpy.shutdown()
 
 
 def main(args=None):
