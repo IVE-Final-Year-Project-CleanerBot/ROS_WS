@@ -8,8 +8,6 @@ def generate_launch_description():
         'robot_bringup')
     lidar_ros2_dir = get_package_share_directory(
         'sllidar_ros2')
-    camera_stream_dir = get_package_share_directory(
-        'camera_stream')
     driver_ros2_dir = get_package_share_directory('driver_ros2')
 
     # 启动 URDF 转换
@@ -41,9 +39,19 @@ def generate_launch_description():
     lidar_delay = launch.actions.TimerAction(period=5.0, actions=[lidar])
 
     # 启动摄像头发布节点
-    camera_publisher = launch.actions.IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(
-            [camera_stream_dir, '/launch', '/camera_publisher.launch.py']),
+    camera_publisher = launch_ros.actions.Node(
+        package='image_tools',
+        executable='cam2image',
+        name='cam2image',
+        output='screen',
+        parameters=[
+            {'width': 640},
+            {'height': 480},
+            {'frequency': 30.0}
+        ],
+        remappings=[
+            ('/image', '/camera/image_raw')
+        ]
     )
 
     # 启动Driver节点
