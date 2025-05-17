@@ -38,6 +38,7 @@ setup(
             'bottle_place_node = yolo_detect.bottle_place_node:main',
             'midas_node = yolo_detect.midas_node:main',
             'bottle_position_node = yolo_detect.bottle_position_node:main',
+            'bottle_nav2position_node = yolo_detect.bottle_nav2position_node:main',
         ],
     },
 )
