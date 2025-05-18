@@ -1,5 +1,6 @@
 from ament_index_python.packages import get_package_share_directory
 from sensor_msgs.msg import Image
+from rclpy.qos import QoSProfile, ReliabilityPolicy
 from std_msgs.msg import Bool
 from geometry_msgs.msg import Point
 from cv_bridge import CvBridge
@@ -23,13 +24,18 @@ class BottleDetectionNode(Node):
         model_file = os.path.join(package_dir, "config", "model", "yolo11.pt")
         self.model = YOLO(model_file, verbose=False)  # 加载 YOLO 模型
 
+        qos_profile = QoSProfile(
+            reliability=ReliabilityPolicy.BEST_EFFORT,
+            depth=10
+        )
+
         # 初始化图像处理
         self.bridge = CvBridge()
         self.subscription = self.create_subscription(
             Image,
             '/camera/image_raw',
             self.listener_callback,
-            10
+            qos_profile
         )
 
         self.get_logger().info("BottleDetectionNode has been started.")

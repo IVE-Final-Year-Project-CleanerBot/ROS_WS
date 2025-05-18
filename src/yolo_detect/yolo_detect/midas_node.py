@@ -2,6 +2,7 @@ import rclpy
 from rclpy.node import Node
 from sensor_msgs.msg import Image
 from cv_bridge import CvBridge
+from rclpy.qos import QoSProfile, ReliabilityPolicy
 import torch
 import cv2
 import numpy as np
@@ -9,11 +10,17 @@ import numpy as np
 class MiDaSNode(Node):
     def __init__(self):
         super().__init__('midas_node')
+
+        qos_profile = QoSProfile(
+            reliability=ReliabilityPolicy.BEST_EFFORT,
+            depth=10
+        )
+
         self.subscription = self.create_subscription(
             Image,
             '/camera/image_raw',
             self.image_callback,
-            10)
+            qos_profile)
         self.publisher_ = self.create_publisher(Image, '/camera/depth', 10)
         self.bridge = CvBridge()
 

@@ -45,9 +45,9 @@ def generate_launch_description():
         name='cam2image',
         output='screen',
         parameters=[
-            {'width': 640},
-            {'height': 480},
-            {'frequency': 10.0},
+            {'width': 320},
+            {'height': 240},
+            {'frequency': 5.0},
             {'reliability': 'best_effort'}
         ],
         remappings=[
