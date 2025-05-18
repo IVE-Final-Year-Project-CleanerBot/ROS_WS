@@ -47,7 +47,8 @@ def generate_launch_description():
         parameters=[
             {'width': 640},
             {'height': 480},
-            {'frequency': 10.0}
+            {'frequency': 10.0},
+            {'reliability': 'best_effort'}
         ],
         remappings=[
             ('/image', '/camera/image_raw')
