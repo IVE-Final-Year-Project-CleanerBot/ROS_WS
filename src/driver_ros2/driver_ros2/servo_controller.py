@@ -1,4 +1,4 @@
-from std_msgs.msg import Int32MultiArray, String
+from std_msgs.msg import Int32MultiArray, String, Bool
 import time
 
 class ServoController:
@@ -21,6 +21,9 @@ class ServoController:
             self.arm_command_callback,
             10
         )
+
+        # 新增：夹爪状态发布器
+        self.gripper_state_pub = self.node.create_publisher(Bool, '/gripper_has_bottle', 10)
 
     def pwm_servo_callback(self, msg):
         """处理舵机控制指令"""
@@ -63,6 +66,8 @@ class ServoController:
         time.sleep(2)  # 等待夹爪闭合
         self.reset_arm_position()  # 重置机械臂到初始位置
         time.sleep(2)  # 等待舵机到达位置
+        self.gripper_state_pub.publish(Bool(data=True))
+        self.node.get_logger().info("发布夹爪状态: True")
 
     def move_to_place_position(self):
         """移动机械臂到放置位置"""
@@ -78,6 +83,8 @@ class ServoController:
         time.sleep(2)
         self.reset_arm_position()  # 重置机械臂到初始位置
         time.sleep(2)  # 等待舵机到达位置
+        self.gripper_state_pub.publish(Bool(data=False))
+        self.node.get_logger().info("发布夹爪状态: False")
 
     def reset_arm_position(self):
         """重置机械臂到初始位置"""
@@ -89,6 +96,8 @@ class ServoController:
         ]
         self.board.pwm_servo_set_position(2, positions)
         self.node.get_logger().info("Reset arm to initial position.")
+        self.gripper_state_pub.publish(Bool(data=False))
+        self.node.get_logger().info("发布夹爪状态: False")
 
     def close_gripper(self):
         """关闭夹爪以夹取物体"""

@@ -1,8 +1,8 @@
 from ament_index_python.packages import get_package_share_directory
 from sensor_msgs.msg import Image
 from rclpy.qos import QoSProfile, ReliabilityPolicy
-from std_msgs.msg import Bool
 from geometry_msgs.msg import Point
+from std_msgs.msg import Bool
 from cv_bridge import CvBridge
 from ultralytics import YOLO
 import rclpy
@@ -10,26 +10,23 @@ from rclpy.node import Node
 import os
 import cv2
 
-
 class BottleDetectionNode(Node):
     def __init__(self):
         super().__init__('bottle_detection_node')
 
-        # 初始化检测结果发布器
-        self.bottle_detected_publisher = self.create_publisher(Bool, '/bottle_detected', 10)
         self.bottle_position_publisher = self.create_publisher(Point, '/bottle_position', 10)
+        self.gripper_has_bottle = False
+        self.sent_once = False  # 夹爪没有瓶子时只发一次
 
-        # 初始化 YOLO 模型
         package_dir = get_package_share_directory("yolo_detect")
         model_file = os.path.join(package_dir, "config", "model", "yolo11.pt")
-        self.model = YOLO(model_file, verbose=False)  # 加载 YOLO 模型
+        self.model = YOLO(model_file, verbose=False)
 
         qos_profile = QoSProfile(
             reliability=ReliabilityPolicy.BEST_EFFORT,
             depth=10
         )
 
-        # 初始化图像处理
         self.bridge = CvBridge()
         self.subscription = self.create_subscription(
             Image,
@@ -37,51 +34,50 @@ class BottleDetectionNode(Node):
             self.listener_callback,
             qos_profile
         )
+        self.create_subscription(Bool, '/gripper_has_bottle', self.gripper_state_callback, 10)
 
         self.get_logger().info("BottleDetectionNode has been started.")
 
-    def listener_callback(self, msg):
-        # 将 ROS 图像消息转换为 OpenCV 图像
-        frame = self.bridge.imgmsg_to_cv2(msg, desired_encoding='bgr8')
-        image_height, image_width, _ = frame.shape  # 获取图像分辨率
+    def gripper_state_callback(self, msg):
+        self.gripper_has_bottle = msg.data
+        if self.gripper_has_bottle:
+            self.sent_once = False  # 夹爪有瓶子时重置，放下后允许再次发
 
-        # 运行 YOLO 检测
+    def listener_callback(self, msg):
+        # 夹爪有瓶子时不发，或者已经发过一次也不发
+        if self.gripper_has_bottle or self.sent_once:
+            return
+
+        frame = self.bridge.imgmsg_to_cv2(msg, desired_encoding='bgr8')
         results = self.model(frame)
 
-        # 标志变量，用于判断是否检测到 "PET Bottle"
-        detected_bottle = False
-        bottle_position = Point()
-
-        # 遍历检测结果
         for result in results:
             boxes = result.boxes
             for box in boxes:
                 class_id = int(box.cls[0])
                 if self.model.names[class_id] == "PET Bottle":
-                    detected_bottle = True
-
-                    # 计算检测框的中心点
                     x1, y1, x2, y2 = map(int, box.xyxy[0])
+                    bottle_position = Point()
                     bottle_position.x = (x1 + x2) / 2
                     bottle_position.y = (y1 + y2) / 2
-                    bottle_position.z = 0.0  # 假设 z 轴为 0
+                    bottle_position.z = 0.0
 
-                    # 在图像上绘制检测框和标签
-                    cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 255, 0), 2)  # 绘制绿色矩形框
+                    # 显示检测框
+                    cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 255, 0), 2)
                     cv2.putText(frame, "PET Bottle", (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
 
+                    self.bottle_position_publisher.publish(bottle_position)
+                    self.get_logger().info(f"已发布瓶子位置: ({bottle_position.x:.1f}, {bottle_position.y:.1f})")
+                    self.sent_once = True  # 只发一次
                     break
-
-        # 发布检测结果和瓶子位置
-        self.bottle_detected_publisher.publish(Bool(data=detected_bottle))
-        if detected_bottle:
-            self.bottle_position_publisher.publish(bottle_position)
+            else:
+                continue
+            break
 
         # 显示检测结果
-        # cv2.imshow("YOLO Detection", frame)
-        # if cv2.waitKey(1) & 0xFF == ord('q'):
-        #     rclpy.shutdown()
-
+        cv2.imshow("YOLO Detection", frame)
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            rclpy.shutdown()
 
 def main(args=None):
     rclpy.init(args=args)
@@ -93,7 +89,6 @@ def main(args=None):
     finally:
         cv2.destroyAllWindows()
         rclpy.shutdown()
-
 
 if __name__ == '__main__':
     main()

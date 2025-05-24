@@ -47,8 +47,8 @@ class BottleNavigationNode(Node):
         twist = Twist()
 
         # 计算 x 和 y 偏移量
-        offset_x = self.bottle_position.x - 320  # 假设图像宽度为 640
-        y_threshold = 480 * self.y_threshold_factor  # 假设图像高度为 480
+        offset_x = self.bottle_position.x - 240  # 假设图像宽度为 640
+        y_threshold = 320 * self.y_threshold_factor  # 假设图像高度为 480
 
         # 阶段 1：水平对齐
         if abs(offset_x) > self.x_tolerance:

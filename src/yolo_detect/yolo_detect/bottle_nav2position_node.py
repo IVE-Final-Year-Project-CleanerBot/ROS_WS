@@ -1,9 +1,11 @@
 import rclpy
 from rclpy.node import Node
 from sensor_msgs.msg import Image
-from geometry_msgs.msg import Point
+from geometry_msgs.msg import Point, PoseStamped
 from cv_bridge import CvBridge
 import numpy as np
+from tf2_ros import Buffer, TransformListener
+import tf_transformations
 
 class BottleNav2PositionNode(Node):
     def __init__(self):
@@ -13,13 +15,16 @@ class BottleNav2PositionNode(Node):
         self.last_depth_header = None
 
         # 相机内参（请替换为实际标定值）
-        self.fx = 600.0  # 焦距x
-        self.fy = 600.0  # 焦距y
-        self.cx = 320.0  # 主点x
-        self.cy = 240.0  # 主点y
+        self.fx = 411.0  # 焦距x
+        self.fy = 411.0  # 焦距y
+        self.cx = 165.2  # 主点x
+        self.cy = 124.5  # 主点y
 
         self.create_subscription(Image, '/camera/depth', self.depth_callback, 10)
         self.create_subscription(Point, '/bottle_position', self.bottle_callback, 10)
+        self.goal_pub = self.create_publisher(PoseStamped, '/bottle_nav_goal', 10)
+        self.tf_buffer = Buffer()
+        self.tf_listener = TransformListener(self.tf_buffer, self)
 
     def depth_callback(self, msg):
         self.last_depth = self.bridge.imgmsg_to_cv2(msg, desired_encoding='mono8')
@@ -58,14 +63,40 @@ class BottleNav2PositionNode(Node):
         # Y = (v - self.cy) * real_z / self.fy  # 通常地面机器人不需要
         Z = real_z
 
-        # nav2坐标系
-        robot_X = Z      # 前进距离（米）
-        robot_Y = X      # 左右距离（米）
-        robot_Z = 0.0    # 地面导航，高度为0
+        # 1. 先将目标点从camera_link变换到base_link
+        # 假设相机和base_link重合，否则需要加静态变换
+        point_in_base = np.array([Z, X, 0.0, 1.0])  # [前, 左, 上, 1]
 
-        self.get_logger().info(
-            f"Nav2目标点: X={robot_X:.2f}m (前进), Y={robot_Y:.2f}m (左右), Z={robot_Z:.2f}m (高度，通常为0)"
-        )
+        # 2. 获取base_link在map下的pose
+        try:
+            tf = self.tf_buffer.lookup_transform(
+                'map', 'base_link', rclpy.time.Time(), rclpy.duration.Duration(seconds=1.0)
+            )
+            trans = tf.transform.translation
+            rot = tf.transform.rotation
+            # 四元数转欧拉角
+            quat = [rot.x, rot.y, rot.z, rot.w]
+            trans_mat = tf_transformations.quaternion_matrix(quat)
+            trans_mat[0:3, 3] = [trans.x, trans.y, trans.z]
+
+            # 3. 目标点加到机器人当前位置
+            target_in_map = np.dot(trans_mat, point_in_base)
+
+            # 4. 发布PoseStamped
+            goal = PoseStamped()
+            goal.header.frame_id = 'map'
+            goal.header.stamp = self.get_clock().now().to_msg()
+            goal.pose.position.x = target_in_map[0]
+            goal.pose.position.y = target_in_map[1]
+            goal.pose.position.z = 0.0
+            goal.pose.orientation = rot  # 朝向和机器人一致
+
+            # self.goal_pub.publish(goal)
+            self.get_logger().info(
+                f"发布全局目标点: x={goal.pose.position.x:.2f}, y={goal.pose.position.y:.2f}"
+            )
+        except Exception as e:
+            self.get_logger().warn(f"TF查找失败: {e}")
 
 def main(args=None):
     rclpy.init(args=args)

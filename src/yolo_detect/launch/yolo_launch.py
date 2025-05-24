@@ -11,19 +11,13 @@ def generate_launch_description():
         ),
         Node(
             package='yolo_detect',
-            executable='bottle_navigation_node',
+            executable='midas_node',
             output='screen',
             parameters=[{'use_sim_time': False}],
         ),
         Node(
             package='yolo_detect',
-            executable='bottle_pickup_node',
-            output='screen',
-            parameters=[{'use_sim_time': False}],
-        ),
-        Node(
-            package='yolo_detect',
-            executable='bottle_place_node',
+            executable='nav2position_node',
             output='screen',
             parameters=[{'use_sim_time': False}],
         ),
