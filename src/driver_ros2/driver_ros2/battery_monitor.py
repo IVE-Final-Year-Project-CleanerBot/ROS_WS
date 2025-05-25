@@ -17,3 +17,5 @@ class BatteryMonitor:
             msg.data = voltage / 1000.0
             self.battery_publisher.publish(msg)
             self.node.get_logger().info(f"Battery voltage: {msg.data} V")
+        else:
+            self.node.get_logger().warn("No battery voltage read from board!")
