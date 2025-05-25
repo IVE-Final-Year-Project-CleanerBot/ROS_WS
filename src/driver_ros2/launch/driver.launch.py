@@ -1,3 +1,4 @@
+import launch
 from launch import LaunchDescription
 from launch.substitutions import LaunchConfiguration
 from launch.actions import DeclareLaunchArgument
@@ -22,6 +23,11 @@ def generate_launch_description():
         output='screen',
     )
 
+    bottle_pickup_delay_node = launch.actions.TimerAction(
+        period=5.0,  # Delay in seconds before starting the bottle pickup
+        actions=[bottle_pickup_node]
+    )
+
     bottle_place_node = Node(
         package='driver_ros2',
         executable='bottle_place_node',
@@ -30,12 +36,17 @@ def generate_launch_description():
         output='screen',
     )
 
+    bottle_place_delay_node = launch.actions.TimerAction(
+        period=10.0,  # Delay in seconds before starting the bottle place
+        actions=[bottle_place_node]
+    )
+
     return LaunchDescription([
         DeclareLaunchArgument(
             'use_sim_time',
             default_value='false',
             description='Use simulation (Gazebo) clock if true'),
         driver_node,
-        bottle_pickup_node,
-        bottle_place_node,
+        bottle_pickup_delay_node,
+        bottle_place_delay_node,
     ])

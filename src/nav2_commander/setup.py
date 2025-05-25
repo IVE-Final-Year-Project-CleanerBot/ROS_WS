@@ -26,6 +26,7 @@ setup(
             'target_node = nav2_commander.target_node:main',
             'init_node = nav2_commander.init_node:main',
             'bottle_target_node = nav2_commander.bottle_target_node:main',
+            'station_node = nav2_commander.station_node:main',
         ],
     },
 )

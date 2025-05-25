@@ -16,14 +16,9 @@ class BottlePickupNode(Node):
 
     def bottle_at_target_callback(self, msg):
         if msg.data:
-            self.pick_up_bottle()
-        else:
-            self.get_logger().info("Bottle not at target position. Skipping pick-up operation.")
+            self.arm_command_publisher.publish(String(data="move_to_pick"))
+            self.get_logger().info("Sent pick-up command to the arm.")
 
-    def pick_up_bottle(self):
-        """控制机械臂拾取瓶子"""
-        self.arm_command_publisher.publish(String(data="move_to_pick"))
-        self.get_logger().info("Sent pick-up command to the arm.")
 
 def main(args=None):
     rclpy.init(args=args)
