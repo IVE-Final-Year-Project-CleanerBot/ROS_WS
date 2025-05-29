@@ -26,8 +26,8 @@ setup(
     entry_points={
         'console_scripts': [
             'driver_node = driver_ros2.driver_node:main',
-            'bottle_pickup_node = yolo_detect.bottle_pickup_node:main',
-            'bottle_place_node = yolo_detect.bottle_place_node:main',
+            'bottle_pickup_node = driver_ros2.bottle_pickup_node:main',
+            'bottle_place_node = driver_ros2.bottle_place_node:main',
         ],
     },
 )
