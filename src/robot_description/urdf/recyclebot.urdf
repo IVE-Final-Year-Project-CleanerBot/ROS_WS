@@ -73,7 +73,7 @@
   <joint name="imu_joint" type="fixed">
     <parent link="base_link" />
     <child link="imu_link" />
-    <origin xyz="0.0 0.0 0.1" rpy="0 0 0" /> <!-- IMU 相对于 base_link 的位置 -->
+    <origin xyz="0.0 0.0 0.1" rpy="0 0 1.5708" /> <!-- IMU 相对于 base_link 的位置 -->
   </joint>
 
 </robot>
