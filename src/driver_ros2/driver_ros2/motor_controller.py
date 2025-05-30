@@ -1,4 +1,5 @@
 from geometry_msgs.msg import Twist
+from sensor_msgs.msg import Imu
 
 class MotorController:
     def __init__(self, node, board):
@@ -13,6 +14,9 @@ class MotorController:
         self.is_stopped = False
         self.last_cmd_time = self.node.get_clock().now()
 
+        # IMU数据缓存
+        self.last_imu_msg = None
+
         # 订阅电机控制指令
         self.motor_subscription = self.node.create_subscription(
             Twist,
@@ -21,8 +25,22 @@ class MotorController:
             10
         )
 
+        # 订阅IMU数据
+        self.imu_subscription = self.node.create_subscription(
+            Imu,
+            '/imu/data',  # 或 '/imu/data_raw'，根据你的实际话题名
+            self.imu_callback,
+            10
+        )
+
         # 定时检查超时
         self.timeout_timer = self.node.create_timer(0.1, self.check_timeout)
+
+    def imu_callback(self, msg):
+        """处理IMU数据"""
+        self.last_imu_msg = msg
+        # 你可以在这里处理IMU数据，比如打印或滤波
+        # print(f"IMU angular_velocity.z: {msg.angular_velocity.z}, linear_acceleration.x: {msg.linear_acceleration.x}")
 
     def cmd_vel_callback(self, msg):
         """处理电机控制指令"""
@@ -35,6 +53,19 @@ class MotorController:
         # 提取线速度和角速度
         linear_x = msg.linear.x
         angular_z = msg.angular.z * self.angular_scale
+
+        # === 用IMU数据做补偿/限制（示例） ===
+        if self.last_imu_msg is not None:
+            # 例如：限制加速度，防止突然加速
+            acc_x = self.last_imu_msg.linear_acceleration.x
+            max_acc = 2.0  # m/s^2
+            if abs(acc_x) > max_acc:
+                linear_x = 0.0
+                self.node.get_logger().warn("加速度过大，已强制停止！")
+
+            # 例如：根据陀螺仪角速度做角速度补偿
+            gyro_z = self.last_imu_msg.angular_velocity.z
+            angular_z += gyro_z  # 简单补偿，可根据实际需求调整
 
         # 计算左右轮组的速度
         left_speed = linear_x - (angular_z * self.wheel_base / 2.0)
