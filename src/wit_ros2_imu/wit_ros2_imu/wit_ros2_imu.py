@@ -143,6 +143,7 @@ class IMUDriverNode(Node):
         #self.baud_rate = self.get_parameter('baud')
 
         # 启动IMU驱动线程
+        self.running = True
         self.driver_thread = threading.Thread(target=self.driver_loop, args=(port_name,))
         self.driver_thread.start()
 
@@ -162,7 +163,7 @@ class IMUDriverNode(Node):
             exit(0)
 
         # 循环读取IMU数据
-        while True:
+        while self.running and rclpy.ok():
             # 读取加速度计数据
 
             try:
@@ -178,6 +179,11 @@ class IMUDriverNode(Node):
                         tag = handle_serial_data(buff_data[i])
                         if tag:
                             self.imu_data()
+    
+    def stop(self):
+        self.running = False
+        if self.driver_thread.is_alive():
+            self.driver_thread.join()
 
     def imu_data(self):
         accel_x, accel_y, accel_z = acceleration[0], acceleration[1], acceleration[2]  # struct.unpack('hhh', accel_raw)
@@ -250,6 +256,7 @@ def main():
     except (KeyboardInterrupt, rclpy.executors.ExternalShutdownException):
         pass
     finally:
+        node.stop()
         node.destroy_node()
         if rclpy.ok():
             rclpy.shutdown()
