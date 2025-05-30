@@ -25,10 +25,11 @@ def main(args=None):
     node = DriverNode()
     try:
         rclpy.spin(node)
-    except KeyboardInterrupt:
+    except (KeyboardInterrupt, rclpy.executors.ExternalShutdownException):
         pass
     finally:
-        if rclpy.ok():  # 确保 rclpy 仍然处于运行状态
+        node.destroy_node()
+        if rclpy.ok():
             rclpy.shutdown()
 
 if __name__ == '__main__':
