@@ -214,7 +214,12 @@ class IMUDriverNode(Node):
 
         angle_radian = [angle_degree[i] * math.pi / 180 for i in range(3)]
 
-        qua = get_quaternion_from_euler(angle_radian[0], angle_radian[1], angle_radian[2])
+        # === 加补偿：绕Z轴加90度（1.5708弧度），如需其他角度可调整 ===
+        roll = angle_radian[0]
+        pitch = angle_radian[1]
+        yaw = angle_radian[2] + 1.5708  # +90度补偿
+
+        qua = get_quaternion_from_euler(roll, pitch, yaw)
 
         self.imu_msg.orientation.x = qua[0]
         self.imu_msg.orientation.y = qua[1]
