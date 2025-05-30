@@ -58,4 +58,22 @@
     <origin xyz="0.0 0.0 0.15" rpy="0 0 0" /> <!-- 摄像头相对于 base_link 的位置 -->
   </joint>
 
+  <!-- imu link -->
+  <link name="imu_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <cylinder length="0.05" radius="0.02" />
+      </geometry>
+      <material name="silver">
+        <color rgba="0.8 0.8 0.8 1.0" />
+      </material>
+    </visual>
+  </link>
+  <joint name="imu_joint" type="fixed">
+    <parent link="base_link" />
+    <child link="imu_link" />
+    <origin xyz="0.0 0.0 0.1" rpy="0 0 0" /> <!-- IMU 相对于 base_link 的位置 -->
+  </joint>
+
 </robot>
