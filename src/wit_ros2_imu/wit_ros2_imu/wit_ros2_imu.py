@@ -212,6 +212,11 @@ class IMUDriverNode(Node):
         self.imu_msg.angular_velocity.y = gyro_y
         self.imu_msg.angular_velocity.z = gyro_z
 
+        # 设置协方差
+        self.imu_msg.orientation_covariance = [0.01, 0, 0, 0, 0.01, 0, 0, 0, 0.01]
+        self.imu_msg.angular_velocity_covariance = [0.01, 0, 0, 0, 0.01, 0, 0, 0, 0.01]
+        self.imu_msg.linear_acceleration_covariance = [0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1]
+
         angle_radian = [angle_degree[i] * math.pi / 180 for i in range(3)]
 
         # === 加补偿：绕Z轴加90度（1.5708弧度），如需其他角度可调整 ===
