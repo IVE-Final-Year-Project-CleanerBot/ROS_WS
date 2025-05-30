@@ -9,6 +9,7 @@ def generate_launch_description():
     lidar_ros2_dir = get_package_share_directory(
         'sllidar_ros2')
     driver_ros2_dir = get_package_share_directory('driver_ros2')
+    imu_ros2_dir = get_package_share_directory('wit_ros2_imu')
 
     # 启动 URDF 转换
     urdf2tf = launch.actions.IncludeLaunchDescription(
@@ -37,6 +38,13 @@ def generate_launch_description():
 
     # 使用 TimerAction 启动后 5 秒执行 lidar 节点
     lidar_delay = launch.actions.TimerAction(period=5.0, actions=[lidar])
+
+    imu = launch.actions.IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            [imu_ros2_dir, '/launch', '/rviz_and_imu.launch.py']),
+    )
+
+    imu_delay = launch.actions.TimerAction(period=5.0, actions=[imu])
 
     # 启动摄像头发布节点
     camera_publisher = launch_ros.actions.Node(
@@ -68,4 +76,5 @@ def generate_launch_description():
         lidar_delay,
         camera_publisher,
         driver_nodes,
+        imu_delay,
     ])
