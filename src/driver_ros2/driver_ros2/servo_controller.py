@@ -96,8 +96,6 @@ class ServoController:
         ]
         self.board.pwm_servo_set_position(2, positions)
         self.node.get_logger().info("Reset arm to initial position.")
-        self.gripper_state_pub.publish(Bool(data=False))
-        self.node.get_logger().info("发布夹爪状态: False")
 
     def close_gripper(self):
         """关闭夹爪以夹取物体"""

@@ -37,7 +37,7 @@ amcl:
     z_max: 0.05
     z_rand: 0.5
     z_short: 0.05
-    scan_topic: scan
+    scan_topic: scan_filtered
 
 bt_navigator:
   ros__parameters:
@@ -141,7 +141,7 @@ controller_server:
     FollowPath:
       plugin: "dwb_core::DWBLocalPlanner"
       debug_trajectory_details: True
-      min_vel_x: 0.0
+      min_vel_x: -0.26
       min_vel_y: 0.0
       max_vel_x: 0.26
       max_vel_y: 0.0
