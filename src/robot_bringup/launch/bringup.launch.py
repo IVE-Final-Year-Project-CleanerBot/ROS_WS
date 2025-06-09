@@ -55,7 +55,7 @@ def generate_launch_description():
         parameters=[
             {'width': 320},
             {'height': 240},
-            {'frequency': 5.0},
+            {'frequency': 10.0},
             {'reliability': 'best_effort'}
         ],
         remappings=[

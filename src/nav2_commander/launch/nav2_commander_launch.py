@@ -25,7 +25,15 @@ def generate_launch_description():
         parameters=[{'use_sim_time': use_sim_time}]
     )
 
+    bottle_target_node = Node(
+        package='nav2_commander',
+        executable='bottle_target_node',
+        output='screen',
+        parameters=[{'use_sim_time': use_sim_time}]
+    )
+
     return LaunchDescription([
-        target_commander_node,
-        init_commander_node_delay
+        # target_commander_node,
+        init_commander_node_delay,
+        bottle_target_node,
     ])

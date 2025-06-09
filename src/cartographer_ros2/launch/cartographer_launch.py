@@ -52,7 +52,7 @@ def generate_launch_description():
             'use_sim_time',
             default_value='false',
             description='Use simulation (Gazebo) clock if true'),
-        rviz_node,
+        # rviz_node,
         cartographer_node,
         cartographer_occupancy_grid_node,
         # static_transform_publisher,

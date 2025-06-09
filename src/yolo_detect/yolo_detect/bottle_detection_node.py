@@ -16,7 +16,7 @@ class BottleDetectionNode(Node):
 
         self.bottle_position_publisher = self.create_publisher(Point, '/bottle_position', 10)
         self.gripper_has_bottle = False
-        self.sent_once = False  # 夹爪没有瓶子时只发一次
+        self.sent_once = False  # 只发一次
 
         package_dir = get_package_share_directory("yolo_detect")
         model_file = os.path.join(package_dir, "config", "model", "yolo11.pt")
@@ -40,11 +40,12 @@ class BottleDetectionNode(Node):
 
     def gripper_state_callback(self, msg):
         self.gripper_has_bottle = msg.data
+        # 夹爪有瓶子时允许下次放下后重新检测并发送
         if self.gripper_has_bottle:
-            self.sent_once = False  # 夹爪有瓶子时重置，放下后允许再次发
+            self.sent_once = False
 
     def listener_callback(self, msg):
-        # 夹爪有瓶子时不发，或者已经发过一次也不发
+        # 只有在夹爪没有瓶子且还没发过时才检测并发送
         if self.gripper_has_bottle or self.sent_once:
             return
 
@@ -68,16 +69,16 @@ class BottleDetectionNode(Node):
 
                     self.bottle_position_publisher.publish(bottle_position)
                     self.get_logger().info(f"已发布瓶子位置: ({bottle_position.x:.1f}, {bottle_position.y:.1f})")
-                    self.sent_once = True  # 只发一次
+                    # self.sent_once = True  # 只发一次
                     break
             else:
                 continue
             break
 
         # 显示检测结果
-        cv2.imshow("YOLO Detection", frame)
-        if cv2.waitKey(1) & 0xFF == ord('q'):
-            rclpy.shutdown()
+        # cv2.imshow("YOLO Detection", frame)
+        # if cv2.waitKey(1) & 0xFF == ord('q'):
+        #     rclpy.shutdown()
 
 def main(args=None):
     rclpy.init(args=args)

@@ -588,12 +588,11 @@ class BasicNavigator(Node):
             if self.status != GoalStatus.STATUS_SUCCEEDED:
                 result = result_response.result
                 if result is not None:
-                    self.setTaskError(result.error_code, result.error_msg)
+                    # 兼容新版本，没有 error_code 和 error_msg 字段
+                    self.setTaskError(0, '')
                     self.debug(
-                        'Task with failed with'
-                        f' status code:{self.status}'
-                        f' error code:{result.error_code}'
-                        f' error msg:{result.error_msg}')
+                        f'Task failed with status code:{self.status}'
+                    )
                     return True
                 else:
                     self.setTaskError(0, 'No result received')
