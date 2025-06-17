@@ -38,7 +38,7 @@ def generate_launch_description():
     )
 
     return LaunchDescription([
-        bottle_detection_node_delay,
-        midas_node,
-        bottle_nav2position_node_delay
+        bottle_detection_node,
+        # midas_node,
+        # bottle_nav2position_node_delay
     ])

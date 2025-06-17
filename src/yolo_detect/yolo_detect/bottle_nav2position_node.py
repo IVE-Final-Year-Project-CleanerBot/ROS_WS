@@ -65,7 +65,7 @@ class BottleNav2PositionNode(Node):
 
         # 1. 先将目标点从camera_link变换到base_link
         # 假设相机和base_link重合，否则需要加静态变换
-        offset = 0.45  # 单位：米
+        offset = 0.0  # 单位：米
         point_in_base = np.array([Z - offset, - X, 0.0, 1.0])  # [前, 左, 上, 1]
 
         # 2. 获取base_link在map下的pose
@@ -92,7 +92,7 @@ class BottleNav2PositionNode(Node):
             goal.pose.position.z = 0.0
             goal.pose.orientation = rot  # 朝向和机器人一致
 
-            # self.goal_pub.publish(goal)
+            self.goal_pub.publish(goal)
             self.get_logger().info(
                 f"发布全局目标点: x={goal.pose.position.x:.2f}, y={goal.pose.position.y:.2f}, w={goal.pose.orientation.w:.2f}"
             )

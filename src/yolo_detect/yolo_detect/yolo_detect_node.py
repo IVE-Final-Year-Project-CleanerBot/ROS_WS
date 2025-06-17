@@ -8,11 +8,17 @@ import rclpy
 from rclpy.node import Node
 import os
 import cv2
+from rclpy.qos import QoSProfile, ReliabilityPolicy
 
 
 class YoloDetectNode(Node):
     def __init__(self):
         super().__init__('yolo_detect_node')
+
+        qos_profile = QoSProfile(
+            reliability=ReliabilityPolicy.BEST_EFFORT,
+            depth=10
+        )
 
         # 初始化电机控制发布器
         self.cmd_vel_publisher = self.create_publisher(Twist, '/cmd_vel', 10)
@@ -31,7 +37,7 @@ class YoloDetectNode(Node):
             Image,
             '/camera/image_raw',
             self.listener_callback,
-            10
+            qos_profile,
         )
 
         # 可调整参数

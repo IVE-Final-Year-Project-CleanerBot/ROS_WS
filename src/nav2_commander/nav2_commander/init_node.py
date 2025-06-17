@@ -12,18 +12,15 @@ class ReturnToStartNode(Node):
         self.create_subscription(Bool, '/target_reached', self.target_reached_callback, 10)
         self.create_subscription(Bool, '/gripper_has_bottle', self.gripper_callback, 10)
         self.start_published = False
-
-        self.start_reached_publisher.publish(Bool(data=True))
+        self.start_reached_publisher.publish(Bool(data=True))  # 启动时发布一次
 
     def target_reached_callback(self, msg):
         if msg.data and not self.start_published:
-            self.get_logger().info("Target reached or gripper has bottle, publishing start point.")
             self.navigate_to_start()
             self.start_published = True
 
     def gripper_callback(self, msg):
         if msg.data and not self.start_published:
-            self.get_logger().info("Gripper has bottle, publishing start point.")
             self.navigate_to_start()
             self.start_published = True
 
@@ -33,9 +30,8 @@ class ReturnToStartNode(Node):
         start_pose.pose.position.x = 0.0
         start_pose.pose.position.y = 0.0
         start_pose.pose.orientation.z = 0.0
-        start_pose.pose.orientation.w = 1.0  # 合法四元数
+        start_pose.pose.orientation.w = 1.0
         start_pose.header.stamp = self.get_clock().now().to_msg()
-        self.get_logger().info("Navigating back to start position...")
         self.navigator.goToPose(start_pose)
 
     def reset(self):
@@ -50,7 +46,6 @@ def main(args=None):
             if node.start_published and node.navigator.isTaskComplete():
                 result = node.navigator.getResult()
                 if result == TaskResult.SUCCEEDED:
-                    node.get_logger().info("Returned to start position!")
                     node.start_reached_publisher.publish(Bool(data=True))
                     node.reset()
                 elif result == TaskResult.CANCELED or result == TaskResult.FAILED:
